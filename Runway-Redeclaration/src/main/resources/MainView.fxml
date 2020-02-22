@@ -13,9 +13,12 @@
     <top>
         <MenuBar>
             <Menu text="File">
-                <MenuItem text="Define New Airport" onAction="#defineAirport"/>
-                <MenuItem text="Define New Runway" onAction="#defineRunway"/>
-                <MenuItem text="Define New Obstacle" onAction="#defineObstacle"/>
+                <!-- Opens Airport Definition Window -->
+                <MenuItem text="Define New Airport" onAction="#openAirportDefinition"/>
+                <!-- Opens Runway Definition Window -->
+                <MenuItem text="Define New Runway" onAction="#openRunwayDefinition"/>
+                <!-- Opens Obstacle Definition Window -->
+                <MenuItem text="Define New Obstacle" onAction="#openObstacleDefinition"/>
             </Menu>
         </MenuBar>
     </top>

@@ -9,9 +9,12 @@
 <?import javafx.scene.text.Text?>
 <GridPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Controller.Controller"
             prefHeight="400.0" prefWidth="600.0">
+
     <Text text="Airport Name" GridPane.rowIndex="0"/>
-    <TextField GridPane.rowIndex="1"/>
-    <Button text="Done" GridPane.rowIndex="2"/>
+    <!-- Reads airport Name-->
+    <TextField fx:id="airportName" GridPane.rowIndex="1"/>
+    <!-- When pressed, the button calls airport definition function in Controller Class.-->
+    <Button fx:id="airportDoneButton" text="Done" onAction="#defineAirport" GridPane.rowIndex="2"/>
+
 </GridPane>
