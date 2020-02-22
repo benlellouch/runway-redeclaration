@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
+
+    <Text text="Left Runway Designator" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+    <Text text="Right Runway Designator" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+    <TextField GridPane.columnIndex="0" GridPane.rowIndex="1" />
+    <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+    <Text text="TODA (m)" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+    <Text text="TODA (m)" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+    <TextField GridPane.columnIndex="0" GridPane.rowIndex="3" />
+    <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+    <Text text="TORA (m)" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+    <Text text="TORA (m)" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+    <TextField GridPane.columnIndex="0" GridPane.rowIndex="5" />
+    <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+    <Text text="ASDA (m)" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+    <Text text="ASDA (m)" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+    <TextField GridPane.columnIndex="0" GridPane.rowIndex="7" />
+    <TextField GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+    <Text text="LDA (m)" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+    <Text text="LDA (m)" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+
+    <TextField GridPane.columnIndex="0" GridPane.rowIndex="9" />
+    <TextField GridPane.columnIndex="1" GridPane.rowIndex="9" />
+
+    <Button text="Done" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+
+    <ComboBox prefWidth="150.0" promptText="Choose Airport" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+
+</GridPane>
