@@ -13,11 +13,10 @@
     <top>
         <MenuBar>
             <Menu text="File">
-                <MenuItem text="Declare New Airport"/>
-                <MenuItem text="Declare New Runway"/>
-                <MenuItem text="Declare New Obstacle"/>
+                <MenuItem text="Define New Airport" onAction="#defineAirport"/>
+                <MenuItem text="Define New Runway" onAction="#defineRunway"/>
+                <MenuItem text="Define New Obstacle" onAction="#defineObstacle"/>
             </Menu>
         </MenuBar>
     </top>
-
 </BorderPane>

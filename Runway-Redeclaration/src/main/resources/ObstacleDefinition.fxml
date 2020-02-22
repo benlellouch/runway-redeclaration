@@ -8,9 +8,9 @@
     <center>
         <GridPane>
             <Text text="Name of Obstacle" GridPane.rowIndex="0"/>
-            <TextField  text="Name of Obstacle" GridPane.rowIndex="1"/>
-            <Text text="Height" GridPane.rowIndex="2"/>
-            <TextField text="Height (m)" GridPane.rowIndex="3" />
+            <TextField   GridPane.rowIndex="1"/>
+            <Text text="Height (m)" GridPane.rowIndex="2"/>
+            <TextField  GridPane.rowIndex="3" />
             <Button text="Done" GridPane.rowIndex="4" />
         </GridPane>
     </center>
