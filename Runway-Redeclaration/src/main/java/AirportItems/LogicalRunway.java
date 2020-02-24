@@ -1,6 +1,6 @@
 package AirportItems;
 
-public class LogicalRunways {
+public class LogicalRunway {
 
     private Integer lda;
     private Integer tora;
@@ -8,9 +8,12 @@ public class LogicalRunways {
     private Integer asda;
     private Integer displacedThreshold;
     private String name;
+    private int degree;
+    private String postion;
 
-    public LogicalRunways(String name, Integer lda, Integer tora, Integer toda, Integer asda, Integer displacedThreshold){
-        this.name = name;
+    public LogicalRunway(int degree, String position, Integer tora, Integer toda, Integer asda, Integer lda, Integer displacedThreshold){
+        this.degree = degree;
+        this.postion = position;
         this.asda = asda;
         this.toda = toda;
         this.tora = tora;

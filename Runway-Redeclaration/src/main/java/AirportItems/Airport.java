@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Airport {
 
     private String name;
-    private ArrayList<Runways> runwayList;
+    private ArrayList<Runway> runwayList;
 
     public Airport(String name){
         this.name = name;
@@ -20,7 +20,7 @@ public class Airport {
         return runwayList;
     }
 
-    public void addRunway(Runways runway){
+    public void addRunway(Runway runway){
         runwayList.add(runway);
     }
 
