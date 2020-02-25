@@ -28,10 +28,4 @@ public class Runway {
         return name;
     }
 
-    private String degreeConversion(int d){
-        if(d<100){
-            return "0"+(Integer.toString(d));
-        }else
-            return Integer.toString(d/10);
-    }
 }
