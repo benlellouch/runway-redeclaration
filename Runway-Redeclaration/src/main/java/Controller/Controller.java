@@ -7,14 +7,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
+
+import Model.*;
 
 /**
  * @author Benjamin Lellouch
@@ -63,13 +67,21 @@ public class Controller implements Initializable {
     private Button runwayDoneButton;
 
 
-    /**
-     * These are Dummy Airport Lists
-     */
-    //TODO remove
     @FXML
     private ComboBox<Airport> airports;
+    @FXML
+    private ComboBox<String> runwayDegree;
+    @FXML
+    private ComboBox<String> runwayPosition;
+    @FXML
+    private Text complementDesignatorText;
+
+
     private ObservableList<Airport> airportObservableList;
+    private ObservableList<String> runwayDegreeList;
+    private ObservableList <String> runwayPositionList;
+    private HashMap<String,String> oppositeDegreeMap;
+    private HashMap<String,String> oppositePositionMap;
 
 
 
@@ -80,12 +92,21 @@ public class Controller implements Initializable {
     public Controller()
     {
         airports = new ComboBox<>();
+        runwayDegree = new ComboBox<>();
+        runwayPosition = new ComboBox<>();
         airportObservableList = FXCollections.observableArrayList();
+        runwayDegreeList = generateDegreeList();
+        runwayPositionList = generatePositionList();
+        oppositeDegreeMap = generateOppositeDegreeMap();
+        oppositePositionMap = generateOppositePositionMap();
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         airports.setItems(airportObservableList);
+        runwayDegree.setItems(runwayDegreeList);
+        runwayPosition.setItems(runwayPositionList);
     }
 
     /**
@@ -173,12 +194,17 @@ public class Controller implements Initializable {
         String newAirportName = airportName.getText().replaceAll("\\s", "");
         if(!newAirportName.isEmpty())
         {
+            airportObservableList.add(new Airport(newAirportName));
             Stage stage = (Stage) airportDoneButton.getScene().getWindow();
             stage.close();
         }
         else
         {
-            System.out.println("Please input a name for the Airport");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Input fields empty");
+            alert.setContentText("Please fill all input fields");
+
+            alert.showAndWait();
         }
     }
 
@@ -192,6 +218,7 @@ public class Controller implements Initializable {
     {
         //TODO create new Runway and add them to their Respective Airport
         //TODO add Error pop-up when fields are empty
+
         Stage stage = (Stage) runwayDoneButton.getScene().getWindow();
         stage.close();
     }
@@ -210,24 +237,91 @@ public class Controller implements Initializable {
         stage.close();
     }
 
-
-
-}
-
-/**
- * This is a dummy Airport class
- */
-//TODO remove class when Airport Model is Defined
-class Airport
-{
-    String name;
-
-    public Airport(String name)
+    @FXML
+    private void updateDesignator()
     {
-        this.name = name;
+        String newDegree = getOppositeDegree(runwayDegree.getValue());
+        String newPosition =  getOppositePosition(runwayPosition.getValue());
+        complementDesignatorText.setText( newDegree + newPosition);
     }
 
-    public String getName() {
-        return name;
+
+    private String getOppositeDegree(String degree)
+    {
+        return oppositeDegreeMap.get(degree);
     }
+
+    private String getOppositePosition(String position)
+    {
+        return oppositePositionMap.get(position);
+    }
+
+
+
+    private ObservableList<String> generateDegreeList()
+    {
+        return FXCollections.observableArrayList("01","02","03","04","05","06","07","08","09","10","11","12","13","14","15",
+                "16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36");
+    }
+
+
+
+    private ObservableList<String> generatePositionList()
+    {
+        return FXCollections.observableArrayList("L","R","C");
+    }
+
+
+    private HashMap<String,String> generateOppositePositionMap()
+    {
+        HashMap<String,String> oppositeMap = new HashMap<>();
+        oppositeMap.put("L","R");
+        oppositeMap.put("R", "L");
+        oppositeMap.put("C", "C");
+        return oppositeMap;
+    }
+
+
+    private HashMap<String,String> generateOppositeDegreeMap()
+    {
+        HashMap<String,String> oppositeMap = new HashMap<>();
+        oppositeMap.put("36", "18");
+        oppositeMap.put("01", "19");
+        oppositeMap.put("02", "20");
+        oppositeMap.put("03", "21");
+        oppositeMap.put("04", "22");
+        oppositeMap.put("05", "23");
+        oppositeMap.put("06", "24");
+        oppositeMap.put("07", "25");
+        oppositeMap.put("08", "26");
+        oppositeMap.put("09", "27");
+        oppositeMap.put("10", "28");
+        oppositeMap.put("11", "29");
+        oppositeMap.put("12", "30");
+        oppositeMap.put("13", "31");
+        oppositeMap.put("14", "32");
+        oppositeMap.put("15", "33");
+        oppositeMap.put("16", "34");
+        oppositeMap.put("17", "35");
+        oppositeMap.put("18", "36");
+        oppositeMap.put("19", "01");
+        oppositeMap.put("20", "02");
+        oppositeMap.put("21", "03");
+        oppositeMap.put("22", "04");
+        oppositeMap.put("23", "05");
+        oppositeMap.put("24", "06");
+        oppositeMap.put("25", "07");
+        oppositeMap.put("26", "08");
+        oppositeMap.put("27", "09");
+        oppositeMap.put("28", "10");
+        oppositeMap.put("29", "11");
+        oppositeMap.put("30", "12");
+        oppositeMap.put("31", "13");
+        oppositeMap.put("32", "14");
+        oppositeMap.put("33", "15");
+        oppositeMap.put("34", "16");
+        oppositeMap.put("35", "17");
+        return oppositeMap;
+    }
+
 }

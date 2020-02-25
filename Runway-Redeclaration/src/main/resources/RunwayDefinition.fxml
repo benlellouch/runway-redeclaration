@@ -4,14 +4,10 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane hgap="3.0" prefHeight="400.0" prefWidth="600.0" vgap="3.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
 
     <Text text="Left Runway Designator" GridPane.columnIndex="0" GridPane.rowIndex="0" />
     <Text text="Right Runway Designator" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-
-    <!--Reads designator for left logical runway-->
-    <ComboBox prefWidth="150.0" promptText="Choose Degree" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-    <ComboBox prefWidth="150.0" promptText="Choose position" GridPane.columnIndex="1" GridPane.rowIndex="1" />
     <!--Reads designator for right logical runway-->
 
     <Text text="TODA (m)" GridPane.columnIndex="0" GridPane.rowIndex="2" />
@@ -47,28 +43,16 @@
     <TextField fx:id="ldaRight" GridPane.columnIndex="2" GridPane.rowIndex="9" />
 
     <!--When pressed, the button calls the runway definition function in Controller-->
-    <Button fx:id="runwayDoneButton" onAction="#defineRunway" text="Done" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+    <Button fx:id="runwayDoneButton" alignment="CENTER" onAction="#defineRunway" text="Done" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
 
     <!--ComboBox containing all the defined airports. The select the airport to which the airport will be added -->
-    <ComboBox fx:id="airports" prefWidth="150.0" promptText="Choose Airport" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-   <columnConstraints>
-      <ColumnConstraints />
-      <ColumnConstraints />
-      <ColumnConstraints />
-      <ColumnConstraints />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-   </rowConstraints>
+    <ComboBox fx:id="airports" prefWidth="150.0" promptText="Choose Airport" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+   <SplitPane dividerPositions="0.5" prefHeight="30.0" GridPane.rowIndex="1">
+      <items>
+         <ComboBox fx:id="runwayDegree" onAction="#updateDesignator" prefWidth="150.0" promptText=" Degree" />
+         <ComboBox fx:id="runwayPosition" onAction="#updateDesignator" prefWidth="150.0" promptText=" Position" />
+      </items>
+   </SplitPane>
+   <Text fx:id="complementDesignatorText" layoutX="10.0" layoutY="171.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 
 </GridPane>
