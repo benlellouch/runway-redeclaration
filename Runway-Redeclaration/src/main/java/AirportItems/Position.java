@@ -2,31 +2,25 @@ package AirportItems;
 
 public class Position {
 
-    private Obstacle obstacle;
-    private Integer distCenter;
-    private Integer distLThresh;
-    private Integer distRThresh;
+    private int distCenter;
+    private int distLThresh;
+    private int distRThresh;
 
-    public Position(Obstacle obstacle, Integer distCenter, Integer distLThresh, Integer distRThresh) {
-        this.obstacle = obstacle;
+    public Position(int distCenter, int distLThresh, int distRThresh) {
         this.distCenter = distCenter;
         this.distLThresh = distLThresh;
         this.distRThresh = distRThresh;
     }
 
-    public Obstacle getObstacle() {
-        return obstacle;
-    }
-
-    public Integer getDistCenter() {
+    public int getDistCenter() {
         return distCenter;
     }
 
-    public Integer getDistLThresh() {
+    public int getDistLThresh() {
         return distLThresh;
     }
 
-    public Integer getDistRThresh() {
+    public int getDistRThresh() {
         return distRThresh;
     }
 }

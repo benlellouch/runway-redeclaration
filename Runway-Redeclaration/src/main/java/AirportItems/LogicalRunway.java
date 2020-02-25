@@ -2,18 +2,15 @@ package AirportItems;
 
 public class LogicalRunway {
 
-    private Integer lda;
-    private Integer tora;
-    private Integer toda;
-    private Integer asda;
-    private Integer displacedThreshold;
-    private String name;
-    private int degree;
-    private String postion;
+    private int lda;
+    private int tora;
+    private int toda;
+    private int asda;
+    private int displacedThreshold;
+    private String designator;
 
-    public LogicalRunway(int degree, String position, Integer tora, Integer toda, Integer asda, Integer lda, Integer displacedThreshold){
-        this.degree = degree;
-        this.postion = position;
+    public LogicalRunway(String designator, int tora, int toda, int asda, int lda, int displacedThreshold){
+        this.designator = designator;
         this.asda = asda;
         this.toda = toda;
         this.tora = tora;
@@ -21,27 +18,24 @@ public class LogicalRunway {
         this.displacedThreshold = displacedThreshold;
     }
 
-    public Integer getLda() {
+
+    public int getLda() {
         return lda;
     }
 
-    public Integer getTora() {
+    public int getTora() {
         return tora;
     }
 
-    public Integer getToda() {
+    public int getToda() {
         return toda;
     }
 
-    public Integer getAsda() {
+    public int getAsda() {
         return asda;
     }
 
-    public Integer getDisplacedThreshold() {
+    public int getDisplacedThreshold() {
         return displacedThreshold;
-    }
-
-    public String getName() {
-        return name;
     }
 }
