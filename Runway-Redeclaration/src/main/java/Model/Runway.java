@@ -15,6 +15,8 @@ public class Runway {
         /*para1 & 2 are necessary parameters for each logical runway
         * [0]=TORA, [1]=TODA, [2]= ASDA, [3]=LDA, [4]=Displaced Threshold*/
 
+        logicRunList = new ArrayList<>();
+
         LogicalRunway logicRun1 = new LogicalRunway(designator1,para1[0],para1[1],para1[2],para1[3],para1[0]-para1[3]);
         LogicalRunway logicRun2 = new LogicalRunway(designator2,para2[0],para2[1],para2[2],para2[3],para2[0]-para2[3]);
 

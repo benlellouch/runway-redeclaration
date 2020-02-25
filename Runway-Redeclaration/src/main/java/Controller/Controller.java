@@ -44,10 +44,6 @@ public class Controller implements Initializable {
 
     // Injected Parameters for Runway Definition Window
     @FXML
-    private TextField runwayDesignatorLeft;
-    @FXML
-    private TextField runwayDesignatorRight;
-    @FXML
     private TextField todaLeft;
     @FXML
     private TextField todaRight;
@@ -82,6 +78,7 @@ public class Controller implements Initializable {
     private ObservableList <String> runwayPositionList;
     private HashMap<String,String> oppositeDegreeMap;
     private HashMap<String,String> oppositePositionMap;
+    private ObservableList<Obstacle> obstacles;
 
 
 
@@ -95,6 +92,7 @@ public class Controller implements Initializable {
         runwayDegree = new ComboBox<>();
         runwayPosition = new ComboBox<>();
         airportObservableList = FXCollections.observableArrayList();
+        obstacles = FXCollections.observableArrayList();
         runwayDegreeList = generateDegreeList();
         runwayPositionList = generatePositionList();
         oppositeDegreeMap = generateOppositeDegreeMap();
@@ -219,6 +217,28 @@ public class Controller implements Initializable {
         //TODO create new Runway and add them to their Respective Airport
         //TODO add Error pop-up when fields are empty
 
+        Airport airport = airports.getValue();
+
+        String designatorLeft = runwayDegree.getValue() + runwayPosition.getValue();
+        String designatorRight = complementDesignatorText.getText();
+
+        int todaLeft = Integer.parseInt(this.todaLeft.getText());
+        int todaRight = Integer.parseInt(this.todaRight.getText());
+
+        int toraLeft = Integer.parseInt(this.toraLeft.getText());
+        int toraRight = Integer.parseInt(this.toraRight.getText());
+
+        int asdaLeft = Integer.parseInt(this.asdaLeft.getText());
+        int asdaRight = Integer.parseInt(this.asdaRight.getText());
+
+        int ldaLeft = Integer.parseInt(this.ldaLeft.getText());
+        int ldaRight = Integer.parseInt(this.ldaRight.getText());
+
+        int[] leftRunwayParameters = {toraLeft, todaLeft,asdaLeft,ldaLeft};
+        int[] rightRunwayParameters = {toraRight, todaRight,asdaRight,ldaRight};
+        Runway newRunway = new Runway(designatorLeft,designatorRight,leftRunwayParameters,rightRunwayParameters);
+        airport.addRunway(newRunway);
+
         Stage stage = (Stage) runwayDoneButton.getScene().getWindow();
         stage.close();
     }
@@ -233,17 +253,56 @@ public class Controller implements Initializable {
     {
         //TODO create new Obstacle and add it to a List of Obstacles
         //TODO add Error pop-up when fields are empty
+        String newObstacleName = obstacleName.getText();
+        // may throw number format exception so needs some polishing
+        int newObstacleHeight =  Integer.parseInt(obstacleHeight.getText());
+        obstacles.add(new Obstacle(newObstacleName,newObstacleHeight));
         Stage stage = (Stage) obstacleDoneButton.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Dynamically updates the designator of the right runway
+     */
     @FXML
     private void updateDesignator()
     {
         String newDegree = getOppositeDegree(runwayDegree.getValue());
         String newPosition =  getOppositePosition(runwayPosition.getValue());
-        complementDesignatorText.setText( newDegree + newPosition);
+
+        if (newDegree == null)
+        {
+            complementDesignatorText.setText(newPosition);
+        }
+        else if ( newPosition == null)
+        {
+            complementDesignatorText.setText(newDegree);
+        }
+        else
+        {
+            complementDesignatorText.setText( newDegree + newPosition);
+        }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     private String getOppositeDegree(String degree)
