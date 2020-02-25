@@ -1,4 +1,4 @@
-package AirportItems;
+package Model;
 
 public class Obstacle {
 

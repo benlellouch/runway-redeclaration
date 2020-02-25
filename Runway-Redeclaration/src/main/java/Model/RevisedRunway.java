@@ -1,4 +1,6 @@
-package AirportItems;
+package Model;
+
+import Model.Runway;
 
 public class RevisedRunway {
 
