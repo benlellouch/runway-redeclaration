@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="Controller.Controller"
+            prefHeight="400.0" prefWidth="600.0">
+    <top>
+        <MenuBar>
+            <Menu text="File">
+                <!-- Opens Airport Definition Window -->
+                <MenuItem text="Define New Airport" onAction="#openAirportDefinition"/>
+                <!-- Opens Runway Definition Window -->
+                <MenuItem text="Define New Runway" onAction="#openRunwayDefinition"/>
+                <!-- Opens Obstacle Definition Window -->
+                <MenuItem text="Define New Obstacle" onAction="#openObstacleDefinition"/>
+            </Menu>
+        </MenuBar>
+    </top>
+</BorderPane>
