@@ -33,7 +33,7 @@ public class RevisedRunway
 
     public Position getPosition() { return position; }
 
-    public void printResults()
+    public String printResults()
     {
         System.out.println("*********************************************************************");
         System.out.println("Runway " + revisedRunway1.getName() + "/" + revisedRunway2.getName());
@@ -47,6 +47,20 @@ public class RevisedRunway
             System.out.println("ASDA " + revisedRunway.getAsda());
             System.out.println("LDA: " + revisedRunway.getLda() + "\n");
         }
+
+        String result = "";
+
+        result += "Runway " + revisedRunway1.getName() + "/" + revisedRunway2.getName() + "\n";
+        for (LogicalRunway revisedRunway : new LogicalRunway[] {revisedRunway1, revisedRunway2})
+        {
+            result += "Runway " + revisedRunway.getName() + ":" + "\n";
+            result += "TORA: " + revisedRunway.getTora() + "\n";
+            result += "TODA " + revisedRunway.getToda()+ "\n";
+            result += "ASDA " + revisedRunway.getAsda()+ "\n";
+            result += "LDA: " + revisedRunway.getLda() + "\n";
+        }
+
+        return result;
 
     }
 

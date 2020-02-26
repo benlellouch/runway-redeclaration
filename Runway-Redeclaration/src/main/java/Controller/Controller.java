@@ -62,6 +62,13 @@ public class Controller implements Initializable {
     @FXML
     private Button runwayDoneButton;
 
+    @FXML
+    private TextField leftThresholdDistance;
+    @FXML
+    private TextField rightThresholdDistance;
+    @FXML
+    private Text resultsText;
+
 
     @FXML
     private ComboBox<Airport> airports;
@@ -69,6 +76,12 @@ public class Controller implements Initializable {
     private ComboBox<String> runwayDegree;
     @FXML
     private ComboBox<String> runwayPosition;
+    @FXML
+    private ComboBox<Obstacle> obstacleBox;
+    @FXML
+    private ComboBox<Runway> runwayBox;
+    @FXML
+    private ComboBox<LogicalRunway> logicalRunwayBox;
     @FXML
     private Text complementDesignatorText;
 
@@ -91,6 +104,7 @@ public class Controller implements Initializable {
         airports = new ComboBox<>();
         runwayDegree = new ComboBox<>();
         runwayPosition = new ComboBox<>();
+        obstacleBox = new ComboBox<>();
         airportObservableList = FXCollections.observableArrayList();
         obstacles = FXCollections.observableArrayList();
         runwayDegreeList = generateDegreeList();
@@ -105,6 +119,7 @@ public class Controller implements Initializable {
         airports.setItems(airportObservableList);
         runwayDegree.setItems(runwayDegreeList);
         runwayPosition.setItems(runwayPositionList);
+        obstacleBox.setItems(obstacles);
     }
 
     /**
@@ -284,6 +299,35 @@ public class Controller implements Initializable {
         }
     }
 
+    @FXML
+    private void updateRunwayBox()
+    {
+        Airport airport = airports.getValue();
+        ObservableList<Runway> runwayObservableList = FXCollections.observableArrayList();
+        runwayObservableList.addAll(airport.getRunways());
+        runwayBox.setItems(runwayObservableList);
+    }
+
+    @FXML
+    private void updateLogicalRunwayBox()
+    {
+        Runway runway = runwayBox.getValue();
+        ObservableList<LogicalRunway> logicalRunwayObservableList = FXCollections.observableArrayList();
+        logicalRunwayObservableList.addAll(runway.getLogicalRunway1(), runway.getLogicalRunway2());
+        logicalRunwayBox.setItems(logicalRunwayObservableList);
+    }
+
+    @FXML
+    private void calculateRevisedRunway()
+    {
+        Runway runwayToRevise = runwayBox.getValue();
+        Obstacle obstacleOnRunway = obstacleBox.getValue();
+        int leftTHRDistance = Integer.parseInt(leftThresholdDistance.getText());
+        int rightTHRDistance = Integer.parseInt(rightThresholdDistance.getText());
+        Position positionOfObstacle = new Position(0,leftTHRDistance,rightTHRDistance);
+        RevisedRunway revisedRunway = new RevisedRunway(runwayToRevise,obstacleOnRunway,positionOfObstacle);
+        resultsText.setText(revisedRunway.printResults());
+    }
 
 
 

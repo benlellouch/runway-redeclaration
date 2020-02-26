@@ -18,17 +18,17 @@
         </MenuBar>
     </top>
     <center>
-        <GridPane hgap="3.0" prefHeight="771.0" prefWidth="659.0" vgap="4.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+        <GridPane hgap="10.0" prefHeight="771.0" prefWidth="659.0" vgap="4.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
             <Text text="Airport" GridPane.rowIndex="0" />
-            <ComboBox promptText="Airport" fx:id="airports" onAction="#updateRunwayBox" GridPane.rowIndex="1" />
+            <ComboBox fx:id="airports" onAction="#updateRunwayBox" promptText="Airport" GridPane.rowIndex="1" />
 
 
             <Text text="Runway" GridPane.rowIndex="3" />
-            <ComboBox promptText="Runway" onAction="#updateLogicalRunwayBox" GridPane.rowIndex="4" />
+            <ComboBox fx:id="runwayBox" onAction="#updateLogicalRunwayBox" promptText="Runway" GridPane.rowIndex="4" />
 
 
             <Text text="Logical Runway" GridPane.rowIndex="6" />
-            <ComboBox promptText="Logical Runway" GridPane.rowIndex="7" />
+            <ComboBox fx:id="logicalRunwayBox" promptText="Logical Runway" GridPane.rowIndex="7" />
 
             <Text text="Distance from Left Threshold" GridPane.rowIndex="9" />
             <TextField fx:id="leftThresholdDistance" GridPane.rowIndex="10" />
@@ -36,14 +36,36 @@
             <Text text="Distance from Right Threshold" GridPane.rowIndex="12" />
             <TextField fx:id="rightThresholdDistance" GridPane.rowIndex="13" />
 
-            <Text text="Left / Right from Centre Line" GridPane.columnIndex="1" />
-            <ComboBox promptText="L / R " GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Text text="Left / Right from Centre Line" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <ComboBox promptText="L / R " GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-            <Text text="Distance from Centre Line" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="distanceCentre" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Text text="Distance from Centre Line" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <TextField fx:id="distanceCentre" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
 
-            <Button onAction="#calculateRevisedRunway" text="Calculate" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Button onAction="#calculateRevisedRunway" text="Calculate" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+         <ComboBox fx:id="obstacleBox" prefWidth="150.0" promptText="Obstacle" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Obstacle" GridPane.columnIndex="1" />
+         <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
 
         </GridPane>
 

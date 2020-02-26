@@ -16,7 +16,7 @@ public class Airport {
         return name;
     }
 
-    public ArrayList getRunways(){
+    public ArrayList<Runway> getRunways(){
         return runwayList;
     }
 
