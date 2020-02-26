@@ -1,25 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Controller.Controller"
-            prefHeight="400.0" prefWidth="600.0">
+<BorderPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
     <top>
         <MenuBar>
             <Menu text="File">
                 <!-- Opens Airport Definition Window -->
-                <MenuItem text="Define New Airport" onAction="#openAirportDefinition"/>
+                <MenuItem onAction="#openAirportDefinition" text="Define New Airport" />
                 <!-- Opens Runway Definition Window -->
-                <MenuItem text="Define New Runway" onAction="#openRunwayDefinition"/>
+                <MenuItem onAction="#openRunwayDefinition" text="Define New Runway" />
                 <!-- Opens Obstacle Definition Window -->
-                <MenuItem text="Define New Obstacle" onAction="#openObstacleDefinition"/>
+                <MenuItem onAction="#openObstacleDefinition" text="Define New Obstacle" />
             </Menu>
         </MenuBar>
     </top>
+    <center>
+        <GridPane hgap="3.0" prefHeight="771.0" prefWidth="659.0" vgap="4.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+            <Text text="Airport" GridPane.rowIndex="0" />
+            <ComboBox promptText="Airport" fx:id="airports" onAction="#updateRunwayBox" GridPane.rowIndex="1" />
+
+
+            <Text text="Runway" GridPane.rowIndex="3" />
+            <ComboBox promptText="Runway" onAction="#updateLogicalRunwayBox" GridPane.rowIndex="4" />
+
+
+            <Text text="Logical Runway" GridPane.rowIndex="6" />
+            <ComboBox promptText="Logical Runway" GridPane.rowIndex="7" />
+
+            <Text text="Distance from Left Threshold" GridPane.rowIndex="9" />
+            <TextField fx:id="leftThresholdDistance" GridPane.rowIndex="10" />
+
+            <Text text="Distance from Right Threshold" GridPane.rowIndex="12" />
+            <TextField fx:id="rightThresholdDistance" GridPane.rowIndex="13" />
+
+            <Text text="Left / Right from Centre Line" GridPane.columnIndex="1" />
+            <ComboBox promptText="L / R " GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+            <Text text="Distance from Centre Line" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="distanceCentre" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+
+            <Button onAction="#calculateRevisedRunway" text="Calculate" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+        </GridPane>
+
+    </center>
+   <right>
+         <TabPane fx:id="pane" prefHeight="50.0" prefWidth="253.0" BorderPane.alignment="CENTER">
+                <tabs>
+                    <Tab fx:id="resultsTab" closable="false" text="Results">
+                        <Text fx:id="resultsText" text="" />
+                    </Tab>
+                    <Tab fx:id="calculationBreakdownTab" closable="false" text="Calculation Breakdown">
+                        <Label fx:id="rightTabLabel" text="" />
+                    </Tab>
+                </tabs>
+         </TabPane>
+   </right>
 </BorderPane>
