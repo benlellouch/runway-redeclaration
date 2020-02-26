@@ -12,7 +12,7 @@ public class Obstacle {
 
     @Override
     public String toString() {
-        return this.name;
+        return this.name + "(" + height + "m)";
     }
 
     public String getName() {
