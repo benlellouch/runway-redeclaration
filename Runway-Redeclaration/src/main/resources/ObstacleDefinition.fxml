@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" >
+    <center>
+        <GridPane>
+            <Text text="Name of Obstacle" GridPane.rowIndex="0"/>
+            <!--Reads obstacle name-->
+            <TextField  fx:id="obstacleName" GridPane.rowIndex="1"/>
+            <Text text="Height (m)" GridPane.rowIndex="2"/>
+            <!--Reads obstacle height-->
+            <TextField fx:id="obstacleHeight" GridPane.rowIndex="3" />
+            <!--When pressed, the button calls obstacle definition function in Controller-->
+            <Button fx:id="obstacleDoneButton" text="Done" onAction="#defineObstacle" GridPane.rowIndex="4" />
+        </GridPane>
+    </center>
+
+
+
+</BorderPane>
