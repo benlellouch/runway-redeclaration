@@ -10,6 +10,11 @@ public class Obstacle {
         this.height = height;
     }
 
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
     public String getName() {
         return name;
     }

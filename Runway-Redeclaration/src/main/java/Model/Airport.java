@@ -16,6 +16,11 @@ public class Airport {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
     public ArrayList<Runway> getRunways(){
         return runwayList;
     }

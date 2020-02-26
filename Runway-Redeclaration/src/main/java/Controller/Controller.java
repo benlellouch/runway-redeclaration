@@ -7,10 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -19,6 +16,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import Model.*;
+import javafx.util.Callback;
 
 /**
  * @author Benjamin Lellouch
@@ -73,6 +71,8 @@ public class Controller implements Initializable {
     @FXML
     private ComboBox<Airport> airports;
     @FXML
+    private ComboBox<Airport> airportMainBox;
+    @FXML
     private ComboBox<String> runwayDegree;
     @FXML
     private ComboBox<String> runwayPosition;
@@ -105,6 +105,7 @@ public class Controller implements Initializable {
         runwayDegree = new ComboBox<>();
         runwayPosition = new ComboBox<>();
         obstacleBox = new ComboBox<>();
+        airportMainBox = new ComboBox<>();
         airportObservableList = FXCollections.observableArrayList();
         obstacles = FXCollections.observableArrayList();
         runwayDegreeList = generateDegreeList();
@@ -115,8 +116,10 @@ public class Controller implements Initializable {
 
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources)
+    {
         airports.setItems(airportObservableList);
+        airportMainBox.setItems(airportObservableList);
         runwayDegree.setItems(runwayDegreeList);
         runwayPosition.setItems(runwayPositionList);
         obstacleBox.setItems(obstacles);
@@ -254,6 +257,8 @@ public class Controller implements Initializable {
         Runway newRunway = new Runway(designatorLeft,designatorRight,leftRunwayParameters,rightRunwayParameters);
         airport.addRunway(newRunway);
 
+        updateRunwayBox();
+
         Stage stage = (Stage) runwayDoneButton.getScene().getWindow();
         stage.close();
     }
@@ -302,19 +307,25 @@ public class Controller implements Initializable {
     @FXML
     private void updateRunwayBox()
     {
-        Airport airport = airports.getValue();
-        ObservableList<Runway> runwayObservableList = FXCollections.observableArrayList();
-        runwayObservableList.addAll(airport.getRunways());
-        runwayBox.setItems(runwayObservableList);
+        Airport airport = airportMainBox.getValue();
+        if(airport != null)
+        {
+            ObservableList<Runway> runwayObservableList = FXCollections.observableArrayList();
+            runwayObservableList.addAll(airport.getRunways());
+            runwayBox.setItems(runwayObservableList);
+        }
     }
 
     @FXML
     private void updateLogicalRunwayBox()
     {
         Runway runway = runwayBox.getValue();
-        ObservableList<LogicalRunway> logicalRunwayObservableList = FXCollections.observableArrayList();
-        logicalRunwayObservableList.addAll(runway.getLogicalRunway1(), runway.getLogicalRunway2());
-        logicalRunwayBox.setItems(logicalRunwayObservableList);
+        if(runway != null)
+        {
+            ObservableList<LogicalRunway> logicalRunwayObservableList = FXCollections.observableArrayList();
+            logicalRunwayObservableList.addAll(runway.getLogicalRunway1(), runway.getLogicalRunway2());
+            logicalRunwayBox.setItems(logicalRunwayObservableList);
+        }
     }
 
     @FXML
@@ -328,18 +339,6 @@ public class Controller implements Initializable {
         RevisedRunway revisedRunway = new RevisedRunway(runwayToRevise,obstacleOnRunway,positionOfObstacle);
         resultsText.setText(revisedRunway.getResults());
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

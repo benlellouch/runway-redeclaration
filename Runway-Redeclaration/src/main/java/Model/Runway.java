@@ -16,6 +16,11 @@ public class Runway {
         this.name = designator1+designator2;
     }
 
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
     public LogicalRunway getLogicalRunway1() {
         return logicalRunway1;
     }

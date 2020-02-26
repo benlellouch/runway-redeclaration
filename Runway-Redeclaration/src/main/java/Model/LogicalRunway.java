@@ -24,6 +24,11 @@ public class LogicalRunway
         direction = (designator.substring(2, 3).equals("L")) ? Direction.LEFT : Direction.RIGHT;
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+
     public String getName() { return ((degree < 10) ? "0" + degree : degree) + ((direction == Direction.LEFT) ? "L" : "R"); }
 
     public int getDegree() { return degree * 10; }
