@@ -1,4 +1,4 @@
-import AirportItems.*;
+import Model.*;
 
 public class Test
 {
