@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
+<BorderPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
     <top>
         <MenuBar>
             <Menu text="File">
@@ -18,79 +18,46 @@
         </MenuBar>
     </top>
     <center>
-        <GridPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+        <GridPane hgap="3.0" prefHeight="771.0" prefWidth="659.0" vgap="4.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
             <Text text="Airport" GridPane.rowIndex="0" />
-            <ComboBox promptText="Airport" GridPane.rowIndex="1" />
+            <ComboBox promptText="Airport" fx:id="airports" onAction="#updateRunwayBox" GridPane.rowIndex="1" />
 
-            <Text text="" GridPane.rowIndex="2" />
 
             <Text text="Runway" GridPane.rowIndex="3" />
-            <ComboBox promptText="Runway" GridPane.rowIndex="4" />
+            <ComboBox promptText="Runway" onAction="#updateLogicalRunwayBox" GridPane.rowIndex="4" />
 
-            <Text text="" GridPane.rowIndex="5" />
 
             <Text text="Logical Runway" GridPane.rowIndex="6" />
             <ComboBox promptText="Logical Runway" GridPane.rowIndex="7" />
 
-            <Text text="" GridPane.rowIndex="8" />
+            <Text text="Distance from Left Threshold" GridPane.rowIndex="9" />
+            <TextField fx:id="leftThresholdDistance" GridPane.rowIndex="10" />
 
-            <Text text="Distance Left Threshold" GridPane.rowIndex="9" />
-            <TextField fx:id="leftThreshold" GridPane.rowIndex="10" />
-
-            <Text text="" GridPane.rowIndex="11" />
-
-            <Text text="Distance Right Threshold" GridPane.rowIndex="12" />
-            <TextField fx:id="rightThreshold" GridPane.rowIndex="13" />
+            <Text text="Distance from Right Threshold" GridPane.rowIndex="12" />
+            <TextField fx:id="rightThresholdDistance" GridPane.rowIndex="13" />
 
             <Text text="Left / Right from Centre Line" GridPane.columnIndex="1" />
             <ComboBox promptText="L / R " GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-            <Text text="" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
             <Text text="Distance from Centre Line" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="distanceCentre" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-            <Text text="" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-            <Button fx:id="calculate" text="Calculate" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <TabPane fx:id="pane" GridPane.columnIndex="1" GridPane.rowIndex="7">
-                   <tabs>
-                       <Tab fx:id="leftTab" text="Calculation breakdown">
-                           <Label fx:id="leftTabLabel" text="Hello"/>
-                       </Tab>
-                       <Tab fx:id="rightTab" text="TO BE CHANGED">
-                           <Label fx:id="rightTabLabel" text="Hello"/>
-                       </Tab>
-                   </tabs>
-                    </TabPane>
-
-
-
-
-
-
-         <columnConstraints>
-            <ColumnConstraints />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-         </rowConstraints>
-
+            <Button onAction="#calculateRevisedRunway" text="Calculate" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
         </GridPane>
 
     </center>
+   <right>
+         <TabPane fx:id="pane" prefHeight="50.0" prefWidth="253.0" BorderPane.alignment="CENTER">
+                <tabs>
+                    <Tab fx:id="resultsTab" closable="false" text="Results">
+                        <Text fx:id="resultsText" text="" />
+                    </Tab>
+                    <Tab fx:id="calculationBreakdownTab" closable="false" text="Calculation Breakdown">
+                        <Label fx:id="rightTabLabel" text="" />
+                    </Tab>
+                </tabs>
+         </TabPane>
+   </right>
 </BorderPane>
