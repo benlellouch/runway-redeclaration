@@ -17,13 +17,16 @@ public class LogicalRunway
         this.lda = lda;
         this.displacedThreshold = displacedThreshold;
 
-        degree = Integer.parseInt(designator.substring(0, 2)) * 10;
+        if (designator.length() < 3)
+            designator = "0" + designator;
+
+        degree = Integer.parseInt(designator.substring(0, 2));
         direction = (designator.substring(2, 3).equals("L")) ? Direction.LEFT : Direction.RIGHT;
     }
 
-    public String getName() { return degree + ((direction == Direction.LEFT) ? "L" : "R"); }
+    public String getName() { return ((degree < 10) ? "0" + degree : degree) + ((direction == Direction.LEFT) ? "L" : "R"); }
 
-    public int getDegree() { return degree; }
+    public int getDegree() { return degree * 10; }
 
     public Direction getDirection() { return direction; }
 

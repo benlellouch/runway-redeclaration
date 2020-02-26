@@ -9,6 +9,6 @@ public class Test
         Position position = new Position(60, 3203, 150);
 
         RevisedRunway revisedRunway = new RevisedRunway(runway, obstacle, position);
-        revisedRunway.printResults();
+        System.out.println(revisedRunway.getResults());
     }
 }

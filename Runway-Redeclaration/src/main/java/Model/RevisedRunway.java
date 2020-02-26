@@ -1,7 +1,5 @@
 package Model;
 
-import Model.Runway;
-
 public class RevisedRunway
 {
     private LogicalRunway revisedRunway1;
@@ -33,21 +31,8 @@ public class RevisedRunway
 
     public Position getPosition() { return position; }
 
-    public String printResults()
+    public String getResults()
     {
-        System.out.println("*********************************************************************");
-        System.out.println("Runway " + revisedRunway1.getName() + "/" + revisedRunway2.getName());
-        System.out.println("*********************************************************************");
-
-        for (LogicalRunway revisedRunway : new LogicalRunway[] {revisedRunway1, revisedRunway2})
-        {
-            System.out.println("Runway " + revisedRunway.getName() + ":");
-            System.out.println("TORA: " + revisedRunway.getTora());
-            System.out.println("TODA " + revisedRunway.getToda());
-            System.out.println("ASDA " + revisedRunway.getAsda());
-            System.out.println("LDA: " + revisedRunway.getLda() + "\n");
-        }
-
         String result = "";
 
         result += "Runway " + revisedRunway1.getName() + "/" + revisedRunway2.getName() + "\n";
@@ -61,7 +46,6 @@ public class RevisedRunway
         }
 
         return result;
-
     }
 
     private LogicalRunway calculateValues(LogicalRunway runway)

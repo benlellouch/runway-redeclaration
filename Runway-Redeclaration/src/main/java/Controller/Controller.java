@@ -326,7 +326,7 @@ public class Controller implements Initializable {
         int rightTHRDistance = Integer.parseInt(rightThresholdDistance.getText());
         Position positionOfObstacle = new Position(0,leftTHRDistance,rightTHRDistance);
         RevisedRunway revisedRunway = new RevisedRunway(runwayToRevise,obstacleOnRunway,positionOfObstacle);
-        resultsText.setText(revisedRunway.printResults());
+        resultsText.setText(revisedRunway.getResults());
     }
 
 
