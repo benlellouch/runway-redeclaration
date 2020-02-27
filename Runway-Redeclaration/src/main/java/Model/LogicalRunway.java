@@ -21,7 +21,8 @@ public class LogicalRunway
             designator = "0" + designator;
 
         degree = Integer.parseInt(designator.substring(0, 2));
-        direction = (designator.substring(2, 3).equals("L")) ? Direction.LEFT : Direction.RIGHT;
+        String designation = designator.substring(2, 3);
+        direction = (designation.equals("L")) ? Direction.LEFT : designation.equals("R") ? Direction.RIGHT : Direction.CENTRE;
     }
 
     @Override
@@ -29,7 +30,8 @@ public class LogicalRunway
         return getName();
     }
 
-    public String getName() { return ((degree < 10) ? "0" + degree : degree) + ((direction == Direction.LEFT) ? "L" : "R"); }
+    public String getName() { return ((degree < 10) ? "0" + degree : degree) +
+            ((direction == Direction.LEFT) ? "L" : direction == Direction.RIGHT ? "R" : "C"); }
 
     public int getDegree() { return degree * 10; }
 
