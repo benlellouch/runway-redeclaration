@@ -85,6 +85,9 @@ public class Controller implements Initializable {
     @FXML
     private Text complementDesignatorText;
 
+    @FXML
+    private Button noAirportDefinedOK;
+
 
     private ObservableList<Airport> airportObservableList;
     private ObservableList<String> runwayDegreeList;
@@ -113,6 +116,7 @@ public class Controller implements Initializable {
         runwayPositionList = generatePositionList();
         oppositeDegreeMap = generateOppositeDegreeMap();
         oppositePositionMap = generateOppositePositionMap();
+        checkForAirports();
     }
 
 
@@ -135,6 +139,9 @@ public class Controller implements Initializable {
     {
         try
         {
+            Stage stage = (Stage) noAirportDefinedOK.getScene().getWindow();
+            stage.close();
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AirportDefinition.fxml"));
             loader.setController(this);
             Parent root = loader.load();
@@ -142,6 +149,7 @@ public class Controller implements Initializable {
             Scene definitionScene = new Scene(root);
             definitionStage.setScene(definitionScene);
             definitionStage.show();
+            definitionStage.requestFocus();
         }
         catch (Exception e)
         {
@@ -206,8 +214,6 @@ public class Controller implements Initializable {
     @FXML
     private void defineAirport()
     {
-        //TODO create new Airport and add it to a List of Airports
-        //TODO add Error pop-up when fields are empty
         String newAirportName = airportName.getText().replaceAll("\\s", "");
         if(!newAirportName.isEmpty())
         {
@@ -233,8 +239,7 @@ public class Controller implements Initializable {
     @FXML
     private void defineRunway()
     {
-        //TODO create new Runway and add them to their Respective Airport
-        //TODO add Error pop-up when fields are empty
+        //TODO add Error pop-up when fields are empty or malformed
 
         Airport airport = airports.getValue();
 
@@ -353,18 +358,21 @@ public class Controller implements Initializable {
     }
 
 
-
-
-
-
-
-
-
+    /**
+     *
+     * @param degree takes the degree of the runway designator
+     * @return the opposite degree
+     */
     private String getOppositeDegree(String degree)
     {
         return oppositeDegreeMap.get(degree);
     }
 
+    /**
+     *
+     * @param position takes the position of the runway position
+     * @return the opposite position
+     */
     private String getOppositePosition(String position)
     {
         return oppositePositionMap.get(position);
@@ -436,6 +444,29 @@ public class Controller implements Initializable {
         oppositeMap.put("34", "16");
         oppositeMap.put("35", "17");
         return oppositeMap;
+    }
+
+    private void checkForAirports()
+    {
+        if(airportObservableList.isEmpty())
+        {
+            try
+            {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/noAirportDefinedPopUp.fxml"));
+                loader.setController(this);
+                Parent root = loader.load();
+                Stage definitionStage = new Stage();
+                Scene definitionScene = new Scene(root);
+                definitionStage.setScene(definitionScene);
+                definitionStage.requestFocus();
+                definitionStage.show();
+                definitionStage.setAlwaysOnTop(true);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
