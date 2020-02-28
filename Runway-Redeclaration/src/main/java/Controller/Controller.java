@@ -108,6 +108,7 @@ public class Controller implements Initializable {
         airportMainBox = new ComboBox<>();
         airportObservableList = FXCollections.observableArrayList();
         obstacles = FXCollections.observableArrayList();
+        populateObstacleList();
         runwayDegreeList = generateDegreeList();
         runwayPositionList = generatePositionList();
         oppositeDegreeMap = generateOppositeDegreeMap();
@@ -279,6 +280,17 @@ public class Controller implements Initializable {
         obstacles.add(new Obstacle(newObstacleName,newObstacleHeight));
         Stage stage = (Stage) obstacleDoneButton.getScene().getWindow();
         stage.close();
+    }
+
+    /**
+     * Fills in the obstacle list with a few predefined obstacles and their heights
+     */
+    private void populateObstacleList()
+    {
+        obstacles.add(new Obstacle("Broken Down Rover Vehicle",2));
+        obstacles.add(new Obstacle("Barricades",1));
+        obstacles.add(new Obstacle("Lighting Pole",5));
+        obstacles.add(new Obstacle("Broken Down Aircraft",19));
     }
 
     /**
