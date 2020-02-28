@@ -252,10 +252,10 @@ public class Controller implements Initializable {
         int ldaLeft = Integer.parseInt(this.ldaLeft.getText());
         int ldaRight = Integer.parseInt(this.ldaRight.getText());
 
-        int[] leftRunwayParameters = {toraLeft, todaLeft,asdaLeft,ldaLeft};
-        int[] rightRunwayParameters = {toraRight, todaRight,asdaRight,ldaRight};
-        Runway newRunway = new Runway(designatorLeft,designatorRight,leftRunwayParameters,rightRunwayParameters);
-        airport.addRunway(newRunway);
+        LogicalRunway logicalRunway1 = new LogicalRunway(designatorLeft, toraLeft,todaLeft,asdaLeft,ldaLeft,toraLeft-ldaLeft);
+        LogicalRunway logicalRunway2 = new LogicalRunway(designatorRight,toraRight,todaRight,asdaRight,ldaRight,toraRight-ldaRight);
+        Runway run = new Runway(logicalRunway1,logicalRunway2);
+        airport.addRunway(run);
 
         updateRunwayBox();
 
