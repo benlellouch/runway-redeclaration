@@ -8,6 +8,7 @@ public class LogicalRunway
     private int asda;
     private int displacedThreshold;
     private int degree;
+    private String designation;
     private Direction direction;
 
     public LogicalRunway(String designator, int tora, int toda, int asda, int lda, int displacedThreshold){
@@ -21,8 +22,8 @@ public class LogicalRunway
             designator = "0" + designator;
 
         degree = Integer.parseInt(designator.substring(0, 2));
-        String designation = designator.substring(2, 3);
-        direction = (designation.equals("L")) ? Direction.LEFT : designation.equals("R") ? Direction.RIGHT : Direction.CENTRE;
+        designation = designator.substring(2, 3);
+        direction = (degree <= 18) ? Direction.LEFT : Direction.RIGHT;
     }
 
     @Override
@@ -30,8 +31,7 @@ public class LogicalRunway
         return getName();
     }
 
-    public String getName() { return ((degree < 10) ? "0" + degree : degree) +
-            ((direction == Direction.LEFT) ? "L" : direction == Direction.RIGHT ? "R" : "C"); }
+    public String getName() { return ((degree < 10) ? "0" + degree : degree) + designation; }
 
     public int getDegree() { return degree * 10; }
 
