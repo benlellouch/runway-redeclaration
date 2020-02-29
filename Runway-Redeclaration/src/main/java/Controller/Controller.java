@@ -412,14 +412,32 @@ public class Controller implements Initializable {
 
     @FXML
     private void calculateRevisedRunway()
-    {
+    {   try{
         Runway runwayToRevise = runwayBox.getValue();
         Obstacle obstacleOnRunway = obstacleBox.getValue();
+
+        if(airportMainBox.getValue().toString().trim().equalsIgnoreCase("Airport")||obstacleBox.getValue().toString().trim().equalsIgnoreCase("Obstacle")||runwayBox.getValue().toString().trim().equalsIgnoreCase("Runway")||logicalRunwayBox.getValue().toString().trim().equalsIgnoreCase("Logical Runway")||leftThresholdDistance.getText().isEmpty()||rightThresholdDistance.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Please fill in all inputs");
+            alert.showAndWait();
+        }
+        else{
         int leftTHRDistance = Integer.parseInt(leftThresholdDistance.getText());
         int rightTHRDistance = Integer.parseInt(rightThresholdDistance.getText());
         Position positionOfObstacle = new Position(0,leftTHRDistance,rightTHRDistance);
         RevisedRunway revisedRunway = new RevisedRunway(runwayToRevise,obstacleOnRunway,positionOfObstacle);
         resultsText.setText(revisedRunway.getResults());
+        }
+    }catch (NullPointerException e){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("Please fill in all inputs");
+        alert.showAndWait();
+    }catch (NumberFormatException ex){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("Please input numbers for distances");
+        alert.showAndWait();
+    }
+
     }
 
 
