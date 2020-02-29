@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -216,10 +217,23 @@ public class Controller implements Initializable {
     {
         String newAirportName = airportName.getText().replaceAll("\\s", "");
         if(!newAirportName.isEmpty())
-        {
+        {   if(!airportObservableList.isEmpty()){
+            for (Airport airport : airportObservableList){
+                if(airport.getName().equalsIgnoreCase(newAirportName)){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setContentText("Airport already exists");
+                    alert.showAndWait();
+                }else {
+                    airportObservableList.add(new Airport(newAirportName));
+                    Stage stage = (Stage) airportDoneButton.getScene().getWindow();
+                    stage.close();
+                }
+            }
+         }else{
             airportObservableList.add(new Airport(newAirportName));
             Stage stage = (Stage) airportDoneButton.getScene().getWindow();
             stage.close();
+        }
         }
         else
         {
@@ -229,6 +243,8 @@ public class Controller implements Initializable {
 
             alert.showAndWait();
         }
+
+
     }
 
     /**
@@ -280,11 +296,34 @@ public class Controller implements Initializable {
         //TODO create new Obstacle and add it to a List of Obstacles
         //TODO add Error pop-up when fields are empty
         String newObstacleName = obstacleName.getText();
+        String obstacleHeightString = obstacleHeight.getText();
         // may throw number format exception so needs some polishing
         int newObstacleHeight =  Integer.parseInt(obstacleHeight.getText());
-        obstacles.add(new Obstacle(newObstacleName,newObstacleHeight));
-        Stage stage = (Stage) obstacleDoneButton.getScene().getWindow();
-        stage.close();
+        try {
+            if(newObstacleName.isEmpty() || obstacleHeight.getText().isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Input field empty");
+                alert.setContentText("Please fill in all input fields");
+
+                alert.showAndWait();
+            } else if(newObstacleHeight<1){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("Please put a number greater than zero for Height");
+                alert.showAndWait();
+
+            }
+            else {
+                obstacles.add(new Obstacle(newObstacleName,newObstacleHeight));
+                Stage stage = (Stage) obstacleDoneButton.getScene().getWindow();
+                stage.close();
+            }
+        }catch (NumberFormatException e ){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Input field empty");
+            alert.setContentText("Please fill in all input fields");
+
+            alert.showAndWait();
+        }
     }
 
     /**
