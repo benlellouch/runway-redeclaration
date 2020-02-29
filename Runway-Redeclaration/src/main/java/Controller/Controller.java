@@ -298,7 +298,7 @@ public class Controller implements Initializable {
         String newObstacleName = obstacleName.getText();
         String obstacleHeightString = obstacleHeight.getText();
         // may throw number format exception so needs some polishing
-        int newObstacleHeight =  Integer.parseInt(obstacleHeight.getText());
+        //int newObstacleHeight =  Integer.parseInt(obstacleHeight.getText());
         try {
             if(newObstacleName.isEmpty() || obstacleHeight.getText().isEmpty()){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -306,13 +306,14 @@ public class Controller implements Initializable {
                 alert.setContentText("Please fill in all input fields");
 
                 alert.showAndWait();
-            } else if(newObstacleHeight<1){
+            } else if(Integer.parseInt(obstacleHeightString)<1){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText("Please put a number greater than zero for Height");
                 alert.showAndWait();
 
             }
             else {
+                int newObstacleHeight =  Integer.parseInt(obstacleHeight.getText());
                 obstacles.add(new Obstacle(newObstacleName,newObstacleHeight));
                 Stage stage = (Stage) obstacleDoneButton.getScene().getWindow();
                 stage.close();
