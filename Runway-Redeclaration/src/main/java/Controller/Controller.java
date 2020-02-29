@@ -295,36 +295,42 @@ public class Controller implements Initializable {
     {
         //TODO create new Obstacle and add it to a List of Obstacles
         //TODO add Error pop-up when fields are empty
-        String newObstacleName = obstacleName.getText();
-        String obstacleHeightString = obstacleHeight.getText();
-        // may throw number format exception so needs some polishing
-        //int newObstacleHeight =  Integer.parseInt(obstacleHeight.getText());
-        try {
-            if(newObstacleName.isEmpty() || obstacleHeight.getText().isEmpty()){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Input field empty");
-                alert.setContentText("Please fill in all input fields");
+       try {
+           String newObstacleName = obstacleName.getText();
 
-                alert.showAndWait();
-            } else if(Integer.parseInt(obstacleHeightString)<1){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("Please put a number greater than zero for Height");
-                alert.showAndWait();
+           if (newObstacleName.isEmpty() || obstacleHeight.getText().isEmpty()) {
+               Alert alert = new Alert(Alert.AlertType.INFORMATION);
+               alert.setTitle("Input field empty");
+               alert.setContentText("Please fill in all input fields");
+               alert.showAndWait();
 
-            }
-            else {
-                int newObstacleHeight =  Integer.parseInt(obstacleHeight.getText());
-                obstacles.add(new Obstacle(newObstacleName,newObstacleHeight));
-                Stage stage = (Stage) obstacleDoneButton.getScene().getWindow();
-                stage.close();
-            }
-        }catch (NumberFormatException e ){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Input field empty");
-            alert.setContentText("Please fill in all input fields");
+           } else if (Integer.parseInt(obstacleHeight.getText()) < 1) {
+               Alert alert = new Alert(Alert.AlertType.INFORMATION);
+               alert.setContentText("Please put a number greater than zero for Height");
+               alert.showAndWait();
 
-            alert.showAndWait();
-        }
+           } else {
+               int newObstacleHeight = Integer.parseInt(obstacleHeight.getText());
+               Obstacle newObstacleCreated = new Obstacle(newObstacleName,newObstacleHeight);
+               for (int i=0;i<obstacles.size();i++){
+                   if(obstacles.get(i).getName().equalsIgnoreCase(newObstacleName)&&obstacles.get(i).getHeight()==newObstacleHeight){
+                       Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                       alert.setContentText("Duplicate alert: previous obstacle has been removed");
+                       alert.showAndWait();
+                       obstacles.remove(i);
+                   }
+               }
+               obstacles.add(newObstacleCreated);
+               Stage stage = (Stage) obstacleDoneButton.getScene().getWindow();
+               stage.close();
+
+
+           }
+       } catch (NumberFormatException e) {
+           Alert alert = new Alert(Alert.AlertType.INFORMATION);
+           alert.setContentText("Please input a number for height");
+           alert.showAndWait();
+       }
     }
 
     /**
