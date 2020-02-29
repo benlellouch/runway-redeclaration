@@ -256,7 +256,8 @@ public class Controller implements Initializable {
     private void defineRunway()
     {
         //TODO add Error pop-up when fields are empty or malformed
-
+        try {
+            if(!(runwayPosition.getValue().trim().equalsIgnoreCase("Position"))&&!(Integer.parseInt(todaLeft.getText())<0)&&!(Integer.parseInt(todaRight.getText())<0)&&!(Integer.parseInt(toraLeft.getText())<0)&&!(Integer.parseInt(toraRight.getText())<0)&&!(Integer.parseInt(asdaLeft.getText())<0)&&!(Integer.parseInt(asdaRight.getText())<0)&&!(Integer.parseInt(ldaLeft.getText())<0)&&!(Integer.parseInt(ldaRight.getText())<0)){
         Airport airport = airports.getValue();
 
         String designatorLeft = runwayDegree.getValue() + runwayPosition.getValue();
@@ -283,6 +284,24 @@ public class Controller implements Initializable {
 
         Stage stage = (Stage) runwayDoneButton.getScene().getWindow();
         stage.close();
+            }else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("Please ensure all inputs are filled in and only positive numbers are used for measurements");
+                alert.showAndWait();
+            }
+
+
+    }
+        catch (NullPointerException e){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Please ensure all inputs are filled in and only positive numbers are used for measurements");
+            alert.showAndWait();
+        } catch (NumberFormatException ex){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Please ensure all inputs are filled in and only postive numbers are used for measurements");
+            alert.showAndWait();
+        }
+
     }
 
     /**
