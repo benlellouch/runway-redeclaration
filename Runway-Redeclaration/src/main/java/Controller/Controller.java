@@ -66,7 +66,9 @@ public class Controller implements Initializable {
     @FXML
     private TextField rightThresholdDistance;
     @FXML
-    private Text resultsText;
+    private Text revisedRunwayText;
+    @FXML
+    private Text oldRunwayText;
 
 
     @FXML
@@ -434,7 +436,8 @@ public class Controller implements Initializable {
         int rightTHRDistance = Integer.parseInt(rightThresholdDistance.getText());
         Position positionOfObstacle = new Position(0,leftTHRDistance,rightTHRDistance);
         RevisedRunway revisedRunway = new RevisedRunway(runwayToRevise,obstacleOnRunway,positionOfObstacle);
-        resultsText.setText(revisedRunway.getResults());
+        revisedRunwayText.setText(revisedRunway.getResults());
+        oldRunwayText.setText(runwayToRevise.getResults());
         }
     }catch (NullPointerException e){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

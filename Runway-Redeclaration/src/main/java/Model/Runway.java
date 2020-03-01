@@ -18,6 +18,23 @@ public class Runway {
         return this.name;
     }
 
+    public String getResults()
+    {
+        String result = "";
+
+        result += "Runway " + logicalRunway1.getName() + "/" + logicalRunway2.getName() + "\n";
+        for (LogicalRunway logicalRunway : new LogicalRunway[] {logicalRunway1, logicalRunway2})
+        {
+            result += "Runway " + logicalRunway.getName() + ":" + "\n";
+            result += "TORA: " + logicalRunway.getTora() + "\n";
+            result += "TODA " + logicalRunway.getToda()+ "\n";
+            result += "ASDA " + logicalRunway.getAsda()+ "\n";
+            result += "LDA: " + logicalRunway.getLda() + "\n";
+        }
+
+        return result;
+    }
+
     public LogicalRunway getLogicalRunway1() {
         return logicalRunway1;
     }
