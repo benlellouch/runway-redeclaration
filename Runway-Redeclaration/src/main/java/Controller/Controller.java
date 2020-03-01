@@ -218,17 +218,17 @@ public class Controller implements Initializable {
         String newAirportName = airportName.getText().replaceAll("\\s", "");
         if(!newAirportName.isEmpty())
         {   if(!airportObservableList.isEmpty()){
-            for (Airport airport : airportObservableList){
-                if(airport.getName().equalsIgnoreCase(newAirportName)){
+            for (int i=0;i<airportObservableList.size();i++){
+                if(airportObservableList.get(i).getName().equalsIgnoreCase(newAirportName)){
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("Airport already exists");
                     alert.showAndWait();
-                }else {
-                    airportObservableList.add(new Airport(newAirportName));
-                    Stage stage = (Stage) airportDoneButton.getScene().getWindow();
-                    stage.close();
+                    airportObservableList.remove(i);
                 }
             }
+            airportObservableList.add(new Airport(newAirportName));
+            Stage stage = (Stage) airportDoneButton.getScene().getWindow();
+            stage.close();
          }else{
             airportObservableList.add(new Airport(newAirportName));
             Stage stage = (Stage) airportDoneButton.getScene().getWindow();
