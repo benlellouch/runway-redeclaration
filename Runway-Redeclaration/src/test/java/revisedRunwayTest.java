@@ -5,12 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class revisedRunwayTest {
 
-    LogicalRunway lRunway09R = new LogicalRunway("09R",3660,3660,3660,3353,3660-3353);
-    LogicalRunway lRunway27L = new LogicalRunway("27L",3660,3660,3660,3660,0);
+    LogicalRunway lRunway09R = new LogicalRunway("09R",3660,3660,3660,3353);
+    LogicalRunway lRunway27L = new LogicalRunway("27L",3660,3660,3660,3660);
     Runway runway09R27L = new Runway(lRunway09R,lRunway27L);
 
-    LogicalRunway lRunway09L = new LogicalRunway("09L", 3902,3902,3902,3595,3902-3595);
-    LogicalRunway lRunway27R = new LogicalRunway("27R", 3884,3962,3884,3884,0);
+    LogicalRunway lRunway09L = new LogicalRunway("09L", 3902,3902,3902,3595);
+    LogicalRunway lRunway27R = new LogicalRunway("27R", 3884,3962,3884,3884);
     Runway runway09L27R = new Runway(lRunway09L,lRunway27R);
 
     @Test

@@ -35,19 +35,19 @@ public class LogicalRunway
 
     Direction getDirection() { return direction; }
 
-    int getLda() {
+    public int getLda() {
         return lda;
     }
 
-    int getTora() {
+    public int getTora() {
         return tora;
     }
 
-    int getToda() {
+    public int getToda() {
         return toda;
     }
 
-    int getAsda() {
+    public int getAsda() {
         return asda;
     }
 
