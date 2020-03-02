@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -7,16 +8,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-
-import Model.*;
-import javafx.util.Callback;
 
 /**
  * @author Benjamin Lellouch
@@ -65,7 +66,14 @@ public class Controller implements Initializable {
     @FXML
     private TextField rightThresholdDistance;
     @FXML
+    private TextField centreLineDistance;
+    @FXML
     private Text resultsText;
+    @FXML
+    private Text originalRunwayInfo;
+    @FXML
+    private Text calculationBreakdown;
+
 
 
     @FXML
@@ -83,6 +91,8 @@ public class Controller implements Initializable {
     @FXML
     private ComboBox<LogicalRunway> logicalRunwayBox;
     @FXML
+    private ComboBox<String> leftRightBox;
+    @FXML
     private Text complementDesignatorText;
 
 
@@ -92,6 +102,7 @@ public class Controller implements Initializable {
     private HashMap<String,String> oppositeDegreeMap;
     private HashMap<String,String> oppositePositionMap;
     private ObservableList<Obstacle> obstacles;
+    private ObservableList<String> leftRight;
 
 
 
@@ -106,6 +117,7 @@ public class Controller implements Initializable {
         runwayPosition = new ComboBox<>();
         obstacleBox = new ComboBox<>();
         airportMainBox = new ComboBox<>();
+        leftRightBox = new ComboBox<>();
         airportObservableList = FXCollections.observableArrayList();
         obstacles = FXCollections.observableArrayList();
         populateObstacleList();
@@ -113,6 +125,7 @@ public class Controller implements Initializable {
         runwayPositionList = generatePositionList();
         oppositeDegreeMap = generateOppositeDegreeMap();
         oppositePositionMap = generateOppositePositionMap();
+        leftRight = generateLeftRight();
     }
 
 
@@ -124,6 +137,7 @@ public class Controller implements Initializable {
         runwayDegree.setItems(runwayDegreeList);
         runwayPosition.setItems(runwayPositionList);
         obstacleBox.setItems(obstacles);
+        leftRightBox.setItems(leftRight);
     }
 
     /**
@@ -347,9 +361,24 @@ public class Controller implements Initializable {
         Obstacle obstacleOnRunway = obstacleBox.getValue();
         int leftTHRDistance = Integer.parseInt(leftThresholdDistance.getText());
         int rightTHRDistance = Integer.parseInt(rightThresholdDistance.getText());
-        Position positionOfObstacle = new Position(0,leftTHRDistance,rightTHRDistance);
+        int centreDistance = Integer.parseInt(centreLineDistance.getText());
+        Position positionOfObstacle = new Position(centreDistance,leftTHRDistance,rightTHRDistance);
         RevisedRunway revisedRunway = new RevisedRunway(runwayToRevise,obstacleOnRunway,positionOfObstacle);
         resultsText.setText(revisedRunway.getResults());
+
+        String original =
+                "" + "ORIGINAL RUNWAY" + "\n" + "" + "\n"
+                + "Runway " + revisedRunway.getRevisedRunway1() + "/" + revisedRunway.getRevisedRunway2() + "\n"
+                + "Runway " + revisedRunway.getRevisedRunway1() + ":" + "\n"
+                + runwayToRevise.getLogicalRunway1().getInfo() + "\n"
+                + "Runway " + revisedRunway.getRevisedRunway2() + ":" + "\n"
+                + runwayToRevise.getLogicalRunway2().getInfo();
+
+        originalRunwayInfo.setText(original);
+
+        String breakdown = revisedRunway.getRevisedCalculationBreakdown1();
+
+        calculationBreakdown.setText(breakdown);
     }
 
 
@@ -383,6 +412,11 @@ public class Controller implements Initializable {
     private ObservableList<String> generatePositionList()
     {
         return FXCollections.observableArrayList("L","R","C");
+    }
+
+    private ObservableList<String> generateLeftRight()
+    {
+        return FXCollections.observableArrayList("L","R");
     }
 
 

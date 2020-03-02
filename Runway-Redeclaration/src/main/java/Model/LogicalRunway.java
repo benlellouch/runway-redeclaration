@@ -54,4 +54,15 @@ public class LogicalRunway
     }
 
     public int getDisplacedThreshold() { return displacedThreshold; }
+
+    public String getInfo(){
+
+        String info = "TORA: " + String.valueOf(getTora()) + "\n" +
+                        "TODA: " + String.valueOf(getToda()) + "\n" +
+                        "ASDA: " + String.valueOf(getAsda()) + "\n" +
+                        "LDA: " + String.valueOf(getLda());
+
+
+        return info;
+    }
 }

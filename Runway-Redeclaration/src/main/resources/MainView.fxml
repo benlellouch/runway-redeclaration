@@ -37,10 +37,10 @@
             <TextField fx:id="rightThresholdDistance" GridPane.rowIndex="13" />
 
             <Text text="Left / Right from Centre Line" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <ComboBox promptText="L / R " GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <ComboBox fx:id="leftRightBox" promptText="L / R " GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
             <Text text="Distance from Centre Line" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <TextField fx:id="distanceCentre" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextField fx:id="centreLineDistance" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
 
             <Button onAction="#calculateRevisedRunway" text="Calculate" GridPane.columnIndex="1" GridPane.rowIndex="10" />
@@ -74,10 +74,16 @@
          <TabPane fx:id="pane" prefHeight="50.0" prefWidth="253.0" BorderPane.alignment="CENTER">
                 <tabs>
                     <Tab fx:id="resultsTab" closable="false" text="Results">
-                        <Text fx:id="resultsText" text="" />
+                        <SplitPane>
+                            <Text fx:id="resultsText" />
+                            <Text fx:id="originalRunwayInfo"/>
+                        </SplitPane>
+
                     </Tab>
                     <Tab fx:id="calculationBreakdownTab" closable="false" text="Calculation Breakdown">
-                        <Label fx:id="rightTabLabel" text="" />
+                        <SplitPane>
+                            <Text fx:id="calculationBreakdown" wrappingWidth="200" textAlignment="CENTER"/>
+                        </SplitPane>
                     </Tab>
                 </tabs>
          </TabPane>
