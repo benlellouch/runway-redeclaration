@@ -2,9 +2,9 @@ package Model;
 
 public class Runway {
 
-    private LogicalRunway logicalRunway1;
-    private LogicalRunway logicalRunway2;
-    private String name;
+    private final LogicalRunway logicalRunway1;
+    private final LogicalRunway logicalRunway2;
+    private final String name;
 
     public Runway(LogicalRunway logicalRunway1, LogicalRunway logicalRunway2) {
         this.logicalRunway1 = logicalRunway1;
@@ -18,22 +18,7 @@ public class Runway {
         return this.name;
     }
 
-    public String getResults()
-    {
-        String result = "";
-
-        result += "Runway " + logicalRunway1.getName() + "/" + logicalRunway2.getName() + "\n";
-        for (LogicalRunway logicalRunway : new LogicalRunway[] {logicalRunway1, logicalRunway2})
-        {
-            result += "Runway " + logicalRunway.getName() + ":" + "\n";
-            result += "TORA: " + logicalRunway.getTora() + "\n";
-            result += "TODA " + logicalRunway.getToda()+ "\n";
-            result += "ASDA " + logicalRunway.getAsda()+ "\n";
-            result += "LDA: " + logicalRunway.getLda() + "\n";
-        }
-
-        return result;
-    }
+    public String getResults() { return logicalRunway1.getResults() + logicalRunway2.getResults(); }
 
     public LogicalRunway getLogicalRunway1() {
         return logicalRunway1;

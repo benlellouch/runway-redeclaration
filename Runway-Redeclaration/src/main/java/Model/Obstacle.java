@@ -2,8 +2,8 @@ package Model;
 
 public class Obstacle {
 
-    private String name;
-    private int height;
+    private final String name;
+    private final int height;
 
     public Obstacle(String name, int height) {
         this.name = name;

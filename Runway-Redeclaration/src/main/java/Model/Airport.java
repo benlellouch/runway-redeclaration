@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Airport {
 
-    private String name;
-    private ArrayList<Runway> runwayList;
+    private final String name;
+    private final ArrayList<Runway> runwayList;
 
     public Airport(String name){
         this.name = name;

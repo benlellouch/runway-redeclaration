@@ -2,9 +2,9 @@ package Model;
 
 public class Position {
 
-    private int distCenter;
-    private int distLThresh;
-    private int distRThresh;
+    private final int distCenter;
+    private final int distLThresh;
+    private final int distRThresh;
 
     public Position(int distCenter, int distLThresh, int distRThresh) {
         this.distCenter = distCenter;

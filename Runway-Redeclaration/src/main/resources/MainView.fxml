@@ -63,9 +63,11 @@
                         </SplitPane>
                     </Tab>
                     <Tab fx:id="calculationBreakdownTab" closable="false" text="Calculation Breakdown">
-                        <SplitPane>
-                            <Text fx:id="calculationBreakdown" wrappingWidth="200" textAlignment="CENTER"/>
-                        </SplitPane>
+                        <Pane>
+                            <VBox>
+                                <Text fx:id="calculationBreakdown"/>
+                            </VBox>
+                        </Pane>
                     </Tab>
                 </tabs>
             </TabPane>

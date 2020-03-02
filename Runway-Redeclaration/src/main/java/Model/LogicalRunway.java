@@ -2,21 +2,19 @@ package Model;
 
 public class LogicalRunway
 {
-    private int lda;
-    private int tora;
-    private int toda;
-    private int asda;
-    private int displacedThreshold;
-    private int degree;
-    private String designation;
-    private Direction direction;
+    private final int lda;
+    private final int tora;
+    private final int toda;
+    private final int asda;
+    private final int degree;
+    private final String designation;
+    private final Direction direction;
 
-    public LogicalRunway(String designator, int tora, int toda, int asda, int lda, int displacedThreshold){
+    public LogicalRunway(String designator, int tora, int toda, int asda, int lda){
         this.asda = asda;
         this.toda = toda;
         this.tora = tora;
         this.lda = lda;
-        this.displacedThreshold = displacedThreshold;
 
         if (designator.length() < 3)
             designator = "0" + designator;
@@ -31,38 +29,40 @@ public class LogicalRunway
         return getName();
     }
 
-    public String getName() { return ((degree < 10) ? "0" + degree : degree) + designation; }
+    String getName() { return ((degree < 10) ? "0" + degree : degree) + designation; }
 
     public int getDegree() { return degree * 10; }
 
-    public Direction getDirection() { return direction; }
+    Direction getDirection() { return direction; }
 
-    public int getLda() {
+    int getLda() {
         return lda;
     }
 
-    public int getTora() {
+    int getTora() {
         return tora;
     }
 
-    public int getToda() {
+    int getToda() {
         return toda;
     }
 
-    public int getAsda() {
+    int getAsda() {
         return asda;
     }
 
-    public int getDisplacedThreshold() { return displacedThreshold; }
+    int getDisplacedThreshold() { return tora - lda; }
 
-    public String getInfo(){
+    String getResults()
+    {
+        String result = "";
 
-        String info = "TORA: " + String.valueOf(getTora()) + "\n" +
-                        "TODA: " + String.valueOf(getToda()) + "\n" +
-                        "ASDA: " + String.valueOf(getAsda()) + "\n" +
-                        "LDA: " + String.valueOf(getLda());
+        result += "Runway " + getName() + ":" + "\n";
+        result += "LDA: " + getLda() + "\n";
+        result += "TORA: " + getTora() + "\n";
+        result += "TODA: " + getToda()+ "\n";
+        result += "ASDA: " + getAsda()+ "\n\n";
 
-
-        return info;
+        return result;
     }
 }

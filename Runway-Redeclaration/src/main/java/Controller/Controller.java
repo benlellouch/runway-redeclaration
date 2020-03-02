@@ -274,8 +274,8 @@ public class Controller implements Initializable {
         int ldaLeft = Integer.parseInt(this.ldaLeft.getText());
         int ldaRight = Integer.parseInt(this.ldaRight.getText());
 
-        LogicalRunway logicalRunway1 = new LogicalRunway(designatorLeft, toraLeft,todaLeft,asdaLeft,ldaLeft,toraLeft-ldaLeft);
-        LogicalRunway logicalRunway2 = new LogicalRunway(designatorRight,toraRight,todaRight,asdaRight,ldaRight,toraRight-ldaRight);
+        LogicalRunway logicalRunway1 = new LogicalRunway(designatorLeft, toraLeft,todaLeft,asdaLeft,ldaLeft);
+        LogicalRunway logicalRunway2 = new LogicalRunway(designatorRight,toraRight,todaRight,asdaRight,ldaRight);
         Runway run = new Runway(logicalRunway1,logicalRunway2);
         airport.addRunway(run);
 
@@ -379,9 +379,7 @@ public class Controller implements Initializable {
         RevisedRunway revisedRunway = new RevisedRunway(runwayToRevise,obstacleOnRunway,positionOfObstacle);
         revisedRunwayText.setText(revisedRunway.getResults());
         oldRunwayText.setText(runwayToRevise.getResults());
-        String breakdown = revisedRunway.getRevisedCalculationBreakdown1();
-
-        calculationBreakdown.setText(breakdown);
+        calculationBreakdown.setText(revisedRunway.getCalcBreakdown());
         }
     }catch (NullPointerException e){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

@@ -2,32 +2,26 @@ package Model;
 
 public class RevisedRunway
 {
-    private LogicalRunway revisedRunway1;
-    private LogicalRunway revisedRunway2;
-    private Obstacle obstacle;
-    private Position position;
-    private String revisedCalculationBreakdown1 = "";
-
+    private final LogicalRunway revisedRunway1;
+    private final LogicalRunway revisedRunway2;
+    private final Obstacle obstacle;
+    private final Position position;
+    private final StringBuilder calcBreakdown = new StringBuilder();
 
     // Constants
-    private static int RESA = 240;
-    private static int ALS = 50;
-    private static int TOCS = 50;
-    private static int STRIP_END = 60;
-    private static int BLAST_ALLOWANCE = 300;
+    private static final int RESA = 240;
+    private static final int ALS = 50;
+    private static final int TOCS = 50;
+    private static final int STRIP_END = 60;
+    private static final int BLAST_ALLOWANCE = 300;
 
     public RevisedRunway(Runway runway, Obstacle obstacle, Position position)
     {
         this.obstacle = obstacle;
         this.position = position;
 
-        revisedCalculationBreakdown1 += "Runway: " + runway.getLogicalRunway1().getName() + "\n";
         revisedRunway1 = calculateValues(runway.getLogicalRunway1());
-
-
-        revisedCalculationBreakdown1 += "Runway: " + runway.getLogicalRunway2().getName() + "\n";
         revisedRunway2 = calculateValues(runway.getLogicalRunway2());
-
     }
 
     public LogicalRunway getRevisedRunway1() { return revisedRunway1; }
@@ -38,26 +32,9 @@ public class RevisedRunway
 
     public Position getPosition() { return position; }
 
-    public String getRevisedCalculationBreakdown1(){ return this.revisedCalculationBreakdown1;}
+    public String getResults() { return revisedRunway1.getResults() + revisedRunway2.getResults(); }
 
-
-    public String getResults()
-    {
-        String result = "";
-
-        result += "Runway " + revisedRunway1.getName() + "/" + revisedRunway2.getName() + "\n";
-        for (LogicalRunway revisedRunway : new LogicalRunway[] {revisedRunway1, revisedRunway2})
-        {
-            result += "Runway " + revisedRunway.getName() + ":" + "\n";
-            result += "TORA: " + revisedRunway.getTora() + "\n";
-            result += "TODA " + revisedRunway.getToda()+ "\n";
-            result += "ASDA " + revisedRunway.getAsda()+ "\n";
-            result += "LDA: " + revisedRunway.getLda() + "\n";
-
-        }
-
-        return result;
-    }
+    public String getCalcBreakdown() { return calcBreakdown.toString(); }
 
     private LogicalRunway calculateValues(LogicalRunway runway)
     {
@@ -67,151 +44,139 @@ public class RevisedRunway
                 position.getDistLThresh() : position.getDistRThresh();
         boolean towardsObstacle = runway.getDirection() == obstacleSide;
 
+        calcBreakdown.append("Runway ").append(runway.getName()).append(":\n");
+
         int lda = towardsObstacle ?
-                calculateRevisedLDA(distanceFromThreshold) : calculateRevisedLDA(runway.getLda(), distanceFromThreshold);
+                calculateRevisedLDA(distanceFromThreshold) :
+                calculateRevisedLDA(runway.getLda(), distanceFromThreshold);
         int tora = towardsObstacle ?
                 calculateRevisedTORA(distanceFromThreshold, runway.getDisplacedThreshold()) :
                 calculateRevisedTORA(runway.getTora(), distanceFromThreshold, runway.getDisplacedThreshold());
-        int toda = towardsObstacle ?
-                tora : tora + (runway.getToda() - runway.getTora());
-        int asda = towardsObstacle ?
-                tora : tora + (runway.getAsda() - runway.getTora());
 
-        String toraBreakdown = towardsObstacle ? revisedToraBreakdown(true, tora, distanceFromThreshold, runway.getDisplacedThreshold(), runway.getTora()) : revisedToraBreakdown(false, tora, distanceFromThreshold, runway.getDisplacedThreshold(), runway.getTora());
-        String ldaBreakdown = towardsObstacle ? revisedLDABreakdown(true, lda, distanceFromThreshold, runway.getLda()) : revisedLDABreakdown(false, lda, distanceFromThreshold, runway.getLda());
-        String asdaBreakdown = towardsObstacle ? revisedASDABreakdown(true, asda, runway.getAsda(), runway.getTora()) : revisedASDABreakdown(false, asda, runway.getAsda(), runway.getTora());
-        String todaBreakdown = towardsObstacle ? revisedTODABreakdown(true, toda, runway.getToda(), runway.getTora()) : revisedTODABreakdown(false, toda, runway.getToda(), runway.getTora());
+        int toda = tora;
+        int asda = tora;
 
-        revisedCalculationBreakdown1 += toraBreakdown + "" + "\n" + "\n" + ldaBreakdown + "" + "\n" + "\n" + todaBreakdown + "" + "\n" + "\n" + asdaBreakdown + "" + "\n" + "\n";
+        if (towardsObstacle)
+        {
+            calcBreakdown.append("TODA:\nRevised TORA (").append(tora)
+                    .append(") = ").append(toda).append("\n");
+            calcBreakdown.append("ASDA:\nRevised TORA (").append(tora)
+                    .append(") = ").append(asda).append("\n\n");
+        }
+        else
+        {
+            int clearway = (runway.getToda() - runway.getTora());
+            int stopway = (runway.getAsda() - runway.getTora());
 
+            toda = tora + clearway;
+            asda = tora + stopway;
 
+            calcBreakdown.append("TODA:\nRevised TORA (").append(tora).append(") + ")
+                    .append("Clearway (").append(clearway)
+                    .append(") = ").append(toda).append("\n");
+            calcBreakdown.append("ASDA:\nRevised TORA (").append(tora).append(") + ")
+                    .append("Stopway (").append(stopway)
+                    .append(") = ").append(asda).append("\n\n");
+        }
 
-        return new LogicalRunway(runway.getName(), tora, toda, asda, lda, runway.getDisplacedThreshold());
+        return new LogicalRunway(runway.getName(), tora, toda, asda, lda);
     }
 
     private int calculateRevisedLDA(int lda, int distanceFromThreshold)
     {
+        int tempThreshold;
+        int displacement;
+
+        calcBreakdown.append("LDA:\nOriginal LDA (").append(lda)
+                .append(") - Distance from Threshold (").append(distanceFromThreshold).append(") - ");
+
         // Ensure the largest of the possible two values is picked to enforce safety.
-        int tempThreshold = (obstacle.getHeight() * ALS >= RESA) ?
-                obstacle.getHeight() * ALS : RESA;
-        int displacement = ((tempThreshold + STRIP_END) >= BLAST_ALLOWANCE) ?
-                tempThreshold + STRIP_END : BLAST_ALLOWANCE;
+        if (obstacle.getHeight() * ALS >= RESA)
+        {
+            tempThreshold = obstacle.getHeight() * ALS;
+            calcBreakdown.append("Slope Calculation (");
+        }
+        else
+        {
+            tempThreshold = RESA;
+            calcBreakdown.append("RESA (");
+        }
 
-        System.out.println(lda + "-" + distanceFromThreshold + "-" + displacement);
-        return lda - distanceFromThreshold - displacement;
+        calcBreakdown.append(tempThreshold).append(") - ");
 
+        // Ensure the largest of the possible two values is picked to enforce safety.
+        if ((tempThreshold + STRIP_END) >= BLAST_ALLOWANCE)
+        {
+            displacement = tempThreshold + STRIP_END;
+            calcBreakdown.append("Strip End (").append(STRIP_END);
+        }
+        else
+        {
+            displacement = BLAST_ALLOWANCE;
+            calcBreakdown.append("Blast Allowance (").append(BLAST_ALLOWANCE);
+        }
+
+        int result = lda - distanceFromThreshold - displacement;
+
+        calcBreakdown.append(") = ").append(result).append("\n");
+
+        return result;
     }
 
     private int calculateRevisedLDA(int distanceFromThreshold)
     {
-        return distanceFromThreshold - RESA - STRIP_END;
+        int result = distanceFromThreshold - RESA - STRIP_END;
+
+        calcBreakdown.append("LDA:\nDistance From Threshold (").append(distanceFromThreshold)
+                .append(") - RESA (").append(RESA)
+                .append(") - Strip End (").append(STRIP_END)
+                .append(") = ").append(result).append("\n");
+
+        return result;
     }
 
     private int calculateRevisedTORA(int distanceFromThreshold, int displacedThreshold)
     {
+        int tempThreshold;
+
+        calcBreakdown.append("TORA:\nDistance from Threshold (").append(distanceFromThreshold).append(")");
+
+        if (displacedThreshold != 0)
+                calcBreakdown.append(" + Displaced Threshold (").append(displacedThreshold).append(")");
+
         // Ensure the largest of the possible two values is picked to enforce safety.
-        int tempThreshold = (obstacle.getHeight() * TOCS >= RESA) ?
-                obstacle.getHeight() * TOCS : RESA;
+        if (obstacle.getHeight() * TOCS >= RESA)
+        {
+            tempThreshold = obstacle.getHeight() * TOCS;
+            calcBreakdown.append(" - Slope Calculation (");
+        }
+        else
+        {
+            tempThreshold = RESA;
+            calcBreakdown.append("RESA (");
+        }
+
+        int result = distanceFromThreshold + displacedThreshold - tempThreshold - STRIP_END;
+
+        calcBreakdown.append(tempThreshold).append(") - Strip End (").append(STRIP_END)
+                .append(") = ").append(result).append("\n");
 
         return distanceFromThreshold + displacedThreshold - tempThreshold - STRIP_END;
     }
 
     private int calculateRevisedTORA(int tora, int distanceFromThreshold, int displacedThreshold)
     {
-        return tora - BLAST_ALLOWANCE - distanceFromThreshold - displacedThreshold;
+        int result = tora - BLAST_ALLOWANCE - distanceFromThreshold - displacedThreshold;
+
+        calcBreakdown.append("TORA:\nOriginal TORA (").append(tora)
+                .append(") - Blast Allowance (").append(BLAST_ALLOWANCE)
+                .append(") - Distance From Threshold (").append(distanceFromThreshold);
+
+        if (displacedThreshold != 0)
+            calcBreakdown.append(") - Displaced Threshold (").append(displacedThreshold);
+
+        calcBreakdown.append(") = ").append(result).append("\n");
+
+        return result;
     }
-
-    private String revisedToraBreakdown(Boolean towardsObstacle, int newTora, int distanceFromThreshold, int displacedThreshold, int oldTora) {
-
-        String breakdown = "";
-
-        int tempThreshold = (obstacle.getHeight() * TOCS >= RESA) ?
-                obstacle.getHeight() * TOCS : RESA;
-
-        if(towardsObstacle){
-            breakdown += "TORA BREAKDOWN: " + "\n";
-            breakdown += "TORA (" + newTora + ")" +
-                    " = Distance from Threshold (" + distanceFromThreshold + ")" +
-                    " + Displaced Threshold (" + displacedThreshold + ")" +
-                    " - Temporary Threshold (" + tempThreshold + ")" +
-                    " - Strip End (" + STRIP_END +")";
-
-            return breakdown;
-        }
-
-        breakdown += "TORA BREAKDOWN: " + "\n";
-        breakdown += "TORA (" + newTora + ")" +
-                " = Old TORA (" + oldTora + ")" +
-                " - Blast Allowance (" + BLAST_ALLOWANCE + ")" +
-                " - Distance from Threshold (" + distanceFromThreshold + ")" +
-                " - Displaced Threshold (" + displacedThreshold +")";
-
-        return breakdown;
-    }
-
-    private String revisedLDABreakdown(Boolean towardsObstacle, int newLDA, int distanceFromThreshold, int oldLDA){
-        String breakdown = "";
-
-        int tempThreshold = (obstacle.getHeight() * ALS >= RESA) ?
-                obstacle.getHeight() * ALS : RESA;
-        int displacement = ((tempThreshold + STRIP_END) >= BLAST_ALLOWANCE) ?
-                tempThreshold + STRIP_END : BLAST_ALLOWANCE;
-
-        if(towardsObstacle){
-            breakdown += "LDA BREAKDOWN: " + "\n";
-            breakdown += "LDA (" + newLDA + ")" +
-                    " = Distance from Threshold (" + distanceFromThreshold + ")" +
-                    " - RESA (" + RESA + ")" +
-                    " - Strip End (" + STRIP_END +")";
-
-            return breakdown;
-        }
-
-        breakdown += "LDA BREAKDOWN: " + "\n";
-        breakdown += "LDA (" + newLDA + ")" +
-                " = Old LDA(" + oldLDA + ")" +
-                " - Distance from Threshold (" + distanceFromThreshold + ")" +
-                " - Displacement(" + displacement +")";
-
-        return breakdown;
-    }
-
-    private String revisedTODABreakdown(Boolean towardsObstacle, int newToda, int oldToda, int oldTora){
-        String breakdown = "";
-
-        if(towardsObstacle){
-            breakdown += "TODA BREAKDOWN: " + "\n";
-            breakdown += "TORA (" + newToda + ")" +
-                    " = Old TODA (" + oldToda + ")";
-
-            return breakdown;
-        }
-
-        breakdown += "TODA BREAKDOWN: " + "\n";
-        breakdown += "TODA (" + newToda + ")" +
-                " = Old TORA(" + oldTora + ")" +
-                " + (Old TODA (" + oldToda + ")" +
-                " - Old Tora (" + oldTora +"))";
-        return breakdown;
-    }
-
-    private String revisedASDABreakdown(Boolean towardsObstacle, int newAsda, int oldAsda, int oldTora){
-        String breakdown = "";
-
-        if(towardsObstacle){
-            breakdown += "ASDA BREAKDOWN: " + "\n";
-            breakdown += "ASDA (" + newAsda + ")" +
-                    " = Old TORA (" + oldTora + ")";
-
-            return breakdown;
-        }
-
-        breakdown += "ASDA BREAKDOWN: " + "\n";
-        breakdown += "ASDA (" + newAsda + ")" +
-                " = Old TORA(" + oldTora + ")" +
-                " + (Old ASDA (" + oldAsda + ")" +
-                " - Old Tora (" + oldTora +"))";
-        return breakdown;
-    }
-
 }
