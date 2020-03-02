@@ -227,14 +227,25 @@ public class Controller implements Initializable {
     @FXML
     private void defineAirport()
     {
-        //TODO create new Airport and add it to a List of Airports
-        //TODO add Error pop-up when fields are empty
         String newAirportName = airportName.getText().replaceAll("\\s", "");
         if(!newAirportName.isEmpty())
-        {
+        {   if(!airportObservableList.isEmpty()){
+            for (int i=0;i<airportObservableList.size();i++){
+                if(airportObservableList.get(i).getName().equalsIgnoreCase(newAirportName)){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setContentText("Airport already exists");
+                    alert.showAndWait();
+                    airportObservableList.remove(i);
+                }
+            }
             airportObservableList.add(new Airport(newAirportName));
             Stage stage = (Stage) airportDoneButton.getScene().getWindow();
             stage.close();
+        }else{
+            airportObservableList.add(new Airport(newAirportName));
+            Stage stage = (Stage) airportDoneButton.getScene().getWindow();
+            stage.close();
+        }
         }
         else
         {
@@ -244,6 +255,8 @@ public class Controller implements Initializable {
 
             alert.showAndWait();
         }
+
+
     }
 
     /**
@@ -254,35 +267,61 @@ public class Controller implements Initializable {
     @FXML
     private void defineRunway()
     {
-        //TODO create new Runway and add them to their Respective Airport
-        //TODO add Error pop-up when fields are empty
+        //TODO add Error pop-up when fields are empty or malformed
+        try {
+            if(!(runwayDegree.getValue().trim().equalsIgnoreCase("Degree"))&&!runwayPosition.getValue().trim().equalsIgnoreCase("Position")&&!airports.getValue().toString().trim().equalsIgnoreCase("Choose Airport")&&!todaLeft.getText().isEmpty()&&!todaRight.getText().isEmpty()&&!toraLeft.getText().isEmpty()&&!toraRight.getText().isEmpty()&&!asdaLeft.getText().isEmpty()&&!asdaRight.getText().isEmpty()&&!ldaLeft.getText().isEmpty()&&!ldaRight.getText().isEmpty()){
+                if(!(Integer.parseInt(todaLeft.getText())<0)&&!(Integer.parseInt(todaRight.getText())<0)&&!(Integer.parseInt(toraLeft.getText())<0)&&!(Integer.parseInt(toraRight.getText())<0)&&!(Integer.parseInt(asdaLeft.getText())<0)&&!(Integer.parseInt(asdaRight.getText())<0)&&!(Integer.parseInt(ldaLeft.getText())<0)&&!(Integer.parseInt(ldaRight.getText())<0)){
+                    Airport airport = airports.getValue();
 
-        Airport airport = airports.getValue();
+                    String designatorLeft = runwayDegree.getValue() + runwayPosition.getValue();
+                    String designatorRight = complementDesignatorText.getText();
 
-        String designatorLeft = runwayDegree.getValue() + runwayPosition.getValue();
-        String designatorRight = complementDesignatorText.getText();
+                    int todaLeft = Integer.parseInt(this.todaLeft.getText());
+                    int todaRight = Integer.parseInt(this.todaRight.getText());
 
-        int todaLeft = Integer.parseInt(this.todaLeft.getText());
-        int todaRight = Integer.parseInt(this.todaRight.getText());
+                    int toraLeft = Integer.parseInt(this.toraLeft.getText());
+                    int toraRight = Integer.parseInt(this.toraRight.getText());
 
-        int toraLeft = Integer.parseInt(this.toraLeft.getText());
-        int toraRight = Integer.parseInt(this.toraRight.getText());
+                    int asdaLeft = Integer.parseInt(this.asdaLeft.getText());
+                    int asdaRight = Integer.parseInt(this.asdaRight.getText());
 
-        int asdaLeft = Integer.parseInt(this.asdaLeft.getText());
-        int asdaRight = Integer.parseInt(this.asdaRight.getText());
+                    int ldaLeft = Integer.parseInt(this.ldaLeft.getText());
+                    int ldaRight = Integer.parseInt(this.ldaRight.getText());
 
-        int ldaLeft = Integer.parseInt(this.ldaLeft.getText());
-        int ldaRight = Integer.parseInt(this.ldaRight.getText());
+                    LogicalRunway logicalRunway1 = new LogicalRunway(designatorLeft, toraLeft,todaLeft,asdaLeft,ldaLeft);
+                    LogicalRunway logicalRunway2 = new LogicalRunway(designatorRight,toraRight,todaRight,asdaRight,ldaRight);
+                    Runway run = new Runway(logicalRunway1,logicalRunway2);
+                    airport.addRunway(run);
 
-        LogicalRunway logicalRunway1 = new LogicalRunway(designatorLeft, toraLeft,todaLeft,asdaLeft,ldaLeft);
-        LogicalRunway logicalRunway2 = new LogicalRunway(designatorRight,toraRight,todaRight,asdaRight,ldaRight);
-        Runway run = new Runway(logicalRunway1,logicalRunway2);
-        airport.addRunway(run);
+                    updateRunwayBox();
 
-        updateRunwayBox();
+                    Stage stage = (Stage) runwayDoneButton.getScene().getWindow();
+                    stage.close();
+                }
+                else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setContentText("Please ensure only positive values are used for measurements");
+                    alert.showAndWait();
+                }
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("Please ensure all inputs have been filled in");
+                alert.showAndWait();
+            }
 
-        Stage stage = (Stage) runwayDoneButton.getScene().getWindow();
-        stage.close();
+
+        }
+        catch (NullPointerException e){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Please ensure all inputs have been filled in");
+            alert.showAndWait();
+        } catch (NumberFormatException ex){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Please ensure only numbers are used as inputs for measurements");
+            alert.showAndWait();
+        }
+
     }
 
     /**
@@ -295,12 +334,42 @@ public class Controller implements Initializable {
     {
         //TODO create new Obstacle and add it to a List of Obstacles
         //TODO add Error pop-up when fields are empty
-        String newObstacleName = obstacleName.getText();
-        // may throw number format exception so needs some polishing
-        int newObstacleHeight =  Integer.parseInt(obstacleHeight.getText());
-        obstacles.add(new Obstacle(newObstacleName,newObstacleHeight));
-        Stage stage = (Stage) obstacleDoneButton.getScene().getWindow();
-        stage.close();
+        try {
+            String newObstacleName = obstacleName.getText();
+
+            if (newObstacleName.isEmpty() || obstacleHeight.getText().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Input field empty");
+                alert.setContentText("Please fill in all input fields");
+                alert.showAndWait();
+
+            } else if (Integer.parseInt(obstacleHeight.getText()) < 1) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("Please put a number greater than zero for Height");
+                alert.showAndWait();
+
+            } else {
+                int newObstacleHeight = Integer.parseInt(obstacleHeight.getText());
+                Obstacle newObstacleCreated = new Obstacle(newObstacleName,newObstacleHeight);
+                for (int i=0;i<obstacles.size();i++){
+                    if(obstacles.get(i).getName().equalsIgnoreCase(newObstacleName)&&obstacles.get(i).getHeight()==newObstacleHeight){
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setContentText("Duplicate alert: previous obstacle has been removed");
+                        alert.showAndWait();
+                        obstacles.remove(i);
+                    }
+                }
+                obstacles.add(newObstacleCreated);
+                Stage stage = (Stage) obstacleDoneButton.getScene().getWindow();
+                stage.close();
+
+
+            }
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Please input a number for height");
+            alert.showAndWait();
+        }
     }
 
     /**
