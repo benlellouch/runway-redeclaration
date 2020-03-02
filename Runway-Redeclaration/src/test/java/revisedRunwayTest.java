@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.Test;
+import Model.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
