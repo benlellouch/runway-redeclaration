@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class revisedRunwayTest {
 
     LogicalRunway lRunway09R = new LogicalRunway("09R",3660,3660,3660,3353,3660-3353);
-    LogicalRunway lRunway27L = new LogicalRunway("27L",3660,3660,3660,3353,0);
+    LogicalRunway lRunway27L = new LogicalRunway("27L",3660,3660,3660,3660,0);
     Runway runway09R27L = new Runway(lRunway09R,lRunway27L);
 
     LogicalRunway lRunway09L = new LogicalRunway("09L", 3902,3902,3902,3595,3902-3595);

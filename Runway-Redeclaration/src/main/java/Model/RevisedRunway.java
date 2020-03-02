@@ -77,7 +77,9 @@ public class RevisedRunway
         int displacement = ((tempThreshold + STRIP_END) >= BLAST_ALLOWANCE) ?
                 tempThreshold + STRIP_END : BLAST_ALLOWANCE;
 
+        System.out.println(lda + "-" + distanceFromThreshold + "-" + displacement);
         return lda - distanceFromThreshold - displacement;
+
     }
 
     private int calculateRevisedLDA(int distanceFromThreshold)
