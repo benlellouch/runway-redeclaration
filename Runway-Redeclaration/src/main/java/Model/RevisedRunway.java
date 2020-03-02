@@ -45,8 +45,7 @@ public class RevisedRunway
     {
         String result = "";
 
-        result += "REVISED RUNWAY" + "\n" + "" + "\n" +
-                "Runway " + revisedRunway1.getName() + "/" + revisedRunway2.getName() + "\n";
+        result += "Runway " + revisedRunway1.getName() + "/" + revisedRunway2.getName() + "\n";
         for (LogicalRunway revisedRunway : new LogicalRunway[] {revisedRunway1, revisedRunway2})
         {
             result += "Runway " + revisedRunway.getName() + ":" + "\n";
@@ -98,7 +97,9 @@ public class RevisedRunway
         int displacement = ((tempThreshold + STRIP_END) >= BLAST_ALLOWANCE) ?
                 tempThreshold + STRIP_END : BLAST_ALLOWANCE;
 
+        System.out.println(lda + "-" + distanceFromThreshold + "-" + displacement);
         return lda - distanceFromThreshold - displacement;
+
     }
 
     private int calculateRevisedLDA(int distanceFromThreshold)

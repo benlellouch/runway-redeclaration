@@ -16,7 +16,7 @@
     <!--Reads TODA for left logical runway-->
     <TextField fx:id="todaLeft" GridPane.columnIndex="0" GridPane.rowIndex="3" />
     <!--Reads TODA for right logical runway-->
-    <TextField fx:id="todaRight" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+    <TextField fx:id="todaRight" prefWidth="212.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
 
     <Text text="TORA (m)" GridPane.columnIndex="0" GridPane.rowIndex="4" />
     <Text text="TORA (m)" GridPane.columnIndex="2" GridPane.rowIndex="4" />
@@ -49,8 +49,8 @@
     <ComboBox fx:id="airports" prefWidth="150.0" promptText="Choose Airport" GridPane.columnIndex="2" GridPane.rowIndex="10" />
    <SplitPane dividerPositions="0.5" prefHeight="30.0" GridPane.rowIndex="1">
       <items>
-         <ComboBox fx:id="runwayDegree" onAction="#updateDesignator" prefWidth="150.0" promptText=" Degree" />
-         <ComboBox fx:id="runwayPosition" onAction="#updateDesignator" prefWidth="150.0" promptText=" Position" />
+         <ComboBox fx:id="runwayDegree" onAction="#updateDesignator" promptText=" Degree" />
+         <ComboBox fx:id="runwayPosition" onAction="#updateDesignator" promptText=" Position" />
       </items>
    </SplitPane>
    <Text fx:id="complementDesignatorText" layoutX="10.0" layoutY="171.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />

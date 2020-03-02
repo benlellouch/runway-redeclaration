@@ -68,9 +68,9 @@ public class Controller implements Initializable {
     @FXML
     private TextField centreLineDistance;
     @FXML
-    private Text resultsText;
+    private Text revisedRunwayText;
     @FXML
-    private Text originalRunwayInfo;
+    private Text oldRunwayText;
     @FXML
     private Text calculationBreakdown;
 
@@ -94,6 +94,9 @@ public class Controller implements Initializable {
     private ComboBox<String> leftRightBox;
     @FXML
     private Text complementDesignatorText;
+
+    @FXML
+    private Button noAirportDefinedOK;
 
 
     private ObservableList<Airport> airportObservableList;
@@ -126,6 +129,7 @@ public class Controller implements Initializable {
         oppositeDegreeMap = generateOppositeDegreeMap();
         oppositePositionMap = generateOppositePositionMap();
         leftRight = generateLeftRight();
+        checkForAirports();
     }
 
 
@@ -149,6 +153,9 @@ public class Controller implements Initializable {
     {
         try
         {
+            Stage stage = (Stage) noAirportDefinedOK.getScene().getWindow();
+            stage.close();
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AirportDefinition.fxml"));
             loader.setController(this);
             Parent root = loader.load();
@@ -356,29 +363,34 @@ public class Controller implements Initializable {
 
     @FXML
     private void calculateRevisedRunway()
-    {
+    {   try{
         Runway runwayToRevise = runwayBox.getValue();
         Obstacle obstacleOnRunway = obstacleBox.getValue();
+
+        if(airportMainBox.getValue().toString().trim().equalsIgnoreCase("Airport")||obstacleBox.getValue().toString().trim().equalsIgnoreCase("Obstacle")||runwayBox.getValue().toString().trim().equalsIgnoreCase("Runway")||logicalRunwayBox.getValue().toString().trim().equalsIgnoreCase("Logical Runway")||leftThresholdDistance.getText().isEmpty()||rightThresholdDistance.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Please fill in all inputs");
+            alert.showAndWait();
+        }
+        else{
         int leftTHRDistance = Integer.parseInt(leftThresholdDistance.getText());
         int rightTHRDistance = Integer.parseInt(rightThresholdDistance.getText());
-        int centreDistance = Integer.parseInt(centreLineDistance.getText());
-        Position positionOfObstacle = new Position(centreDistance,leftTHRDistance,rightTHRDistance);
+        Position positionOfObstacle = new Position(0,leftTHRDistance,rightTHRDistance);
         RevisedRunway revisedRunway = new RevisedRunway(runwayToRevise,obstacleOnRunway,positionOfObstacle);
-        resultsText.setText(revisedRunway.getResults());
-
-        String original =
-                "" + "ORIGINAL RUNWAY" + "\n" + "" + "\n"
-                + "Runway " + revisedRunway.getRevisedRunway1() + "/" + revisedRunway.getRevisedRunway2() + "\n"
-                + "Runway " + revisedRunway.getRevisedRunway1() + ":" + "\n"
-                + runwayToRevise.getLogicalRunway1().getInfo() + "\n"
-                + "Runway " + revisedRunway.getRevisedRunway2() + ":" + "\n"
-                + runwayToRevise.getLogicalRunway2().getInfo();
-
-        originalRunwayInfo.setText(original);
-
+        revisedRunwayText.setText(revisedRunway.getResults());
+        oldRunwayText.setText(runwayToRevise.getResults());
         String breakdown = revisedRunway.getRevisedCalculationBreakdown1();
 
         calculationBreakdown.setText(breakdown);
+        }
+    }catch (NullPointerException e){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("Please fill in all inputs");
+        alert.showAndWait();
+    }catch (NumberFormatException ex){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("Please input numbers for distances");
+        alert.showAndWait();
     }
 
 
@@ -387,13 +399,24 @@ public class Controller implements Initializable {
 
 
 
+    }
 
 
+    /**
+     *
+     * @param degree takes the degree of the runway designator
+     * @return the opposite degree
+     */
     private String getOppositeDegree(String degree)
     {
         return oppositeDegreeMap.get(degree);
     }
 
+    /**
+     *
+     * @param position takes the position of the runway position
+     * @return the opposite position
+     */
     private String getOppositePosition(String position)
     {
         return oppositePositionMap.get(position);
@@ -470,6 +493,29 @@ public class Controller implements Initializable {
         oppositeMap.put("34", "16");
         oppositeMap.put("35", "17");
         return oppositeMap;
+    }
+
+    private void checkForAirports()
+    {
+        if(airportObservableList.isEmpty())
+        {
+            try
+            {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/noAirportDefinedPopUp.fxml"));
+                loader.setController(this);
+                Parent root = loader.load();
+                Stage definitionStage = new Stage();
+                Scene definitionScene = new Scene(root);
+                definitionStage.setScene(definitionScene);
+                definitionStage.requestFocus();
+                definitionStage.show();
+                definitionStage.setAlwaysOnTop(true);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
