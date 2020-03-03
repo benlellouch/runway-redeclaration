@@ -520,42 +520,14 @@ public class Controller implements Initializable {
     private HashMap<String,String> generateOppositeDegreeMap()
     {
         HashMap<String,String> oppositeMap = new HashMap<>();
-        oppositeMap.put("36", "18");
-        oppositeMap.put("01", "19");
-        oppositeMap.put("02", "20");
-        oppositeMap.put("03", "21");
-        oppositeMap.put("04", "22");
-        oppositeMap.put("05", "23");
-        oppositeMap.put("06", "24");
-        oppositeMap.put("07", "25");
-        oppositeMap.put("08", "26");
-        oppositeMap.put("09", "27");
-        oppositeMap.put("10", "28");
-        oppositeMap.put("11", "29");
-        oppositeMap.put("12", "30");
-        oppositeMap.put("13", "31");
-        oppositeMap.put("14", "32");
-        oppositeMap.put("15", "33");
-        oppositeMap.put("16", "34");
-        oppositeMap.put("17", "35");
-        oppositeMap.put("18", "36");
-        oppositeMap.put("19", "01");
-        oppositeMap.put("20", "02");
-        oppositeMap.put("21", "03");
-        oppositeMap.put("22", "04");
-        oppositeMap.put("23", "05");
-        oppositeMap.put("24", "06");
-        oppositeMap.put("25", "07");
-        oppositeMap.put("26", "08");
-        oppositeMap.put("27", "09");
-        oppositeMap.put("28", "10");
-        oppositeMap.put("29", "11");
-        oppositeMap.put("30", "12");
-        oppositeMap.put("31", "13");
-        oppositeMap.put("32", "14");
-        oppositeMap.put("33", "15");
-        oppositeMap.put("34", "16");
-        oppositeMap.put("35", "17");
+
+        for (int i = 18; i <= 36; i++)
+        {
+            int mod = (i % 18 == 0) ? 18 : i % 18;
+            oppositeMap.put((mod < 10) ? "0" + mod : String.valueOf(mod), String.valueOf(i));
+            oppositeMap.put(String.valueOf(i), (mod < 10) ? "0" + mod : String.valueOf(mod));
+        }
+
         return oppositeMap;
     }
 
