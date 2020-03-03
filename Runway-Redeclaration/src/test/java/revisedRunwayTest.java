@@ -20,15 +20,16 @@ public class revisedRunwayTest {
         Position position = new Position(0,-50,3646);
         RevisedRunway revisedRunway = new RevisedRunway(runway09L27R, obstacle,position);
 
-        assertEquals(3345,revisedRunway.getRevisedRunway1().getTora());
-        assertEquals(3345,revisedRunway.getRevisedRunway1().getToda());
-        assertEquals(3345,revisedRunway.getRevisedRunway1().getAsda());
-        assertEquals(2985,revisedRunway.getRevisedRunway1().getLda());
+        assertEquals(3345,revisedRunway.getLogicalRunway1().getTora());
+        assertEquals(3345,revisedRunway.getLogicalRunway1().getToda());
+        assertEquals(3345,revisedRunway.getLogicalRunway1().getAsda());
+        assertEquals(2985,revisedRunway.getLogicalRunway1().getLda());
 
-        assertEquals(2986,revisedRunway.getRevisedRunway2().getTora());
-        assertEquals(2986,revisedRunway.getRevisedRunway2().getToda());
-        assertEquals(2986,revisedRunway.getRevisedRunway2().getAsda());
-        assertEquals(3346,revisedRunway.getRevisedRunway2().getLda());
+        assertEquals(2986,revisedRunway.getLogicalRunway2().getTora());
+        assertEquals(2986,revisedRunway.getLogicalRunway2().getToda());
+        assertEquals(2986,revisedRunway.getLogicalRunway2().getAsda());
+        assertEquals(3346,revisedRunway.getLogicalRunway2().getLda());
+        
     }
 
     @Test
@@ -38,15 +39,15 @@ public class revisedRunwayTest {
         Position position = new Position(0,2853,500);
         RevisedRunway revisedRunway = new RevisedRunway(runway09R27L,obstacle,position);
 
-        assertEquals(1850,revisedRunway.getRevisedRunway1().getTora());
-        assertEquals(1850,revisedRunway.getRevisedRunway1().getToda());
-        assertEquals(1850,revisedRunway.getRevisedRunway1().getAsda());
-        assertEquals(2553,revisedRunway.getRevisedRunway1().getLda());
+        assertEquals(1850,revisedRunway.getLogicalRunway1().getTora());
+        assertEquals(1850,revisedRunway.getLogicalRunway1().getToda());
+        assertEquals(1850,revisedRunway.getLogicalRunway1().getAsda());
+        assertEquals(2553,revisedRunway.getLogicalRunway1().getLda());
 
-        assertEquals(2860,revisedRunway.getRevisedRunway2().getTora());
-        assertEquals(2860,revisedRunway.getRevisedRunway2().getToda());
-        assertEquals(2860,revisedRunway.getRevisedRunway2().getAsda());
-        assertEquals(1850,revisedRunway.getRevisedRunway2().getLda());
+        assertEquals(2860,revisedRunway.getLogicalRunway2().getTora());
+        assertEquals(2860,revisedRunway.getLogicalRunway2().getToda());
+        assertEquals(2860,revisedRunway.getLogicalRunway2().getAsda());
+        assertEquals(1850,revisedRunway.getLogicalRunway2().getLda());
     }
 
     @Test
@@ -56,15 +57,15 @@ public class revisedRunwayTest {
         Position position = new Position(0,150,3203);
         RevisedRunway revisedRunway = new RevisedRunway(runway09R27L,obstacle,position);
 
-        assertEquals(2903,revisedRunway.getRevisedRunway1().getTora());
-        assertEquals(2903,revisedRunway.getRevisedRunway1().getToda());
-        assertEquals(2903,revisedRunway.getRevisedRunway1().getAsda());
-        assertEquals(2393,revisedRunway.getRevisedRunway1().getLda());
+        assertEquals(2903,revisedRunway.getLogicalRunway1().getTora());
+        assertEquals(2903,revisedRunway.getLogicalRunway1().getToda());
+        assertEquals(2903,revisedRunway.getLogicalRunway1().getAsda());
+        assertEquals(2393,revisedRunway.getLogicalRunway1().getLda());
 
-        assertEquals(2393,revisedRunway.getRevisedRunway2().getTora());
-        assertEquals(2393,revisedRunway.getRevisedRunway2().getToda());
-        assertEquals(2393,revisedRunway.getRevisedRunway2().getAsda());
-        assertEquals(2903,revisedRunway.getRevisedRunway2().getLda());
+        assertEquals(2393,revisedRunway.getLogicalRunway2().getTora());
+        assertEquals(2393,revisedRunway.getLogicalRunway2().getToda());
+        assertEquals(2393,revisedRunway.getLogicalRunway2().getAsda());
+        assertEquals(2903,revisedRunway.getLogicalRunway2().getLda());
     }
 
     @Test
@@ -74,14 +75,14 @@ public class revisedRunwayTest {
         Position position = new Position(0,3546,50);
         RevisedRunway revisedRunway = new RevisedRunway(runway09L27R, obstacle,position);
 
-        assertEquals(2793,revisedRunway.getRevisedRunway1().getTora());
-        assertEquals(2793,revisedRunway.getRevisedRunway1().getToda());
-        assertEquals(2793,revisedRunway.getRevisedRunway1().getAsda());
-        assertEquals(3246,revisedRunway.getRevisedRunway1().getLda());
+        assertEquals(2793,revisedRunway.getLogicalRunway1().getTora());
+        assertEquals(2793,revisedRunway.getLogicalRunway1().getToda());
+        assertEquals(2793,revisedRunway.getLogicalRunway1().getAsda());
+        assertEquals(3246,revisedRunway.getLogicalRunway1().getLda());
 
-        assertEquals( 3534,revisedRunway.getRevisedRunway2().getTora());
-        assertEquals( 3612,revisedRunway.getRevisedRunway2().getToda());
-        assertEquals(3534,revisedRunway.getRevisedRunway2().getAsda());
-        assertEquals(2774,revisedRunway.getRevisedRunway2().getLda());
+        assertEquals( 3534,revisedRunway.getLogicalRunway2().getTora());
+        assertEquals( 3612,revisedRunway.getLogicalRunway2().getToda());
+        assertEquals(3534,revisedRunway.getLogicalRunway2().getAsda());
+        assertEquals(2774,revisedRunway.getLogicalRunway2().getLda());
     }
 }
