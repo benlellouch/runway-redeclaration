@@ -64,8 +64,8 @@
                     </Tab>
                     <Tab fx:id="calculationBreakdownTab" closable="false" text="Calculation Breakdown">
                         <Pane>
-                            <VBox>
-                                <Text fx:id="calculationBreakdown"/>
+                            <VBox prefWidth="542.0">
+                                <Label fx:id="calculationBreakdown" wrapText="true"/>
                             </VBox>
                         </Pane>
                     </Tab>

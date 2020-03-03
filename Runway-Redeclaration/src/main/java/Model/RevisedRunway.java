@@ -1,9 +1,7 @@
 package Model;
 
-public class RevisedRunway
+public class RevisedRunway extends Runway
 {
-    private final LogicalRunway revisedRunway1;
-    private final LogicalRunway revisedRunway2;
     private final Obstacle obstacle;
     private final Position position;
     private final StringBuilder calcBreakdown = new StringBuilder();
@@ -17,26 +15,27 @@ public class RevisedRunway
 
     public RevisedRunway(Runway runway, Obstacle obstacle, Position position)
     {
+        super(runway.getLogicalRunway1(), runway.getLogicalRunway2());
+
         this.obstacle = obstacle;
         this.position = position;
 
-        revisedRunway1 = calculateValues(runway.getLogicalRunway1());
-        revisedRunway2 = calculateValues(runway.getLogicalRunway2());
+        calculateValues();
     }
-
-    public LogicalRunway getRevisedRunway1() { return revisedRunway1; }
-
-    public LogicalRunway getRevisedRunway2() { return revisedRunway2; }
 
     public Obstacle getObstacle() { return obstacle; }
 
     public Position getPosition() { return position; }
 
-    public String getResults() { return revisedRunway1.getResults() + revisedRunway2.getResults(); }
-
     public String getCalcBreakdown() { return calcBreakdown.toString(); }
 
-    private LogicalRunway calculateValues(LogicalRunway runway)
+    private void calculateValues()
+    {
+        setLogicalRunway1(calculateRunway(getLogicalRunway1()));
+        setLogicalRunway2(calculateRunway(getLogicalRunway2()));
+    }
+
+    private LogicalRunway calculateRunway(LogicalRunway runway)
     {
         Direction obstacleSide = (position.getDistLThresh() >= position.getDistRThresh()) ?
                 Direction.LEFT : Direction.RIGHT;

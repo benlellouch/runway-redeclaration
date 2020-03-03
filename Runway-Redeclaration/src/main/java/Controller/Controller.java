@@ -8,10 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -72,7 +69,7 @@ public class Controller implements Initializable {
     @FXML
     private Text oldRunwayText;
     @FXML
-    private Text calculationBreakdown;
+    private Label calculationBreakdown;
 
 
 
