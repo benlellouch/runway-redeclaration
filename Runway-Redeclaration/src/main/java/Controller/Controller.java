@@ -435,7 +435,7 @@ public class Controller implements Initializable {
         Runway runwayToRevise = runwayBox.getValue();
         Obstacle obstacleOnRunway = obstacleBox.getValue();
 
-        if(airportMainBox.getValue().toString().trim().equalsIgnoreCase("Airport")||obstacleBox.getValue().toString().trim().equalsIgnoreCase("Obstacle")||runwayBox.getValue().toString().trim().equalsIgnoreCase("Runway")||logicalRunwayBox.getValue().toString().trim().equalsIgnoreCase("Logical Runway")||leftThresholdDistance.getText().isEmpty()||rightThresholdDistance.getText().isEmpty()){
+        if(airportMainBox.getValue().toString().trim().equalsIgnoreCase("Airport")||obstacleBox.getValue().toString().trim().equalsIgnoreCase("Obstacle")||runwayBox.getValue().toString().trim().equalsIgnoreCase("Runway")||logicalRunwayBox.getValue().toString().trim().equalsIgnoreCase("Logical Runway")||leftThresholdDistance.getText().isEmpty()||rightThresholdDistance.getText().isEmpty()||leftRightBox.getValue().trim().equalsIgnoreCase("L/R")||centreLineDistance.getText().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("Please fill in all inputs");
             alert.showAndWait();
@@ -443,11 +443,18 @@ public class Controller implements Initializable {
         else{
         int leftTHRDistance = Integer.parseInt(leftThresholdDistance.getText());
         int rightTHRDistance = Integer.parseInt(rightThresholdDistance.getText());
+        int centerLineDistance = Integer.parseInt(centreLineDistance.getText());
+        if(centerLineDistance>=0){
         Position positionOfObstacle = new Position(0,leftTHRDistance,rightTHRDistance);
         RevisedRunway revisedRunway = new RevisedRunway(runwayToRevise,obstacleOnRunway,positionOfObstacle);
         revisedRunwayText.setText(revisedRunway.getResults());
         oldRunwayText.setText(runwayToRevise.getResults());
-        calculationBreakdown.setText(revisedRunway.getCalcBreakdown());
+        calculationBreakdown.setText(revisedRunway.getCalcBreakdown());}
+        else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Please input positive numbers for center line distances");
+            alert.showAndWait();
+        }
         }
     }catch (NullPointerException e){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
