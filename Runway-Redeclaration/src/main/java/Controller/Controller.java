@@ -225,17 +225,18 @@ public class Controller implements Initializable {
     private void defineAirport()
     {
         String newAirportName = airportName.getText().replaceAll("\\s", "");
+        airportObservableList.add(new Airport(newAirportName));
         if(!newAirportName.isEmpty())
         {   if(!airportObservableList.isEmpty()){
-            for (int i=0;i<airportObservableList.size();i++){
+            for (int i=0;i<airportObservableList.size()-1;i++){
                 if(airportObservableList.get(i).getName().equalsIgnoreCase(newAirportName)){
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("Airport already exists");
                     alert.showAndWait();
-                    airportObservableList.remove(i);
+                    airportObservableList.remove(airportObservableList.size()-1);
                 }
             }
-            airportObservableList.add(new Airport(newAirportName));
+            //airportObservableList.add(new Airport(newAirportName));
             Stage stage = (Stage) airportDoneButton.getScene().getWindow();
             stage.close();
         }else{
@@ -348,15 +349,16 @@ public class Controller implements Initializable {
             } else {
                 int newObstacleHeight = Integer.parseInt(obstacleHeight.getText());
                 Obstacle newObstacleCreated = new Obstacle(newObstacleName,newObstacleHeight);
-                for (int i=0;i<obstacles.size();i++){
+                obstacles.add(newObstacleCreated);
+                for (int i=0;i<obstacles.size()-1;i++){
                     if(obstacles.get(i).getName().equalsIgnoreCase(newObstacleName)&&obstacles.get(i).getHeight()==newObstacleHeight){
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setContentText("Duplicate alert: previous obstacle has been removed");
                         alert.showAndWait();
-                        obstacles.remove(i);
+                        obstacles.remove(obstacles.size()-1);
                     }
                 }
-                obstacles.add(newObstacleCreated);
+                //obstacles.add(newObstacleCreated);
                 Stage stage = (Stage) obstacleDoneButton.getScene().getWindow();
                 stage.close();
 
