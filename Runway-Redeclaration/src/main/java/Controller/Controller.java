@@ -285,17 +285,38 @@ public class Controller implements Initializable {
 
                     int ldaLeft = Integer.parseInt(this.ldaLeft.getText());
                     int ldaRight = Integer.parseInt(this.ldaRight.getText());
+                    if(todaLeft<toraLeft||todaLeft<ldaLeft||todaRight<toraRight||todaRight<ldaRight){
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setContentText("TODA values have to be greater than or equal to TORA and LDA");
+                        alert.showAndWait();
+                    }else if (toraLeft<ldaLeft||toraRight<ldaRight){
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setContentText("TORA has to be greater than or equal to LDA");
+                        alert.showAndWait();
+                    }else if(asdaLeft<toraLeft||asdaLeft<ldaLeft||asdaRight<toraRight||asdaRight<ldaRight){
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setContentText("ASDA has to be greater than TORA and LDA");
+                        alert.showAndWait();
+                    }else {
 
-                    LogicalRunway logicalRunway1 = new LogicalRunway(designatorLeft, toraLeft,todaLeft,asdaLeft,ldaLeft);
-                    LogicalRunway logicalRunway2 = new LogicalRunway(designatorRight,toraRight,todaRight,asdaRight,ldaRight);
-                    Runway run = new Runway(logicalRunway1,logicalRunway2);
-                    airport.addRunway(run);
+                        LogicalRunway logicalRunway1 = new LogicalRunway(designatorLeft, toraLeft, todaLeft, asdaLeft, ldaLeft);
+                        LogicalRunway logicalRunway2 = new LogicalRunway(designatorRight, toraRight, todaRight, asdaRight, ldaRight);
+                        Runway run = new Runway(logicalRunway1, logicalRunway2);
+                        airport.addRunway(run);
+                        for (int i = 0; i < airport.getRunways().size() - 1; i++) {
+                            if (airport.getRunways().get(i).getName().equals(run.getName())) {
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setContentText("Logical runway duplicate alert");
+                                alert.showAndWait();
+                                airport.getRunways().remove(run);
+                            }
+                        }
+                        updateRunwayBox();
 
-                    updateRunwayBox();
-
-                    Stage stage = (Stage) runwayDoneButton.getScene().getWindow();
-                    stage.close();
-                }
+                        Stage stage = (Stage) runwayDoneButton.getScene().getWindow();
+                        stage.close();
+                    }
+                    }
                 else {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("Please ensure only positive values are used for measurements");
