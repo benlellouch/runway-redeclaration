@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.*;
+import View.TopDownView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,7 +9,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -95,6 +101,9 @@ public class Controller implements Initializable {
     @FXML
     private Button noAirportDefinedOK;
 
+    @FXML
+    private FlowPane topDownViewContainer;
+
 
     private ObservableList<Airport> airportObservableList;
     private ObservableList<String> runwayDegreeList;
@@ -126,7 +135,24 @@ public class Controller implements Initializable {
         oppositeDegreeMap = generateOppositeDegreeMap();
         oppositePositionMap = generateOppositePositionMap();
         leftRight = generateLeftRight();
+
+        LogicalRunway lRunway09R = new LogicalRunway("09R",3660,3660,3660,3353);
+        LogicalRunway lRunway27L = new LogicalRunway("27L",3660,3660,3660,3660);
+        Runway runway09R27L = new Runway(lRunway09R,lRunway27L);
+
+        LogicalRunway lRunway09L = new LogicalRunway("09L", 3902,3902,3902,3595);
+        LogicalRunway lRunway27R = new LogicalRunway("27R", 3884,3962,3884,3884);
+        Runway runway09L27R = new Runway(lRunway09L,lRunway27R);
+        Airport airport = new Airport("heathrow");
+
+        airport.addRunway(runway09L27R);
+        airport.addRunway(runway09R27L);
+
+        airportObservableList.add(airport);
+
         checkForAirports();
+
+
     }
 
 
@@ -431,45 +457,51 @@ public class Controller implements Initializable {
 
     @FXML
     private void calculateRevisedRunway()
-    {   try{
-        Runway runwayToRevise = runwayBox.getValue();
-        Obstacle obstacleOnRunway = obstacleBox.getValue();
+    {
+        try
+        {
+                Runway runwayToRevise = runwayBox.getValue();
+                Obstacle obstacleOnRunway = obstacleBox.getValue();
 
-        if(airportMainBox.getValue().toString().trim().equalsIgnoreCase("Airport")||obstacleBox.getValue().toString().trim().equalsIgnoreCase("Obstacle")||runwayBox.getValue().toString().trim().equalsIgnoreCase("Runway")||logicalRunwayBox.getValue().toString().trim().equalsIgnoreCase("Logical Runway")||leftThresholdDistance.getText().isEmpty()||rightThresholdDistance.getText().isEmpty()||leftRightBox.getValue().trim().equalsIgnoreCase("L/R")||centreLineDistance.getText().isEmpty()){
+                if(airportMainBox.getValue().toString().trim().equalsIgnoreCase("Airport")||obstacleBox.getValue().toString().trim().equalsIgnoreCase("Obstacle")||runwayBox.getValue().toString().trim().equalsIgnoreCase("Runway")||logicalRunwayBox.getValue().toString().trim().equalsIgnoreCase("Logical Runway")||leftThresholdDistance.getText().isEmpty()||rightThresholdDistance.getText().isEmpty()||leftRightBox.getValue().trim().equalsIgnoreCase("L/R")||centreLineDistance.getText().isEmpty()){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setContentText("Please fill in all inputs");
+                    alert.showAndWait();
+                }
+                else{
+                    int leftTHRDistance = Integer.parseInt(leftThresholdDistance.getText());
+                    int rightTHRDistance = Integer.parseInt(rightThresholdDistance.getText());
+                    int centerLineDistance = Integer.parseInt(centreLineDistance.getText());
+                    if(centerLineDistance>=0){
+                    Position positionOfObstacle = new Position(0,leftTHRDistance,rightTHRDistance);
+                    RevisedRunway revisedRunway = new RevisedRunway(runwayToRevise,obstacleOnRunway,positionOfObstacle);
+                    revisedRunwayText.setText(revisedRunway.getResults());
+                    oldRunwayText.setText(runwayToRevise.getResults());
+                    calculationBreakdown.setText(revisedRunway.getCalcBreakdown());
+                    drawRunway(revisedRunway, obstacleOnRunway, positionOfObstacle);
+                    }
+                    else
+                    {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setContentText("Please input positive numbers for center line distances");
+                        alert.showAndWait();
+                    }
+                }
+
+
+        }
+        catch (NullPointerException e)
+        {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("Please fill in all inputs");
             alert.showAndWait();
         }
-        else{
-        int leftTHRDistance = Integer.parseInt(leftThresholdDistance.getText());
-        int rightTHRDistance = Integer.parseInt(rightThresholdDistance.getText());
-        int centerLineDistance = Integer.parseInt(centreLineDistance.getText());
-        if(centerLineDistance>=0){
-        Position positionOfObstacle = new Position(0,leftTHRDistance,rightTHRDistance);
-        RevisedRunway revisedRunway = new RevisedRunway(runwayToRevise,obstacleOnRunway,positionOfObstacle);
-        revisedRunwayText.setText(revisedRunway.getResults());
-        oldRunwayText.setText(runwayToRevise.getResults());
-        calculationBreakdown.setText(revisedRunway.getCalcBreakdown());}
-        else {
+        catch (NumberFormatException ex)
+        {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText("Please input positive numbers for center line distances");
+            alert.setContentText("Please input numbers for distances");
             alert.showAndWait();
         }
-        }
-    }catch (NullPointerException e){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText("Please fill in all inputs");
-        alert.showAndWait();
-    }catch (NumberFormatException ex){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText("Please input numbers for distances");
-        alert.showAndWait();
-    }
-
-
-
-
-
 
 
     }
@@ -561,6 +593,67 @@ public class Controller implements Initializable {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void drawRunway(RevisedRunway revisedRunway, Obstacle obstacle, Position position) {
+        topDownViewContainer.getChildren().clear();
+
+
+        Runway runway = runwayBox.getSelectionModel().getSelectedItem();
+        LogicalRunway originalRunway = logicalRunwayBox.getSelectionModel().getSelectedItem();
+        LogicalRunway revisedLRunway = originalRunway.getName().equals(revisedRunway.getLogicalRunway1().getName()) ? revisedRunway.getLogicalRunway1() : revisedRunway.getLogicalRunway2();
+
+        try {
+            if (runway == null) {
+                if (runwayBox.getItems().size() > 0) {
+                    runway = runwayBox.getItems().get(0);
+                    // Default to the left virtual runway
+                    originalRunway = runway.getLogicalRunway1();
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            // There is no runway yet
+            return;
+        }
+
+        if (originalRunway == null) {
+            return;
+        }
+
+        Pane pane = new Pane();
+
+        String designator_String = originalRunway.getName();
+        Integer designator = Integer.parseInt(designator_String.replaceAll("[^\\d.]", ""));
+
+        // Calculate bearing of runway
+        double bearing;
+        if (designator <= 18) {
+            bearing = designator * 10;
+        } else {
+            bearing = (designator - 18) * 10;
+        }
+
+        // Rotate compass accordingly
+
+
+        // Draw static elements: measuring line, take-off direction, compass
+
+        //TODO  very hacked together needs to change
+        TopDownView topDownView = new TopDownView(originalRunway, revisedLRunway, position, obstacle, false);
+        topDownView.widthProperty().bind(topDownViewContainer.widthProperty());
+        topDownView.heightProperty().bind(topDownViewContainer.heightProperty());
+
+        // Add everything to top down view tab
+        pane.getChildren().addAll(topDownView);
+        topDownViewContainer.getChildren().add(pane);
+
+        // Draw side on view
+
+
+        if (position != null) {
+            topDownView.drawObstacle();
+        }
+
     }
 
 }

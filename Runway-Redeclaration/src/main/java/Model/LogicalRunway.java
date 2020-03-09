@@ -29,11 +29,11 @@ public class LogicalRunway
         return getName();
     }
 
-    String getName() { return ((degree < 10) ? "0" + degree : degree) + designation; }
+    public String getName() { return ((degree < 10) ? "0" + degree : degree) + designation; }
 
     public int getDegree() { return degree * 10; }
 
-    Direction getDirection() { return direction; }
+    public Direction getDirection() { return direction; }
 
     public int getLda() {
         return lda;
@@ -51,7 +51,7 @@ public class LogicalRunway
         return asda;
     }
 
-    int getDisplacedThreshold() { return tora - lda; }
+    public int getDisplacedThreshold() { return tora - lda; }
 
     String getResults()
     {

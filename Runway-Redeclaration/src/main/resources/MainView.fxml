@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
+<BorderPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
     <top>
         <MenuBar>
             <Menu text="File">
@@ -47,29 +47,54 @@
                 <Button onAction="#calculateRevisedRunway" text="Calculate" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                 <ComboBox fx:id="obstacleBox" prefWidth="150.0" promptText="Obstacle" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Obstacle" GridPane.columnIndex="1" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
             </GridPane>
             <TabPane fx:id="pane" prefHeight="771.0" prefWidth="542.0" BorderPane.alignment="CENTER">
                 <tabs>
                     <Tab fx:id="resultsTab" closable="false" text="Results">
-                        <SplitPane>
+                        <SplitPane dividerPositions="0.5">
                             <VBox>
-                                <Text text="Old Runway"/>
-                                <Text fx:id="oldRunwayText"/>
+                                <Text text="Old Runway" />
+                                <Text fx:id="oldRunwayText" />
                             </VBox>
                             <VBox>
-                                <Text text="Revised Runway"/>
-                                <Text fx:id="revisedRunwayText"/>
+                                <Text text="Revised Runway" />
+                                <Text fx:id="revisedRunwayText" />
                             </VBox>
                         </SplitPane>
                     </Tab>
                     <Tab fx:id="calculationBreakdownTab" closable="false" text="Calculation Breakdown">
                         <Pane>
                             <VBox prefWidth="542.0">
-                                <Label fx:id="calculationBreakdown" wrapText="true"/>
+                                <Label fx:id="calculationBreakdown" wrapText="true" />
                             </VBox>
                         </Pane>
                     </Tab>
                 </tabs>
+            </TabPane>
+            <TabPane tabClosingPolicy="UNAVAILABLE">
+                <Tab text="Top-down view">
+                    <FlowPane fx:id="topDownViewContainer" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="1200" />
+                </Tab>
             </TabPane>
         </HBox>
 
