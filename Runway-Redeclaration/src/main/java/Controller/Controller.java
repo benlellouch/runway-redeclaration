@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.controlsfx.control.Notifications;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -452,7 +453,8 @@ public class Controller implements Initializable {
 
     @FXML
     private void calculateRevisedRunway()
-    {   try{
+    {
+        try{
         Runway runwayToRevise = runwayBox.getValue();
         Obstacle obstacleOnRunway = obstacleBox.getValue();
 
