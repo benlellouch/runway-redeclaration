@@ -95,6 +95,9 @@
                 <Tab text="Top-down view">
                     <FlowPane fx:id="topDownViewContainer" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="1200" />
                 </Tab>
+                <Tab text="Side-on view">
+                    <FlowPane fx:id="sideOnViewContainer" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="1200" />
+                </Tab>
             </TabPane>
         </HBox>
 

@@ -1,10 +1,7 @@
 package View;
 
 
-import Model.Direction;
-import Model.LogicalRunway;
-import Model.Obstacle;
-import Model.Position;
+import Model.*;
 import com.sun.org.apache.regexp.internal.RE;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -38,6 +35,7 @@ public abstract class RunwayView extends javafx.scene.canvas.Canvas {
      * @param obstaclePosition the position of the obstacle.
      */
     public RunwayView(LogicalRunway originalRunway, LogicalRunway revisedRunway, Position obstaclePosition, Obstacle obstacle) {
+
         runway = revisedRunway;
         this.obstaclePosition = obstaclePosition;
 

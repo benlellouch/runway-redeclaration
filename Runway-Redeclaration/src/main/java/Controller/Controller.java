@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.*;
+import View.SideOnView;
 import View.TopDownView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -102,7 +103,7 @@ public class Controller implements Initializable {
     private Button noAirportDefinedOK;
 
     @FXML
-    private FlowPane topDownViewContainer;
+    private FlowPane topDownViewContainer, sideOnViewContainer;
 
 
     private ObservableList<Airport> airportObservableList;
@@ -478,7 +479,7 @@ public class Controller implements Initializable {
                     revisedRunwayText.setText(revisedRunway.getResults());
                     oldRunwayText.setText(runwayToRevise.getResults());
                     calculationBreakdown.setText(revisedRunway.getCalcBreakdown());
-                    drawRunway(revisedRunway, obstacleOnRunway, positionOfObstacle);
+                    drawRunway(revisedRunway, revisedRunway.getObstacle(), positionOfObstacle);
                     }
                     else
                     {
@@ -643,15 +644,23 @@ public class Controller implements Initializable {
         topDownView.widthProperty().bind(topDownViewContainer.widthProperty());
         topDownView.heightProperty().bind(topDownViewContainer.heightProperty());
 
+
+
         // Add everything to top down view tab
-        pane.getChildren().addAll(topDownView);
+        pane.getChildren().addAll(topDownView );
         topDownViewContainer.getChildren().add(pane);
+
+        SideOnView sideOnView = new SideOnView(originalRunway, revisedLRunway, position, obstacle, false);
+        sideOnView.widthProperty().bind(sideOnViewContainer.widthProperty());
+        sideOnView.heightProperty().bind(sideOnViewContainer.heightProperty());
+        sideOnViewContainer.getChildren().add(sideOnView);
 
         // Draw side on view
 
 
         if (position != null) {
             topDownView.drawObstacle();
+            sideOnView.drawObstacle();
         }
 
     }

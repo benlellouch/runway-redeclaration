@@ -1,10 +1,7 @@
 package View;
 
 
-import Model.Direction;
-import Model.LogicalRunway;
-import Model.Obstacle;
-import Model.Position;
+import Model.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
