@@ -139,12 +139,30 @@ public abstract class RunwayView extends javafx.scene.canvas.Canvas {
         }
 
         if (leftRunway) {
-            gc.fillText(designator1, scale_x(TORA / 7 + leftSpace), scale_y(y));
-            gc.fillText(designator2, scale_x(TORA * 6 / 7 + leftSpace), scale_y(y));
+            gc.save();
+            gc.translate( scale_x(TORA / 7 + leftSpace), scale_y(y));
+            gc.rotate(-270);
+            gc.fillText(designator1, 0,0);
+            gc.restore();
+            gc.save();
+            gc.translate(scale_x(TORA * 6 / 7 + leftSpace), scale_y(y));
+            gc.rotate(-90);
+            gc.fillText(designator2, 0,0);
+            gc.restore();
         } else {
-            gc.fillText(designator2, scale_x(TORA / 7 + leftSpace), scale_y(y));
-            gc.fillText(designator1, scale_x(TORA * 6 / 7 + leftSpace), scale_y(y));
+            gc.save();
+            gc.translate( scale_x(TORA / 7 + leftSpace), scale_y(y));
+            gc.rotate(-270);
+            gc.fillText(designator2, 0,0);
+            gc.restore();
+            gc.save();
+            gc.translate(scale_x(TORA * 6 / 7 + leftSpace), scale_y(y));
+            gc.rotate(-90);
+            gc.fillText(designator1, 0,0);
+            gc.restore();
         }
+
+
     }
 
     /**

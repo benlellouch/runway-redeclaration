@@ -30,7 +30,7 @@ public class TopDownView extends RunwayView {
             this.setRotate(bearing - 90);
             this.setScaleX(0.0089*bearing+0.2);
         }
-
+        drawBackground(gc);
         drawClearedAndGradedArea(gc, leftSpace);
 
         // Draw runway surface
@@ -48,6 +48,12 @@ public class TopDownView extends RunwayView {
 
     }
 
+    private void drawBackground(GraphicsContext gc)
+    {
+        gc.setFill(Color.GREEN);
+        gc.fillRect(0,0,getWidth(),getHeight());
+    }
+
     /**
      * Draw the cleared and graded areas around the runway.
      *
@@ -56,7 +62,7 @@ public class TopDownView extends RunwayView {
      */
     private void drawClearedAndGradedArea(GraphicsContext gc, int offset) {
         // Cleared and graded areas
-        gc.setFill(Color.web("ccc"));
+        gc.setFill(Color.DARKBLUE);
         gc.fillPolygon(
                 new double[]{
                         scale_x(offset - 60),
