@@ -114,7 +114,7 @@ public abstract class RunwayView extends javafx.scene.canvas.Canvas {
      * @param y         the height at which to draw the designators.
      * @param textColor the colour to draw the designators in.
      */
-    protected void drawDesignators(int y, Color textColor) {
+    protected void drawDesignators(int y, Color textColor, double leftDesignatorOrientation, double rightDesignatorOrientation) {
         gc.setFill(textColor);
         gc.setFont(Font.font("Consolas", 24));
         gc.setTextAlign(TextAlignment.CENTER);
@@ -141,23 +141,23 @@ public abstract class RunwayView extends javafx.scene.canvas.Canvas {
         if (leftRunway) {
             gc.save();
             gc.translate( scale_x(TORA / 7 + leftSpace), scale_y(y));
-            gc.rotate(-270);
+            gc.rotate(leftDesignatorOrientation);
             gc.fillText(designator1, 0,0);
             gc.restore();
             gc.save();
             gc.translate(scale_x(TORA * 6 / 7 + leftSpace), scale_y(y));
-            gc.rotate(-90);
+            gc.rotate(rightDesignatorOrientation);
             gc.fillText(designator2, 0,0);
             gc.restore();
         } else {
             gc.save();
             gc.translate( scale_x(TORA / 7 + leftSpace), scale_y(y));
-            gc.rotate(-270);
+            gc.rotate(leftDesignatorOrientation);
             gc.fillText(designator2, 0,0);
             gc.restore();
             gc.save();
             gc.translate(scale_x(TORA * 6 / 7 + leftSpace), scale_y(y));
-            gc.rotate(-90);
+            gc.rotate(rightDesignatorOrientation);
             gc.fillText(designator1, 0,0);
             gc.restore();
         }

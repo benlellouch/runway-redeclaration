@@ -40,7 +40,7 @@ public class TopDownView extends RunwayView {
 
         drawThresholdMarkers(gc);
         drawCentreLine(gc);
-        drawDesignators(150, Color.WHITE);
+        drawDesignators(150, Color.WHITE,-270,-90);
         drawStopway(80);
         drawClearway(90);
 
