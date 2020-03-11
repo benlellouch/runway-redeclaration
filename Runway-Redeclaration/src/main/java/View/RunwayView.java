@@ -38,6 +38,7 @@ public abstract class RunwayView extends javafx.scene.canvas.Canvas {
 
         runway = revisedRunway;
         this.obstaclePosition = obstaclePosition;
+        this.obstacle = obstacle;
 
         if(runway == null){
             return;
@@ -193,7 +194,7 @@ public abstract class RunwayView extends javafx.scene.canvas.Canvas {
         }
 
         int rTORA = runway.getTora();
-        int rLDA = runway.getTora();
+        int rLDA = runway.getLda();
         int displacedThs = runway.getDisplacedThreshold();
         int slopecalc = 240;
         
@@ -203,8 +204,8 @@ public abstract class RunwayView extends javafx.scene.canvas.Canvas {
             if (obstaclePosition.getDistLThresh() > 0) {
                 drawMeasuringLine(leftSpace, obstaclePosition.getDistLThresh(), yObstacle, Integer.toString(obstaclePosition.getDistLThresh()) + "m");
             }
-            drawMeasuringLine(obstaclePosition.getDistLThresh() + leftSpace, oLength, yObstacle, "Obstacle");
-            int endObstacle = leftSpace + obstaclePosition.getDistLThresh() + oLength;
+            drawMeasuringLine(obstaclePosition.getDistLThresh() + leftSpace+displacedThs, oLength, yObstacle, "Obstacle");
+            int endObstacle = leftSpace + obstaclePosition.getDistLThresh() + oLength + displacedThs;
 
             if (leftRunway) {
                 // __|=|__->______
@@ -255,8 +256,8 @@ public abstract class RunwayView extends javafx.scene.canvas.Canvas {
      */
     private void drawTORA_TODA_ASDA(int x, int y) {
         int rTORA = runway.getTora();
-        int rTODA = runway.getTora();
-        int rASDA = runway.getTora();
+        int rTODA = runway.getToda();
+        int rASDA = runway.getAsda();
 
         drawMeasuringLine(x, rTORA, y, "TORA " + rTORA + "m");
 

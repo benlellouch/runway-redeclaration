@@ -127,7 +127,7 @@ public class TopDownView extends RunwayView {
         try {
             draw();
 
-            int obstacle_x = obstaclePosition.getDistLThresh() + leftSpace;
+            int obstacle_x = obstaclePosition.getDistLThresh() + leftSpace + runway.getDisplacedThreshold();
             int obstacle_y;
 
             if (Integer.parseInt(runway.getName().substring(0, 2)) > 18) {
