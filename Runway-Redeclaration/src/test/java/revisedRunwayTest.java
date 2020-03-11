@@ -16,7 +16,7 @@ public class revisedRunwayTest {
     @Test
     public void testScenario1()
     {
-        Obstacle obstacle = new Obstacle("test", 12);
+        Obstacle obstacle = new Obstacle("test", 12,1);
         Position position = new Position(0,-50,3646);
         RevisedRunway revisedRunway = new RevisedRunway(runway09L27R, obstacle,position);
 
@@ -35,7 +35,7 @@ public class revisedRunwayTest {
     @Test
     public void testScenario2()
     {
-        Obstacle obstacle = new Obstacle("test", 25);
+        Obstacle obstacle = new Obstacle("test", 25,1);
         Position position = new Position(0,2853,500);
         RevisedRunway revisedRunway = new RevisedRunway(runway09R27L,obstacle,position);
 
@@ -53,7 +53,7 @@ public class revisedRunwayTest {
     @Test
     public void testScenario3()
     {
-        Obstacle obstacle = new Obstacle("test", 15);
+        Obstacle obstacle = new Obstacle("test", 15,1);
         Position position = new Position(0,150,3203);
         RevisedRunway revisedRunway = new RevisedRunway(runway09R27L,obstacle,position);
 
@@ -71,7 +71,7 @@ public class revisedRunwayTest {
     @Test
     public void testScenario4()
     {
-        Obstacle obstacle = new Obstacle("test", 20);
+        Obstacle obstacle = new Obstacle("test", 20,1);
         Position position = new Position(0,3546,50);
         RevisedRunway revisedRunway = new RevisedRunway(runway09L27R, obstacle,position);
 

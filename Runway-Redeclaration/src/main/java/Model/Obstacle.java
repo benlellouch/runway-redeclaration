@@ -4,10 +4,12 @@ public class Obstacle {
 
     private final String name;
     private final int height;
+    private final int width;
 
-    public Obstacle(String name, int height) {
+    public Obstacle(String name, int height, int width) {
         this.name = name;
         this.height = height;
+        this.width = width;
     }
 
     @Override
@@ -21,5 +23,9 @@ public class Obstacle {
 
     public int getHeight() {
         return height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 }

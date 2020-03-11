@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.*;
+import XMLParsing.ModelFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,8 +11,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -216,6 +219,40 @@ public class Controller implements Initializable {
 
     }
 
+    @FXML
+    private void openImportFile(){
+
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(null);
+        if(file != null) {
+            System.out.println(file.getAbsolutePath());
+            ModelFactory mf = new ModelFactory(file);
+
+            for(Airport a : mf.getAirports()){
+                boolean duplicate = false;
+                for(Airport as : airportObservableList){
+                    if (a.getName().equals(as.getName()))
+                        duplicate = true;
+                }
+                if(!duplicate)
+                    airportObservableList.add(a);
+            }
+
+            for(Obstacle o : mf.getObstacles()){
+                boolean dup = false;
+                for(Obstacle os : obstacles){
+                    if(o.getName().equals(os.getName()) && o.getHeight()==os.getHeight())
+                        dup = true;
+                }
+                if(!dup)
+                    obstacles.add(o);
+            }
+
+            airportObservableList.addAll(mf.getAirports());
+            obstacles.addAll(mf.getObstacles());
+        }
+    }
+
     /**
      * Reads the Textfields in AirportDefinition.fxml,
      * creates a new Airport and adds it the
@@ -369,7 +406,7 @@ public class Controller implements Initializable {
 
             } else {
                 int newObstacleHeight = Integer.parseInt(obstacleHeight.getText());
-                Obstacle newObstacleCreated = new Obstacle(newObstacleName,newObstacleHeight);
+                Obstacle newObstacleCreated = new Obstacle(newObstacleName,newObstacleHeight,1);
                 obstacles.add(newObstacleCreated);
                 for (int i=0;i<obstacles.size()-1;i++){
                     if(obstacles.get(i).getName().equalsIgnoreCase(newObstacleName)&&obstacles.get(i).getHeight()==newObstacleHeight){
@@ -397,10 +434,10 @@ public class Controller implements Initializable {
      */
     private void populateObstacleList()
     {
-        obstacles.add(new Obstacle("Broken Down Rover Vehicle",2));
-        obstacles.add(new Obstacle("Barricades",1));
-        obstacles.add(new Obstacle("Lighting Pole",5));
-        obstacles.add(new Obstacle("Broken Down Aircraft",19));
+        obstacles.add(new Obstacle("Broken Down Rover Vehicle",2,1));
+        obstacles.add(new Obstacle("Barricades",1,1));
+        obstacles.add(new Obstacle("Lighting Pole",5,1));
+        obstacles.add(new Obstacle("Broken Down Aircraft",19,1));
     }
 
     /**
