@@ -1,7 +1,8 @@
 image: maven:latest
 
-variables:
-  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+stages:
+  - build
+  - test
 
 cache:
   paths:
@@ -11,6 +12,7 @@ cache:
 build:
   stage: build
   script:
+    - cd Runway-Redeclaration
     - mvn compile
 
 test:
