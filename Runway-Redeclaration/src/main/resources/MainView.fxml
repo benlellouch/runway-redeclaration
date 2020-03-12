@@ -47,25 +47,45 @@
                 <Button onAction="#calculateRevisedRunway" text="Calculate" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                 <ComboBox fx:id="obstacleBox" prefWidth="150.0" promptText="Obstacle" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Obstacle" GridPane.columnIndex="1" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
             </GridPane>
             <TabPane fx:id="pane" prefHeight="771.0" prefWidth="542.0" BorderPane.alignment="CENTER">
                 <tabs>
                     <Tab fx:id="resultsTab" closable="false" text="Results">
-                        <SplitPane>
+                        <SplitPane dividerPositions="0.5">
                             <VBox>
-                                <Text text="Old Runway"/>
-                                <Text fx:id="oldRunwayText"/>
+                                <Text text="Old Runway" />
+                                <Text fx:id="oldRunwayText" />
                             </VBox>
                             <VBox>
-                                <Text text="Revised Runway"/>
-                                <Text fx:id="revisedRunwayText"/>
+                                <Text text="Revised Runway" />
+                                <Text fx:id="revisedRunwayText" />
                             </VBox>
                         </SplitPane>
                     </Tab>
                     <Tab fx:id="calculationBreakdownTab" closable="false" text="Calculation Breakdown">
                         <Pane>
                             <VBox prefWidth="542.0">
-                                <Label fx:id="calculationBreakdown" wrapText="true"/>
+                                <Label fx:id="calculationBreakdown" wrapText="true" />
                             </VBox>
                         </Pane>
                     </Tab>
@@ -75,4 +95,15 @@
 
 
     </center>
+   <bottom>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab text="Notifications">
+              <ScrollPane>
+                  <Text fx:id="notificationsLog"/>
+              </ScrollPane>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </bottom>
 </BorderPane>
