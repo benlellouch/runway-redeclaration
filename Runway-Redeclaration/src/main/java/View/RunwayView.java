@@ -196,7 +196,7 @@ public abstract class RunwayView extends javafx.scene.canvas.Canvas {
         int rTORA = runway.getTora();
         int rLDA = runway.getLda();
         int displacedThs = runway.getDisplacedThreshold();
-        int slopecalc = 240;
+        int slopecalc = Math.max((obstacle.getHeight() * 50), RESA);
         
 
 
@@ -214,7 +214,7 @@ public abstract class RunwayView extends javafx.scene.canvas.Canvas {
 
                 // length = slopecalc + 60 where 60 is the strip end
                 drawMeasuringLine(endObstacle, slopecalc + 60, yDistances + 10, "slope + strip end");
-                drawMeasuringLine(endObstacle + slopecalc + 60, rLDA, yDistances + 10, "LDA " + rLDA + "m");
+                drawMeasuringLine(endObstacle + slopecalc + 60, rLDA - displacedThs, yDistances + 10, "LDA " + rLDA + "m");
             } else {
                 // __|=|__<-______
                 drawMeasuringLine(endObstacle, slopecalc + 60, yDistances, "slope + strip end");
@@ -258,18 +258,20 @@ public abstract class RunwayView extends javafx.scene.canvas.Canvas {
         int rTORA = runway.getTora();
         int rTODA = runway.getToda();
         int rASDA = runway.getAsda();
+        int displacedThs = runway.getDisplacedThreshold();
 
-        drawMeasuringLine(x, rTORA, y, "TORA " + rTORA + "m");
+
+        drawMeasuringLine(x, rTORA - displacedThs, y, "TORA " + rTORA + "m");
 
         if (rTODA != rTORA) {
             drawMeasuringLine(x, rTODA, y - 10, "TODA " + rTODA + "m");
         } else {
-            gc.fillText("TODA " + rTODA + "m", scale_x(x + rTODA / 2), scale_y(y - 10));
+            gc.fillText("TODA " + rTODA + "m", scale_x(x + (rTODA  - displacedThs)/ 2) , scale_y(y - 10));
         }
         if (rASDA != rTORA && rASDA != rTODA) {
             drawMeasuringLine(x, rASDA, y - 20, "ASDA " + rASDA + "m");
         } else {
-            gc.fillText("ASDA " + rASDA + "m", scale_x(x + rASDA / 2), scale_y(y - 20));
+            gc.fillText("ASDA " + rASDA + "m", scale_x(x + (rASDA - displacedThs)/ 2), scale_y(y - 20));
         }
     }
 
