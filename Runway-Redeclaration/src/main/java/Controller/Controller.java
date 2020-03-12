@@ -16,6 +16,8 @@ import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
 import java.net.URL;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -239,10 +241,6 @@ public class Controller implements Initializable {
                 .text("Airport: " + newAirportName + " has been added")
                 .hideAfter(Duration.seconds(3))
                 .position(Pos.BOTTOM_RIGHT);
-        airportAddedNotification.showConfirm();
-
-        notificationsString.append("Airport: ").append(newAirportName).append(" has been added");
-        notificationsLog.setText(notificationsString.toString());
 
         if(!newAirportName.isEmpty())
         {   if(!airportObservableList.isEmpty()){
@@ -257,10 +255,14 @@ public class Controller implements Initializable {
             //airportObservableList.add(new Airport(newAirportName));
             Stage stage = (Stage) airportDoneButton.getScene().getWindow();
             stage.close();
+            airportAddedNotification.showConfirm();
+            notificationsString.append("Airport: ").append(newAirportName).append(" has been added").append(" (" + Time.valueOf(LocalTime.now()) + ")").append("\n");
+            notificationsLog.setText(notificationsString.toString());
         }else{
             airportObservableList.add(new Airport(newAirportName));
             Stage stage = (Stage) airportDoneButton.getScene().getWindow();
             stage.close();
+
         }
         }
         else
@@ -322,16 +324,6 @@ public class Controller implements Initializable {
                         LogicalRunway logicalRunway2 = new LogicalRunway(designatorRight, toraRight, todaRight, asdaRight, ldaRight);
                         Runway run = new Runway(logicalRunway1, logicalRunway2);
                         airport.addRunway(run);
-                        runwayAddedNotification =
-                                Notifications.create()
-                                        .title("Runway Added")
-                                        .text("Runway: " + run.getName() + " has been added")
-                                        .hideAfter(Duration.seconds(3))
-                                        .position(Pos.BOTTOM_RIGHT);
-                        runwayAddedNotification.showConfirm();
-
-                        notificationsString.append("Runway: ").append(run.getName()).append(" has been added");
-                        notificationsLog.setText(notificationsString.toString());
 
                         for (int i = 0; i < airport.getRunways().size() - 1; i++) {
                             if (airport.getRunways().get(i).getName().equals(run.getName())) {
@@ -345,6 +337,15 @@ public class Controller implements Initializable {
 
                         Stage stage = (Stage) runwayDoneButton.getScene().getWindow();
                         stage.close();
+                        notificationsString.append("Runway: ").append(run.getName()).append(" has been added to Airport: " + airport.getName()).append(" (" + Time.valueOf(LocalTime.now()) + ")").append("\n");
+                        notificationsLog.setText(notificationsString.toString());
+                        runwayAddedNotification =
+                                Notifications.create()
+                                        .title("Runway Added")
+                                        .text("Runway: " + run.getName() + " has been added to Airport: " +airport.getName())
+                                        .hideAfter(Duration.seconds(3))
+                                        .position(Pos.BOTTOM_RIGHT);
+                        runwayAddedNotification.showConfirm();
                     }
                     }
                 else {
@@ -402,15 +403,6 @@ public class Controller implements Initializable {
                 int newObstacleHeight = Integer.parseInt(obstacleHeight.getText());
                 Obstacle newObstacleCreated = new Obstacle(newObstacleName,newObstacleHeight);
                 obstacles.add(newObstacleCreated);
-                obstacleDefinedNotification =
-                        Notifications.create()
-                        .title("Obstacle Added")
-                        .text("Obstacle: " + newObstacleCreated.getName() + " " + newObstacleCreated.getHeight() + "m has been added")
-                        .hideAfter(Duration.seconds(3))
-                        .position(Pos.BOTTOM_RIGHT);
-                obstacleDefinedNotification.showConfirm();
-                notificationsString.append("Obstacle: ").append(newObstacleCreated.getName()).append(" has been added");
-                notificationsLog.setText(notificationsString.toString());
 
                 for (int i=0;i<obstacles.size()-1;i++){
                     if(obstacles.get(i).getName().equalsIgnoreCase(newObstacleName)&&obstacles.get(i).getHeight()==newObstacleHeight){
@@ -423,7 +415,15 @@ public class Controller implements Initializable {
                 //obstacles.add(newObstacleCreated);
                 Stage stage = (Stage) obstacleDoneButton.getScene().getWindow();
                 stage.close();
-
+                obstacleDefinedNotification =
+                        Notifications.create()
+                                .title("Obstacle Added")
+                                .text("Obstacle: " + newObstacleCreated.getName() + " " + newObstacleCreated.getHeight() + "m has been added")
+                                .hideAfter(Duration.seconds(3))
+                                .position(Pos.BOTTOM_RIGHT);
+                obstacleDefinedNotification.showConfirm();
+                notificationsString.append("Obstacle: ").append(newObstacleCreated.getName()).append(" has been added").append(" (" + Time.valueOf(LocalTime.now()) + ")").append("\n");
+                notificationsLog.setText(notificationsString.toString());
 
             }
         } catch (NumberFormatException e) {
@@ -522,7 +522,7 @@ public class Controller implements Initializable {
                             .position(Pos.BOTTOM_RIGHT);
             revisedNotification.showConfirm();
 
-            notificationsString.append("Runway: ").append(runwayToRevise.getName()).append(" has been revised");
+            notificationsString.append("Runway: ").append(runwayToRevise.getName()).append(" has been revised").append(" (" + Time.valueOf(LocalTime.now()) + ")").append("\n");
             notificationsLog.setText(notificationsString.toString());
         }
 
