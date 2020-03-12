@@ -22,4 +22,5 @@ build:
 test:
   stage: test
   script:
+    - cd Runway-Redeclaration
     - mvn test
