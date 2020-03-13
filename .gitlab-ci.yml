@@ -23,4 +23,8 @@ test:
   stage: test
   script:
     - cd Runway-Redeclaration
-    - mvn test
+    - mvn -Dtest=CalculationsTest test
+  artifacts:
+    reports:
+      junit:
+        - target/surefire-reports/TEST-*.xml
