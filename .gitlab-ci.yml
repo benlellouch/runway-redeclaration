@@ -8,9 +8,9 @@ variables:
   MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
   
-before_script:
-    - apt-get update
-    - apt-get install -y openjfx
+# before_script:
+#     - apt-get update
+#     - apt-get install -y openjfx
 
 cache:
   paths:
@@ -21,7 +21,7 @@ build:
   stage: build
   script:
     - cd Runway-Redeclaration
-    - mvn -Djavafx-location=/usr/share/java/openjfx/jre/lib/ext/jfxrt.jar compile 
+    - mvn compile 
 
 test:
   stage: test
