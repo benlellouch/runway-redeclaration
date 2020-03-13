@@ -10,7 +10,7 @@ variables:
   
 before_script:
     - apt-get update
-    - apt install openjdk-8-jdk openjfx
+    - apt-get openjdk-8-jdk openjfx
 
 cache:
   paths:
