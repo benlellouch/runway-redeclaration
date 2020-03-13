@@ -21,7 +21,7 @@ build:
   stage: build
   script:
     - cd Runway-Redeclaration
-    - mvn compile
+    - mvn -Djavafx-location=/usr/share/java/openjfx/jre/lib/ext/jfxrt.jar compile 
 
 test:
   stage: test
