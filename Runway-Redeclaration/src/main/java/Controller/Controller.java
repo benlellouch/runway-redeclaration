@@ -531,7 +531,9 @@ public class Controller implements Initializable {
         RevisedRunway revisedRunway = new RevisedRunway(runwayToRevise,obstacleOnRunway,positionOfObstacle);
         revisedRunwayText.setText(revisedRunway.getResults());
         oldRunwayText.setText(runwayToRevise.getResults());
-        calculationBreakdown.setText(revisedRunway.getCalcBreakdown());}
+        calculationBreakdown.setText(revisedRunway.getCalcBreakdown());
+        drawRunway(revisedRunway,obstacleOnRunway,positionOfObstacle);
+        }
         else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("Please input positive numbers for center line distances");
@@ -684,7 +686,7 @@ public class Controller implements Initializable {
         // Draw static elements: measuring line, take-off direction, compass
 
         //TODO  very hacked together needs to change
-        TopDownView topDownView = new TopDownView(originalRunway, revisedLRunway, position, obstacle, false);
+        TopDownView topDownView = new TopDownView(runway, revisedLRunway, position, obstacle, false);
         topDownView.widthProperty().bind(topDownViewContainer.widthProperty());
         topDownView.heightProperty().bind(topDownViewContainer.heightProperty());
 
@@ -694,7 +696,7 @@ public class Controller implements Initializable {
         pane.getChildren().addAll(topDownView );
         topDownViewContainer.getChildren().add(pane);
 
-        SideOnView sideOnView = new SideOnView(originalRunway, revisedLRunway, position, obstacle, false);
+        SideOnView sideOnView = new SideOnView(runway, revisedLRunway, position, obstacle, false);
         sideOnView.widthProperty().bind(sideOnViewContainer.widthProperty());
         sideOnView.heightProperty().bind(sideOnViewContainer.heightProperty());
         sideOnViewContainer.getChildren().add(sideOnView);

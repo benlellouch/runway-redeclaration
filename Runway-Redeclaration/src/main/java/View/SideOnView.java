@@ -7,8 +7,8 @@ public class SideOnView extends RunwayView {
 
     private Obstacle obstacle;
 
-    public SideOnView(LogicalRunway originalRunway, LogicalRunway revisedRunway, Position obstaclePosition, Obstacle obstacle, boolean rotateView) {
-        super(originalRunway,revisedRunway,obstaclePosition, obstacle);
+    public SideOnView(Runway originalRunways, LogicalRunway revisedRunway, Position obstaclePosition, Obstacle obstacle, boolean rotateView) {
+        super(originalRunways,revisedRunway,obstaclePosition, obstacle);
         this.obstacle = obstacle;
     }
 

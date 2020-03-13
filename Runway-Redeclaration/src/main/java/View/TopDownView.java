@@ -9,8 +9,8 @@ public class TopDownView extends RunwayView {
     protected boolean rotateView;
     private int bearing;
 
-    public TopDownView(LogicalRunway originalRunway, LogicalRunway revisedRunway, Position obstaclePosition, Obstacle obstacle, boolean rotateView) {
-        super(originalRunway,revisedRunway, obstaclePosition,obstacle);
+    public TopDownView(Runway originalRunways, LogicalRunway revisedRunway, Position obstaclePosition, Obstacle obstacle, boolean rotateView) {
+        super(originalRunways,revisedRunway, obstaclePosition,obstacle);
         this.rotateView = rotateView;
         this.bearing = revisedRunway.getDegree();
     }
@@ -127,8 +127,17 @@ public class TopDownView extends RunwayView {
         try {
             draw();
 
-            int obstacle_x = obstaclePosition.getDistLThresh() + leftSpace + runway.getDisplacedThreshold();
+            int displacedThr = Math.max(originalRunways.getLogicalRunway1().getDisplacedThreshold(), originalRunways.getLogicalRunway2().getDisplacedThreshold());
+            int obstacle_x;
             int obstacle_y;
+            if(obstaclePosition.getDistLThresh() < obstaclePosition.getDistRThresh())
+            {
+                 obstacle_x = obstaclePosition.getDistLThresh() + leftSpace + displacedThr;
+            }else
+            {
+                 obstacle_x = obstaclePosition.getDistLThresh() + leftSpace;
+            }
+
 
             if (Integer.parseInt(runway.getName().substring(0, 2)) > 18) {
                 if (runway.getDirection() == Direction.LEFT) {
