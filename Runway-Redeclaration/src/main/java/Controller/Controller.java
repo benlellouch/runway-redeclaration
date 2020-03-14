@@ -104,8 +104,9 @@ public class Controller implements Initializable {
     @FXML
     private Button noAirportDefinedOK;
 
+    //TODO make the views seperate fxml files so that we don't need this many containers
     @FXML
-    private FlowPane topDownViewContainer, sideOnViewContainer;
+    private FlowPane topDownViewContainer, sideOnViewContainer, simTopDownViewContainer, simSideOnViewContainer;
 
 
     private ObservableList<Airport> airportObservableList;
@@ -644,6 +645,9 @@ public class Controller implements Initializable {
 
     public void drawRunway(RevisedRunway revisedRunway, Obstacle obstacle, Position position) {
         topDownViewContainer.getChildren().clear();
+        sideOnViewContainer.getChildren().clear();
+        simSideOnViewContainer.getChildren().clear();
+        simTopDownViewContainer.getChildren().clear();
 
 
         Runway runway = runwayBox.getSelectionModel().getSelectedItem();
@@ -692,14 +696,27 @@ public class Controller implements Initializable {
 
 
 
+
+
         // Add everything to top down view tab
         pane.getChildren().addAll(topDownView );
         topDownViewContainer.getChildren().add(pane);
+
+        TopDownView simTopDownView = new TopDownView(runway, revisedLRunway, position, obstacle, false);
+        simTopDownView.widthProperty().bind(simTopDownViewContainer.widthProperty());
+        simTopDownView.heightProperty().bind(simTopDownViewContainer.heightProperty());
+        simTopDownViewContainer.getChildren().add(simTopDownView);
 
         SideOnView sideOnView = new SideOnView(runway, revisedLRunway, position, obstacle, false);
         sideOnView.widthProperty().bind(sideOnViewContainer.widthProperty());
         sideOnView.heightProperty().bind(sideOnViewContainer.heightProperty());
         sideOnViewContainer.getChildren().add(sideOnView);
+
+        SideOnView simSideOnView = new SideOnView(runway, revisedLRunway, position, obstacle, false);
+        simSideOnView.widthProperty().bind(simTopDownViewContainer.widthProperty());
+        simSideOnView.heightProperty().bind(simTopDownViewContainer.heightProperty());
+        simSideOnViewContainer.getChildren().add(simSideOnView);
+
 
         // Draw side on view
 
@@ -707,6 +724,8 @@ public class Controller implements Initializable {
         if (position != null) {
             topDownView.drawObstacle();
             sideOnView.drawObstacle();
+            simSideOnView.drawObstacle();
+            simTopDownView.drawObstacle();
         }
 
     }
