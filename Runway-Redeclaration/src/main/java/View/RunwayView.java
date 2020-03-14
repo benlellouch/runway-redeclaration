@@ -13,7 +13,7 @@ import javafx.scene.text.TextAlignment;
 
 public abstract class RunwayView extends javafx.scene.canvas.Canvas {
 
-    private static final int RESA = 240;
+    protected static final int RESA = 240;
     protected LogicalRunway runway;
     protected Runway originalRunways;
     protected int TORA, ASDA, TODA, LDA;

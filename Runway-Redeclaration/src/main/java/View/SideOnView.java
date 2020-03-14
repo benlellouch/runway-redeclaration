@@ -41,28 +41,38 @@ public class SideOnView extends RunwayView {
      */
     public void drawObstacle() {
 
-            if(obstaclePosition == null || runway == null){
-                return;
-            }
+        if(obstaclePosition == null || runway == null){
+            return;
+        }
 
-            draw();
+        draw();
 
-            int obstacleLength = TORA - obstaclePosition.getDistRThresh() - obstaclePosition.getDistLThresh();
-            int oHeight = obstacle.getHeight();
+        int obstacleLength = TORA - obstaclePosition.getDistRThresh() - obstaclePosition.getDistLThresh();
+        int oHeight = obstacle.getHeight();
+        int displacedThr = Math.max(originalRunways.getLogicalRunway1().getDisplacedThreshold(), originalRunways.getLogicalRunway2().getDisplacedThreshold());
+        int obstacle_x;
+        if(obstaclePosition.getDistLThresh() < obstaclePosition.getDistRThresh())
+        {
+            obstacle_x = obstaclePosition.getDistLThresh() + leftSpace + displacedThr;
+        }else
+        {
+            obstacle_x = obstaclePosition.getDistLThresh() + leftSpace;
+        }
 
-            gc.setFill(Color.RED);
-            gc.setGlobalAlpha(0.5);
-            scaledFillRect(obstaclePosition.getDistLThresh() + leftSpace, 149 - oHeight, obstacleLength, oHeight);
-            gc.setGlobalAlpha(1.0);
 
-            gc.setFill(Color.BLACK);
-            scaledStrokeRect(obstaclePosition.getDistLThresh() + leftSpace, 149 - oHeight, obstacleLength, oHeight);
+        gc.setFill(Color.RED);
+        gc.setGlobalAlpha(0.5);
+        scaledFillRect(obstacle_x, 149 - oHeight, obstacleLength, oHeight);
+        gc.setGlobalAlpha(1.0);
 
-            int slopecalc = 240;
+        gc.setFill(Color.BLACK);
+        scaledStrokeRect(obstacle_x, 149 - oHeight, obstacleLength, oHeight);
 
-            drawSlope(obstacleLength, slopecalc);
+        int slopecalc = Math.max((obstacle.getHeight() * 50), RESA);
 
-            drawBrokenDownDistances(obstacleLength, 200, 110);
+        drawSlope(obstacleLength, slopecalc);
+
+        drawBrokenDownDistances(obstacleLength, 200, 110);
 
 
 
@@ -76,10 +86,12 @@ public class SideOnView extends RunwayView {
         gc.setGlobalAlpha(0.5);
 
         int oHeight = this.obstacle.getHeight();
+        int displacedThr = Math.max(originalRunways.getLogicalRunway1().getDisplacedThreshold(), originalRunways.getLogicalRunway2().getDisplacedThreshold());
+
 
         if (obstaclePosition.getDistLThresh() < obstaclePosition.getDistRThresh()) {
             // __|=|________
-            int endObstacle = leftSpace + obstaclePosition.getDistLThresh() + oLength;
+            int endObstacle = leftSpace + obstaclePosition.getDistLThresh() + oLength + displacedThr;
 
             gc.fillPolygon(new double[]{scale_x(endObstacle), scale_x(endObstacle), scale_x(endObstacle + slopecalc)}, new double[]{scale_y(149 - oHeight), scale_y(149), scale_y(149)}, 3);
         } else {
