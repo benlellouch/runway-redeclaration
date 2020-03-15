@@ -10,6 +10,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -111,6 +113,7 @@ public class Controller implements Initializable {
     private ObservableList<Obstacle> obstacles;
     private ObservableList<String> leftRight;
     private StringBuilder notificationsString = new StringBuilder();
+    private Image tick = new Image("icons/smalltick.png", true);
 
 
 
@@ -235,12 +238,15 @@ public class Controller implements Initializable {
         Notifications airportAddedNotification;
         String newAirportName = airportName.getText().replaceAll("\\s", "");
         airportObservableList.add(new Airport(newAirportName));
-        airportAddedNotification =
-                Notifications.create()
-                .title("Airport Added")
-                .text("Airport: " + newAirportName + " has been added")
-                .hideAfter(Duration.seconds(3))
-                .position(Pos.BOTTOM_RIGHT);
+//        Image image = new Image("icons/smalltick.png", true);
+
+//        airportAddedNotification =
+//                Notifications.create()
+//                .title("Airport Added")
+//                .text("Airport: " + newAirportName + " has been added")
+//                .hideAfter(Duration.seconds(3))
+//                        .graphic(new ImageView(image))
+//                .position(Pos.BOTTOM_RIGHT);
 
         if(!newAirportName.isEmpty())
         {   if(!airportObservableList.isEmpty()){
@@ -255,7 +261,14 @@ public class Controller implements Initializable {
             //airportObservableList.add(new Airport(newAirportName));
             Stage stage = (Stage) airportDoneButton.getScene().getWindow();
             stage.close();
-            airportAddedNotification.showConfirm();
+            airportAddedNotification =
+                    Notifications.create()
+                            .title("Airport Added")
+                            .text("Airport: " + newAirportName + " has been added")
+                            .hideAfter(Duration.seconds(3))
+                            .graphic(new ImageView(tick))
+                            .position(Pos.BOTTOM_RIGHT);
+            airportAddedNotification.show();
             notificationsString.append("Airport: ").append(newAirportName).append(" has been added").append(" (" + Time.valueOf(LocalTime.now()) + ")").append("\n");
             notificationsLog.setText(notificationsString.toString());
         }else{
@@ -344,8 +357,9 @@ public class Controller implements Initializable {
                                         .title("Runway Added")
                                         .text("Runway: " + run.getName() + " has been added to Airport: " +airport.getName())
                                         .hideAfter(Duration.seconds(3))
+                                        .graphic(new ImageView(tick))
                                         .position(Pos.BOTTOM_RIGHT);
-                        runwayAddedNotification.showConfirm();
+                        runwayAddedNotification.show();
                     }
                     }
                 else {
@@ -420,8 +434,9 @@ public class Controller implements Initializable {
                                 .title("Obstacle Added")
                                 .text("Obstacle: " + newObstacleCreated.getName() + " " + newObstacleCreated.getHeight() + "m has been added")
                                 .hideAfter(Duration.seconds(3))
+                                .graphic(new ImageView(tick))
                                 .position(Pos.BOTTOM_RIGHT);
-                obstacleDefinedNotification.showConfirm();
+                obstacleDefinedNotification.show();
                 notificationsString.append("Obstacle: ").append(newObstacleCreated.getName()).append(" has been added").append(" (" + Time.valueOf(LocalTime.now()) + ")").append("\n");
                 notificationsLog.setText(notificationsString.toString());
 
@@ -517,12 +532,13 @@ public class Controller implements Initializable {
             revisedNotification =
                     Notifications.create()
                             .title("Runway Revised")
-                            .text("Runway: " + runwayToRevise.getName() + " has been revised")
+                            .text("Runway: " + runwayToRevise.getName() + " at Airport: " + airportMainBox.getValue().toString().trim() + " has been revised")
                             .hideAfter(Duration.seconds(3))
+                            .graphic(new ImageView(tick))
                             .position(Pos.BOTTOM_RIGHT);
-            revisedNotification.showConfirm();
+            revisedNotification.show();
 
-            notificationsString.append("Runway: ").append(runwayToRevise.getName()).append(" has been revised").append(" (" + Time.valueOf(LocalTime.now()) + ")").append("\n");
+            notificationsString.append("Runway: ").append(runwayToRevise.getName()).append(" at Airport: " + airportMainBox.getValue().toString().trim() + " has been revised").append(" (" + Time.valueOf(LocalTime.now()) + ")").append("\n");
             notificationsLog.setText(notificationsString.toString());
         }
 
