@@ -354,27 +354,27 @@ public class Controller implements Initializable {
         //TODO create new Obstacle and add it to a List of Obstacles
         //TODO add Error pop-up when fields are empty
         try {
-            String newObstacleName = obstacleName.getText();
+            String newObstacleName = obstacleName.getText().trim();
 
-            if (newObstacleName.isEmpty() || obstacleHeight.getText().isEmpty()) {
+            if (newObstacleName.isEmpty() || obstacleHeight.getText().trim().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Input field empty");
                 alert.setContentText("Please fill in all input fields");
                 alert.showAndWait();
 
-            } else if (Integer.parseInt(obstacleHeight.getText()) < 1) {
+            } else if (Integer.parseInt(obstacleHeight.getText().trim()) < 1) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText("Please put a number greater than zero for Height");
                 alert.showAndWait();
 
             } else {
-                int newObstacleHeight = Integer.parseInt(obstacleHeight.getText());
+                int newObstacleHeight = Integer.parseInt(obstacleHeight.getText().trim());
                 Obstacle newObstacleCreated = new Obstacle(newObstacleName,newObstacleHeight);
                 obstacles.add(newObstacleCreated);
                 for (int i=0;i<obstacles.size()-1;i++){
                     if(obstacles.get(i).getName().equalsIgnoreCase(newObstacleName)&&obstacles.get(i).getHeight()==newObstacleHeight){
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setContentText("Duplicate alert: previous obstacle has been removed");
+                        alert.setContentText("Duplicate alert: Obstacle has not been added");
                         alert.showAndWait();
                         obstacles.remove(obstacles.size()-1);
                     }
