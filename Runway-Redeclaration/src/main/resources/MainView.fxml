@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
+<BorderPane prefHeight="1080.0" prefWidth="1920.0" stylesheets="style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
     <top>
         <MenuBar>
             <Menu text="File">
@@ -30,7 +30,7 @@
 
 
                     <Text text="Logical Runway" GridPane.rowIndex="6" />
-                    <ComboBox fx:id="logicalRunwayBox" promptText="Logical Runway" GridPane.rowIndex="7" />
+                    <ComboBox fx:id="logicalRunwayBox" onAction="#updateLogicalRunwayView" promptText="Logical Runway" GridPane.rowIndex="7" />
 
                     <Text text="Distance from Left Threshold" GridPane.rowIndex="9" />
                     <TextField fx:id="leftThresholdDistance" GridPane.rowIndex="10" />
@@ -47,26 +47,7 @@
                     <Button onAction="#calculateRevisedRunway" text="Calculate" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                     <ComboBox fx:id="obstacleBox" prefWidth="150.0" promptText="Obstacle" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Obstacle" GridPane.columnIndex="1" />
-               <columnConstraints>
-                  <ColumnConstraints />
-                  <ColumnConstraints />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-               </rowConstraints>
+               <CheckBox fx:id="orientationCheckBox" onAction="#updateLogicalRunwayView" mnemonicParsing="false" text="Rotate to match orientation" GridPane.columnIndex="1" GridPane.rowIndex="13" />
                 </GridPane>
                 <TabPane fx:id="pane" prefHeight="771.0" prefWidth="542.0">
                     <tabs>
@@ -101,7 +82,7 @@
                     <FlowPane fx:id="sideOnViewContainer" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="1200" />
                 </Tab>
                 <Tab text="Simultaneous View">
-                    <SplitPane dividerPositions="0.5" orientation="VERTICAL">
+                    <SplitPane dividerPositions="0.5">
                         <FlowPane fx:id="simTopDownViewContainer" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="0.0" />
                         <FlowPane fx:id="simSideOnViewContainer" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="0.0" />
 

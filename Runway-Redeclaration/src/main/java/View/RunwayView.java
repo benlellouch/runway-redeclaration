@@ -211,7 +211,7 @@ public abstract class RunwayView extends javafx.scene.canvas.Canvas {
 
         if (obstaclePosition.getDistLThresh() < obstaclePosition.getDistRThresh()) {
             if (obstaclePosition.getDistLThresh() > 0) {
-                drawMeasuringLine(leftSpace, obstaclePosition.getDistLThresh(), yObstacle, Integer.toString(obstaclePosition.getDistLThresh()) + "m");
+                drawMeasuringLine(leftSpace + displacedThs, obstaclePosition.getDistLThresh(), yObstacle, Integer.toString(obstaclePosition.getDistLThresh()) + "m");
             }
             drawMeasuringLine(obstaclePosition.getDistLThresh() + leftSpace+displacedThs, oLength, yObstacle, "Obstacle");
             int endObstacle = leftSpace + obstaclePosition.getDistLThresh() + oLength + displacedThs;
@@ -223,32 +223,32 @@ public abstract class RunwayView extends javafx.scene.canvas.Canvas {
 
                 // length = slopecalc + 60 where 60 is the strip end
                 drawMeasuringLine(endObstacle, slopecalc + 60, yDistances + 10, "slope + strip end");
-                drawMeasuringLine(endObstacle + slopecalc + 60, rLDA - displacedThs, yDistances + 10, "LDA " + rLDA + "m");
+                drawMeasuringLine(endObstacle + slopecalc + 60, rLDA, yDistances + 10, "LDA " + rLDA + "m");
             } else {
                 // __|=|__<-______
                 drawMeasuringLine(endObstacle, slopecalc + 60, yDistances, "slope + strip end");
                 drawTORA_TODA_ASDA(endObstacle + slopecalc + 60, yDistances);
 
                 drawMeasuringLine(endObstacle, 300, yDistances + 10, "RESA + strip end");
-                drawMeasuringLine(endObstacle + 300, rLDA - displacedThs, yDistances + 10, "LDA " + rLDA + "m");
+                drawMeasuringLine(endObstacle + 300, rLDA , yDistances + 10, "LDA " + rLDA + "m");
             }
         } else {
-            int startObstacle = leftSpace + obstaclePosition.getDistLThresh();
+            int startObstacle = leftSpace + obstaclePosition.getDistLThresh() + displacedThs;
             
             if (leftRunway) {
                 // ______->__|=|__
                 drawTORA_TODA_ASDA(0, yDistances);
-                drawMeasuringLine(rTORA -displacedThs, slopecalc + 60, yDistances, "strip end + slope");
+                drawMeasuringLine(rTORA , slopecalc + 60, yDistances, "strip end + slope");
 
-                drawMeasuringLine(displacedThs, rLDA - displacedThs, yDistances + 10, "LDA " + rLDA + "m");
-                drawMeasuringLine(rLDA, 300, yDistances + 10, "strip end + RESA");
+                drawMeasuringLine(displacedThs, rLDA, yDistances + 10, "LDA " + rLDA + "m");
+                drawMeasuringLine(rLDA + displacedThs, 300, yDistances + 10, "strip end + RESA");
             } else {
                 // ______<-__|=|__
                 drawTORA_TODA_ASDA(leftSpace, yDistances);
-                drawMeasuringLine(leftSpace + rTORA - displacedThs, 300, yDistances, "blast protection");
+                drawMeasuringLine(leftSpace + rTORA, 300, yDistances, "blast protection");
 
                 drawMeasuringLine(leftSpace, rLDA, yDistances + 10, "LDA " + rLDA + "m");
-                drawMeasuringLine(leftSpace + rLDA, slopecalc + 60 - displacedThs, yDistances + 10, "strip end + slope");
+                drawMeasuringLine(leftSpace + rLDA, slopecalc + 60, yDistances + 10, "strip end + slope");
             }
 
             drawMeasuringLine(startObstacle, oLength, yObstacle, "Obstacle");
@@ -267,20 +267,19 @@ public abstract class RunwayView extends javafx.scene.canvas.Canvas {
         int rTORA = runway.getTora();
         int rTODA = runway.getToda();
         int rASDA = runway.getAsda();
-        int displacedThs = Math.max(originalRunways.getLogicalRunway1().getDisplacedThreshold(), originalRunways.getLogicalRunway2().getDisplacedThreshold());
 
 
-        drawMeasuringLine(x, rTORA - displacedThs, y, "TORA " + rTORA + "m");
+        drawMeasuringLine(x, rTORA, y, "TORA " + rTORA + "m");
 
         if (rTODA != rTORA) {
             drawMeasuringLine(x, rTODA, y - 10, "TODA " + rTODA + "m");
         } else {
-            gc.fillText("TODA " + rTODA + "m", scale_x(x + (rTODA  - displacedThs)/ 2) , scale_y(y - 10));
+            gc.fillText("TODA " + rTODA + "m", scale_x(x + rTODA  / 2) , scale_y(y - 10));
         }
         if (rASDA != rTORA && rASDA != rTODA) {
             drawMeasuringLine(x, rASDA, y - 20, "ASDA " + rASDA + "m");
         } else {
-            gc.fillText("ASDA " + rASDA + "m", scale_x(x + (rASDA - displacedThs)/ 2), scale_y(y - 20));
+            gc.fillText("ASDA " + rASDA + "m", scale_x(x + rASDA / 2), scale_y(y - 20));
         }
     }
 

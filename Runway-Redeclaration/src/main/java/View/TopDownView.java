@@ -12,7 +12,7 @@ public class TopDownView extends RunwayView {
     public TopDownView(Runway originalRunways, LogicalRunway revisedRunway, Position obstaclePosition, Obstacle obstacle, boolean rotateView) {
         super(originalRunways,revisedRunway, obstaclePosition,obstacle);
         this.rotateView = rotateView;
-        this.bearing = revisedRunway.getDegree();
+        this.bearing = originalRunways.getLogicalRunway1().getDegree();
     }
 
     /**
@@ -25,12 +25,12 @@ public class TopDownView extends RunwayView {
 
         // Clear the canvas
         gc.clearRect(0, 0, width, height);
+        drawBackground(gc);
 
         if (rotateView) {
             this.setRotate(bearing - 90);
             this.setScaleX(0.0089*bearing+0.2);
         }
-        drawBackground(gc);
         drawClearedAndGradedArea(gc, leftSpace);
 
         // Draw runway surface
@@ -45,6 +45,7 @@ public class TopDownView extends RunwayView {
         drawClearway(90);
 
         drawDisplacedThreshold(80);
+
 
     }
 
@@ -135,7 +136,7 @@ public class TopDownView extends RunwayView {
                  obstacle_x = obstaclePosition.getDistLThresh() + leftSpace + displacedThr;
             }else
             {
-                 obstacle_x = obstaclePosition.getDistLThresh() + leftSpace;
+                 obstacle_x = obstaclePosition.getDistLThresh() + leftSpace + displacedThr;
             }
 
 
@@ -154,7 +155,7 @@ public class TopDownView extends RunwayView {
             }
 
 
-            int obstacleLength = TORA - obstaclePosition.getDistRThresh() - obstaclePosition.getDistLThresh();
+            int obstacleLength = TORA - obstaclePosition.getDistRThresh() - obstaclePosition.getDistLThresh() - displacedThr;
 
             drawBrokenDownDistances(obstacleLength, 210, 110);
 
@@ -162,11 +163,11 @@ public class TopDownView extends RunwayView {
 
             gc.setFill(Color.RED);
             gc.setGlobalAlpha(0.5);
-            scaledFillRect(obstacle_x, obstacle_y - 10, TORA - obstaclePosition.getDistRThresh() - obstaclePosition.getDistLThresh(), 20);
+            scaledFillRect(obstacle_x, obstacle_y - 10, obstacleLength, 20);
             gc.setGlobalAlpha(1.0);
 
             gc.setFill(Color.BLACK);
-            scaledStrokeRect(obstacle_x, obstacle_y - 10, TORA - obstaclePosition.getDistRThresh() - obstaclePosition.getDistLThresh(), 20);
+            scaledStrokeRect(obstacle_x, obstacle_y - 10, obstacleLength, 20);
 
         } catch (NullPointerException e) {
             e.printStackTrace();

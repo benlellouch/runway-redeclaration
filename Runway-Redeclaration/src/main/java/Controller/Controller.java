@@ -33,6 +33,7 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
+
     // Injected Parameters for Airport Definition Window
     @FXML
     private TextField airportName;
@@ -103,6 +104,10 @@ public class Controller implements Initializable {
 
     @FXML
     private Button noAirportDefinedOK;
+    @FXML
+    private CheckBox orientationCheckBox;
+
+    private RevisedRunway revisedRunwayOnDisplay;
 
     //TODO make the views seperate fxml files so that we don't need this many containers
     @FXML
@@ -140,8 +145,8 @@ public class Controller implements Initializable {
         oppositePositionMap = generateOppositePositionMap();
         leftRight = generateLeftRight();
 
-        LogicalRunway lRunway09R = new LogicalRunway("09R",3660,3660,3660,3353);
-        LogicalRunway lRunway27L = new LogicalRunway("27L",3660,3660,3660,3660);
+        LogicalRunway lRunway09R = new LogicalRunway("08R",3660,3660,3660,3353);
+        LogicalRunway lRunway27L = new LogicalRunway("26L",3660,3660,3660,3660);
         Runway runway09R27L = new Runway(lRunway09R,lRunway27L);
 
         LogicalRunway lRunway09L = new LogicalRunway("09L", 3902,3902,3902,3595);
@@ -528,11 +533,12 @@ public class Controller implements Initializable {
         int rightTHRDistance = Integer.parseInt(rightThresholdDistance.getText());
         int centerLineDistance = Integer.parseInt(centreLineDistance.getText());
         if(centerLineDistance>=0){
-        Position positionOfObstacle = new Position(0,leftTHRDistance,rightTHRDistance);
+        Position positionOfObstacle = new Position(centerLineDistance,leftTHRDistance,rightTHRDistance);
         RevisedRunway revisedRunway = new RevisedRunway(runwayToRevise,obstacleOnRunway,positionOfObstacle);
         revisedRunwayText.setText(revisedRunway.getResults());
         oldRunwayText.setText(runwayToRevise.getResults());
         calculationBreakdown.setText(revisedRunway.getCalcBreakdown());
+        revisedRunwayOnDisplay = revisedRunway;
         drawRunway(revisedRunway,obstacleOnRunway,positionOfObstacle);
         }
         else {
@@ -643,6 +649,21 @@ public class Controller implements Initializable {
         }
     }
 
+    @FXML
+    private void updateLogicalRunwayView()
+    {
+        try {
+            if (revisedRunwayOnDisplay.getName().equals(runwayBox.getValue().getName())) {
+                calculateRevisedRunway();
+            }
+        }
+        catch (NullPointerException e)
+        {
+            System.out.println("No runway currently displayed.");
+        }
+
+    }
+
     public void drawRunway(RevisedRunway revisedRunway, Obstacle obstacle, Position position) {
         topDownViewContainer.getChildren().clear();
         sideOnViewContainer.getChildren().clear();
@@ -689,8 +710,10 @@ public class Controller implements Initializable {
 
         // Draw static elements: measuring line, take-off direction, compass
 
+        boolean rotateView = orientationCheckBox.isSelected();
+
         //TODO  very hacked together needs to change
-        TopDownView topDownView = new TopDownView(runway, revisedLRunway, position, obstacle, false);
+        TopDownView topDownView = new TopDownView(runway, revisedLRunway, position, obstacle, rotateView);
         topDownView.widthProperty().bind(topDownViewContainer.widthProperty());
         topDownView.heightProperty().bind(topDownViewContainer.heightProperty());
 
@@ -702,20 +725,21 @@ public class Controller implements Initializable {
         pane.getChildren().addAll(topDownView );
         topDownViewContainer.getChildren().add(pane);
 
-        TopDownView simTopDownView = new TopDownView(runway, revisedLRunway, position, obstacle, false);
+        TopDownView simTopDownView = new TopDownView(runway, revisedLRunway, position, obstacle, rotateView);
         simTopDownView.widthProperty().bind(simTopDownViewContainer.widthProperty());
         simTopDownView.heightProperty().bind(simTopDownViewContainer.heightProperty());
         simTopDownViewContainer.getChildren().add(simTopDownView);
 
-        SideOnView sideOnView = new SideOnView(runway, revisedLRunway, position, obstacle, false);
+        SideOnView sideOnView = new SideOnView(runway, revisedLRunway, position, obstacle, rotateView);
         sideOnView.widthProperty().bind(sideOnViewContainer.widthProperty());
         sideOnView.heightProperty().bind(sideOnViewContainer.heightProperty());
         sideOnViewContainer.getChildren().add(sideOnView);
 
-        SideOnView simSideOnView = new SideOnView(runway, revisedLRunway, position, obstacle, false);
+        SideOnView simSideOnView = new SideOnView(runway, revisedLRunway, position, obstacle, rotateView);
         simSideOnView.widthProperty().bind(simTopDownViewContainer.widthProperty());
         simSideOnView.heightProperty().bind(simTopDownViewContainer.heightProperty());
         simSideOnViewContainer.getChildren().add(simSideOnView);
+
 
 
         // Draw side on view
