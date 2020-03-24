@@ -27,7 +27,7 @@ test:
   stage: test
   script:
     - cd Runway-Redeclaration
-    - mvn -Dtest=CalculationsTest test
+    - mvn test
   artifacts:
     reports:
       junit:
