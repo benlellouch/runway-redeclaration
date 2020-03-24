@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.testfx.api.FxAssert;
 import org.testfx.api.FxToolkit;
@@ -27,6 +28,19 @@ import static org.junit.Assert.*;
 
         
 public class MainTest extends ApplicationTest{
+
+    @BeforeClass
+    public static void headless() {
+        System.setProperty("prism.verbose", "true"); // optional
+        System.setProperty("java.awt.headless", "true");
+        System.setProperty("testfx.robot", "glass");
+        System.setProperty("testfx.headless", "true");
+        System.setProperty("glass.platform", "Monocle");
+        System.setProperty("monocle.platform", "Headless");
+        System.setProperty("prism.order", "sw");
+        System.setProperty("prism.text", "t2k");
+        System.setProperty("testfx.setup.timeout", "2500");
+    }
 
     @Override
     public void start (Stage stage) throws Exception{
