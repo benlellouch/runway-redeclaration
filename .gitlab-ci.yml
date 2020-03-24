@@ -29,7 +29,7 @@ test:
   script:
     - cd Runway-Redeclaration
     - mvn -Dtest=CalculationsTest test
-    - mvn verify $MAVEN_CLI_OPTS -DargLine=\"$HEADLESS_TESTFX\"
+    - "mvn verify $MAVEN_CLI_OPTS -DargLine=\"$HEADLESS_TESTFX\""
   artifacts:
     reports:
       junit:
