@@ -224,10 +224,10 @@ public class Controller implements Initializable {
     @FXML
     private void defineAirport()
     {
-        String newAirportName = airportName.getText().replaceAll("\\s", "");
-        airportObservableList.add(new Airport(newAirportName));
+        String newAirportName = airportName.getText().trim().replaceAll("\\s", "");
         if(!newAirportName.isEmpty())
-        {   if(!airportObservableList.isEmpty()){
+        {   airportObservableList.add(new Airport(newAirportName));
+            if(!airportObservableList.isEmpty()){
             for (int i=0;i<airportObservableList.size()-1;i++){
                 if(airportObservableList.get(i).getName().equalsIgnoreCase(newAirportName)){
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -267,24 +267,24 @@ public class Controller implements Initializable {
     {
         //TODO add Error pop-up when fields are empty or malformed
         try {
-            if(!(runwayDegree.getValue().trim().equalsIgnoreCase("Degree"))&&!runwayPosition.getValue().trim().equalsIgnoreCase("Position")&&!airports.getValue().toString().trim().equalsIgnoreCase("Choose Airport")&&!todaLeft.getText().isEmpty()&&!todaRight.getText().isEmpty()&&!toraLeft.getText().isEmpty()&&!toraRight.getText().isEmpty()&&!asdaLeft.getText().isEmpty()&&!asdaRight.getText().isEmpty()&&!ldaLeft.getText().isEmpty()&&!ldaRight.getText().isEmpty()){
-                if(!(Integer.parseInt(todaLeft.getText())<0)&&!(Integer.parseInt(todaRight.getText())<0)&&!(Integer.parseInt(toraLeft.getText())<0)&&!(Integer.parseInt(toraRight.getText())<0)&&!(Integer.parseInt(asdaLeft.getText())<0)&&!(Integer.parseInt(asdaRight.getText())<0)&&!(Integer.parseInt(ldaLeft.getText())<0)&&!(Integer.parseInt(ldaRight.getText())<0)){
+            if(!(runwayDegree.getValue().trim().equalsIgnoreCase("Degree"))&&!runwayPosition.getValue().trim().equalsIgnoreCase("Position")&&!airports.getValue().toString().trim().equalsIgnoreCase("Choose Airport")&&!todaLeft.getText().trim().isEmpty()&&!todaRight.getText().trim().isEmpty()&&!toraLeft.getText().trim().isEmpty()&&!toraRight.getText().trim().isEmpty()&&!asdaLeft.getText().trim().isEmpty()&&!asdaRight.getText().trim().isEmpty()&&!ldaLeft.getText().trim().isEmpty()&&!ldaRight.getText().trim().isEmpty()){
+                if(!(Integer.parseInt(todaLeft.getText().trim())<0)&&!(Integer.parseInt(todaRight.getText().trim())<0)&&!(Integer.parseInt(toraLeft.getText().trim())<0)&&!(Integer.parseInt(toraRight.getText().trim())<0)&&!(Integer.parseInt(asdaLeft.getText().trim())<0)&&!(Integer.parseInt(asdaRight.getText().trim())<0)&&!(Integer.parseInt(ldaLeft.getText().trim())<0)&&!(Integer.parseInt(ldaRight.getText().trim())<0)){
                     Airport airport = airports.getValue();
 
                     String designatorLeft = runwayDegree.getValue() + runwayPosition.getValue();
                     String designatorRight = complementDesignatorText.getText();
 
-                    int todaLeft = Integer.parseInt(this.todaLeft.getText());
-                    int todaRight = Integer.parseInt(this.todaRight.getText());
+                    int todaLeft = Integer.parseInt(this.todaLeft.getText().trim());
+                    int todaRight = Integer.parseInt(this.todaRight.getText().trim());
 
-                    int toraLeft = Integer.parseInt(this.toraLeft.getText());
-                    int toraRight = Integer.parseInt(this.toraRight.getText());
+                    int toraLeft = Integer.parseInt(this.toraLeft.getText().trim());
+                    int toraRight = Integer.parseInt(this.toraRight.getText().trim());
 
-                    int asdaLeft = Integer.parseInt(this.asdaLeft.getText());
-                    int asdaRight = Integer.parseInt(this.asdaRight.getText());
+                    int asdaLeft = Integer.parseInt(this.asdaLeft.getText().trim());
+                    int asdaRight = Integer.parseInt(this.asdaRight.getText().trim());
 
-                    int ldaLeft = Integer.parseInt(this.ldaLeft.getText());
-                    int ldaRight = Integer.parseInt(this.ldaRight.getText());
+                    int ldaLeft = Integer.parseInt(this.ldaLeft.getText().trim());
+                    int ldaRight = Integer.parseInt(this.ldaRight.getText().trim());
                     if(todaLeft<toraLeft||todaLeft<ldaLeft||todaRight<toraRight||todaRight<ldaRight){
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setContentText("TODA values have to be greater than or equal to TORA and LDA");
@@ -354,27 +354,27 @@ public class Controller implements Initializable {
         //TODO create new Obstacle and add it to a List of Obstacles
         //TODO add Error pop-up when fields are empty
         try {
-            String newObstacleName = obstacleName.getText();
+            String newObstacleName = obstacleName.getText().trim();
 
-            if (newObstacleName.isEmpty() || obstacleHeight.getText().isEmpty()) {
+            if (newObstacleName.isEmpty() || obstacleHeight.getText().trim().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Input field empty");
                 alert.setContentText("Please fill in all input fields");
                 alert.showAndWait();
 
-            } else if (Integer.parseInt(obstacleHeight.getText()) < 1) {
+            } else if (Integer.parseInt(obstacleHeight.getText().trim()) < 1) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText("Please put a number greater than zero for Height");
                 alert.showAndWait();
 
             } else {
-                int newObstacleHeight = Integer.parseInt(obstacleHeight.getText());
+                int newObstacleHeight = Integer.parseInt(obstacleHeight.getText().trim());
                 Obstacle newObstacleCreated = new Obstacle(newObstacleName,newObstacleHeight);
                 obstacles.add(newObstacleCreated);
                 for (int i=0;i<obstacles.size()-1;i++){
                     if(obstacles.get(i).getName().equalsIgnoreCase(newObstacleName)&&obstacles.get(i).getHeight()==newObstacleHeight){
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setContentText("Duplicate alert: previous obstacle has been removed");
+                        alert.setContentText("Duplicate alert: Obstacle has not been added");
                         alert.showAndWait();
                         obstacles.remove(obstacles.size()-1);
                     }
@@ -456,15 +456,15 @@ public class Controller implements Initializable {
         Runway runwayToRevise = runwayBox.getValue();
         Obstacle obstacleOnRunway = obstacleBox.getValue();
 
-        if(airportMainBox.getValue().toString().trim().equalsIgnoreCase("Airport")||obstacleBox.getValue().toString().trim().equalsIgnoreCase("Obstacle")||runwayBox.getValue().toString().trim().equalsIgnoreCase("Runway")||logicalRunwayBox.getValue().toString().trim().equalsIgnoreCase("Logical Runway")||leftThresholdDistance.getText().isEmpty()||rightThresholdDistance.getText().isEmpty()||leftRightBox.getValue().trim().equalsIgnoreCase("L/R")||centreLineDistance.getText().isEmpty()){
+        if(airportMainBox.getValue().toString().trim().equalsIgnoreCase("Airport")||obstacleBox.getValue().toString().trim().equalsIgnoreCase("Obstacle")||runwayBox.getValue().toString().trim().equalsIgnoreCase("Runway")||logicalRunwayBox.getValue().toString().trim().equalsIgnoreCase("Logical Runway")||leftThresholdDistance.getText().trim().isEmpty()||rightThresholdDistance.getText().trim().isEmpty()||leftRightBox.getValue().trim().equalsIgnoreCase("L/R")||centreLineDistance.getText().trim().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("Please fill in all inputs");
             alert.showAndWait();
         }
         else{
-        int leftTHRDistance = Integer.parseInt(leftThresholdDistance.getText());
-        int rightTHRDistance = Integer.parseInt(rightThresholdDistance.getText());
-        int centerLineDistance = Integer.parseInt(centreLineDistance.getText());
+        int leftTHRDistance = Integer.parseInt(leftThresholdDistance.getText().trim());
+        int rightTHRDistance = Integer.parseInt(rightThresholdDistance.getText().trim());
+        int centerLineDistance = Integer.parseInt(centreLineDistance.getText().trim());
         if(centerLineDistance>=0){
         Position positionOfObstacle = new Position(0,leftTHRDistance,rightTHRDistance);
         RevisedRunway revisedRunway = new RevisedRunway(runwayToRevise,obstacleOnRunway,positionOfObstacle);

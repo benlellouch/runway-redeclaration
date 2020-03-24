@@ -1,4 +1,4 @@
-image: maven:latest
+image: maven:3-jdk-8
 
 stages:
   - build
@@ -7,6 +7,10 @@ stages:
 variables:
   MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  
+# before_script:
+#     - apt-get update
+#     - apt-get install -y openjfx
 
 cache:
   paths:
@@ -17,7 +21,7 @@ build:
   stage: build
   script:
     - cd Runway-Redeclaration
-    - mvn compile
+    - mvn compile 
 
 test:
   stage: test
@@ -28,3 +32,5 @@ test:
     reports:
       junit:
         - target/surefire-reports/TEST-*.xml
+  only:
+    - master
