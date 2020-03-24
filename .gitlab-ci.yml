@@ -29,7 +29,7 @@ test:
   script:
     - cd Runway-Redeclaration
     - mvn -Dtest=CalculationsTest test
-    - mvn -DargLine=\"$HEADLESS_TESTFX\"" verify
+    - mvn -DargLine=\"$HEADLESS_TESTFX\" verify
   artifacts:
     reports:
       junit:
