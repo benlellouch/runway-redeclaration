@@ -25,7 +25,7 @@ test:
   script:
     - cd Runway-Redeclaration
     - mvn test
-    - mvn test -f "pom-testfx.xml" -DargLine=\"$HEADLESS_MODE\"
+    - mvn test -f "pom-testfx.xml" -DargLine="$HEADLESS_MODE"
   artifacts:
     reports:
       junit:
