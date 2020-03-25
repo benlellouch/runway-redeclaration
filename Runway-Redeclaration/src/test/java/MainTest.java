@@ -26,8 +26,8 @@ import java.util.List;
 import static org.junit.Assert.*;
 
         
-public class MainTest extends ApplicationTest{
-
+public class MainTest extends ApplicationTest
+{
     @Override
     public void start (Stage stage) throws Exception{
         Parent mainNode = FXMLLoader.load(Main.class.getResource("/MainView.fxml"));
@@ -37,9 +37,13 @@ public class MainTest extends ApplicationTest{
     }
 
     @Before
-    public void setUp() throws Exception{
+    public void setUp() throws Exception {
         clickOn("#noAirportDefinedOK");
-        write("Heathrow");
+        // For some reason, when running this via Monocle, we need to open the window again since it can't
+        // see the window open after confirming the initial no airport message.
+        clickOn("File");
+        clickOn("Define New Airport");
+        clickOn("#airportName").write("Heathrow");
         clickOn("#airportDoneButton");
     }
 

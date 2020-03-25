@@ -28,8 +28,8 @@ test:
   stage: test
   script:
     - cd Runway-Redeclaration
-    - mvn -Dtest=CalculationsTest test
-    - "mvn verify $MAVEN_CLI_OPTS -DargLine=\"$HEADLESS_TESTFX\""
+    - mvn test
+    - mvn test -f "pom-testfx.xml" -DargLine=\"$HEADLESS_TESTFX\"
   artifacts:
     reports:
       junit:
