@@ -41,8 +41,8 @@ public class MainTest extends ApplicationTest
         clickOn("#noAirportDefinedOK");
         // For some reason, when running this via Monocle, we need to open the window again since it can't
         // see the window open after confirming the initial no airport message.
-        // clickOn("File");
-        // clickOn("Define New Airport");
+        clickOn("File");
+        clickOn("Define New Airport");
         clickOn("#airportName").write("Heathrow");
         clickOn("#airportDoneButton");
     }
