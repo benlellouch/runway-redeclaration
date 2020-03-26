@@ -97,13 +97,14 @@
             <version>4.0.15-alpha</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.testfx</groupId>
-            <artifactId>openjfx-monocle</artifactId>
-            <version>jdk-9+181</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+            <name>Dan-PC-releases</name>
+            <url>${env.MAVEN_REPO_URL}/artifactory/libs-release</url>
+        </repository>
+    </distributionManagement>
 
 </project>
