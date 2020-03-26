@@ -32,3 +32,14 @@ test:
         - Runway-Redeclaration/target/surefire-reports/TEST-*.xml
   only:
     - master
+    
+deploy:
+  stage: deploy
+  tags: deploy
+  script:
+    - cd Runway-Redeclaration
+    - mvn deploy
+  only:
+    - master
+    variables:
+        - $CI_COMMIT_TITLE =~ /^[Rr]elease:.*$/
