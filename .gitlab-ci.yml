@@ -35,7 +35,8 @@ test:
     
 deploy:
   stage: deploy
-  tags: deploy
+  tags: 
+    - deploy
   script:
     - cd Runway-Redeclaration
     - mvn deploy
