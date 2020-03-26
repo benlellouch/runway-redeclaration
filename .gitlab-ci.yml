@@ -6,7 +6,7 @@ stages:
   - deploy
   
 variables:
-  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
+  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
   HEADLESS_MODE: "-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dglass.platform=Monocle -Dmonocle.platform=Headless -Dprism.order=sw -Dprism.text=t2k -Dtestfx.setup.timeout=2500 -Dprism.verbose=true"
 
@@ -19,13 +19,13 @@ build:
   stage: build
   script:
     - cd Runway-Redeclaration
-    - mvn compile 
+    - mvn $MAVEN_CLI_OPTS compile 
 
 test:
   stage: test
   script:
     - cd Runway-Redeclaration
-    - mvn test
+    - mvn $MAVEN_CLI_OPTS test
     - mvn test -f "pom-testfx.xml" -DargLine="$HEADLESS_MODE"
   artifacts:
     reports:
@@ -40,7 +40,7 @@ deploy:
     - release
   script:
     - cd Runway-Redeclaration
-    - mvn deploy
+    - mvn $MAVEN_CLI_OPTS deploy
   only:
     refs:
         - master
