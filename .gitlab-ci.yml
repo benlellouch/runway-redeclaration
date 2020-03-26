@@ -34,7 +34,8 @@ test:
     - master
     
 deploy:
-  stage: deploy
+  stage: 
+    - deploy
   tags: 
     - deploy
   script:
