@@ -103,7 +103,7 @@
         <repository>
             <id>central</id>
             <name>Dan-PC-releases</name>
-            <url>${env.MAVEN_REPO_URL}/artifactory/libs-release</url>
+            <url>${env.MAVEN_REPO_URL}/artifactory/libs-release-local</url>
         </repository>
     </distributionManagement>
 
