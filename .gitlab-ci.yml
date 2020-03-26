@@ -6,7 +6,7 @@ stages:
   - deploy
   
 variables:
-  MAVEN_CLI_OPTS: "-s.m2/settings.xml --batch-mode"
+  MAVEN_CLI_OPTS: "-s.m2/settings.xml"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
   HEADLESS_MODE: "-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dglass.platform=Monocle -Dmonocle.platform=Headless -Dprism.order=sw -Dprism.text=t2k -Dtestfx.setup.timeout=2500 -Dprism.verbose=true"
 
