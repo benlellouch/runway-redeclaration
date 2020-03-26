@@ -3,6 +3,7 @@ image: maven:3-jdk-8
 stages:
   - build
   - test
+  - deploy
   
 variables:
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
@@ -34,8 +35,7 @@ test:
     - master
     
 deploy:
-  stage: 
-    - deploy
+  stage: deploy
   tags: 
     - deploy
   script:
