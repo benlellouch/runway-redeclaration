@@ -40,6 +40,7 @@ deploy:
     - cd Runway-Redeclaration
     - mvn deploy
   only:
-    - master
+    refs:
+        - master
     variables:
         - $CI_COMMIT_TITLE =~ /^[Rr]elease:.*$/
