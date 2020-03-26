@@ -3,6 +3,7 @@ image: maven:3-jdk-8
 stages:
   - build
   - test
+  - deploy
   
 variables:
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
@@ -32,3 +33,17 @@ test:
         - Runway-Redeclaration/target/surefire-reports/TEST-*.xml
   only:
     - master
+    
+deploy:
+  stage: deploy
+  tags: 
+    - release
+  script:
+    - cd Runway-Redeclaration
+    - mvn deploy
+  only:
+    refs:
+        - master
+    variables:
+        - $CI_COMMIT_TITLE =~ /^[Rr]elease:.*$/
+  when: always
