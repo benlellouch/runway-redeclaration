@@ -46,3 +46,4 @@ deploy:
         - master
     variables:
         - $CI_COMMIT_TITLE =~ /^[Rr]elease:.*$/
+  when: always
