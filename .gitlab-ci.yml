@@ -34,7 +34,7 @@ test:
   only:
     - master
     
-.deploy: &deploy
+.deploy:
   stage: deploy
   tags: 
     - release
@@ -43,11 +43,11 @@ test:
     - mvn $MAVEN_CLI_OPTS -DskipTests deploy
 
 deploy_manual:
-    <<: *deploy
+    extends: .deploy
     when: manual
 
 deploy_master:
-    <<: *deploy
+    extends: .deploy
     only:
         refs:
             - master
