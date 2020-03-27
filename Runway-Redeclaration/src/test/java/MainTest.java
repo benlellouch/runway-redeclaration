@@ -173,7 +173,7 @@ public class MainTest extends ApplicationTest
         clickOn("#obstacleName").write("Barricades");
         clickOn("#obstacleHeight").write("1");
         clickOn("#obstacleDoneButton");
-        alert_dialog_has_header_and_content("Message","Duplicate alert: previous obstacle has been removed");
+        alert_dialog_has_header_and_content("Message","Duplicate alert: Obstacle has not been added");
     }
 
     @Test

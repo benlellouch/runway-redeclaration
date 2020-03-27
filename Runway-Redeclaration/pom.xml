@@ -12,7 +12,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>Runway-Redeclaration</artifactId>
-    <version>1.0</version>
+    <version>${env.VERSION}</version>
     <build>
         <plugins>
             <plugin>
