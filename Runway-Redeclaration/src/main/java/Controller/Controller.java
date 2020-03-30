@@ -436,7 +436,7 @@ public class Controller implements Initializable {
 
             } else {
                 int newObstacleHeight = Integer.parseInt(obstacleHeight.getText().trim());
-                Obstacle newObstacleCreated = new Obstacle(newObstacleName,newObstacleHeight);
+                Obstacle newObstacleCreated = new Obstacle(newObstacleName,newObstacleHeight,1);
                 obstacles.add(newObstacleCreated);
                 for (int i=0;i<obstacles.size()-1;i++){
                     if(obstacles.get(i).getName().equalsIgnoreCase(newObstacleName)&&obstacles.get(i).getHeight()==newObstacleHeight){
@@ -464,10 +464,10 @@ public class Controller implements Initializable {
      */
     private void populateObstacleList()
     {
-        obstacles.add(new Obstacle("Broken Down Rover Vehicle",2));
-        obstacles.add(new Obstacle("Barricades",1));
-        obstacles.add(new Obstacle("Lighting Pole",5));
-        obstacles.add(new Obstacle("Broken Down Aircraft",19));
+        obstacles.add(new Obstacle("Broken Down Rover Vehicle",2,1));
+        obstacles.add(new Obstacle("Barricades",1,1));
+        obstacles.add(new Obstacle("Lighting Pole",5,1));
+        obstacles.add(new Obstacle("Broken Down Aircraft",19,1));
     }
 
     /**
