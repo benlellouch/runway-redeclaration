@@ -3,14 +3,12 @@ image: maven:3-jdk-8
 stages:
   - build
   - test
+  - deploy
   
 variables:
-  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+  MAVEN_CLI_OPTS: "-s.m2/settings.xml"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-  
-# before_script:
-#     - apt-get update
-#     - apt-get install -y openjfx
+  HEADLESS_MODE: "-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dglass.platform=Monocle -Dmonocle.platform=Headless -Dprism.order=sw -Dprism.text=t2k -Dtestfx.setup.timeout=2500 -Dprism.verbose=true"
 
 cache:
   paths:
@@ -21,16 +19,37 @@ build:
   stage: build
   script:
     - cd Runway-Redeclaration
-    - mvn compile 
+    - mvn $MAVEN_CLI_OPTS -DskipTests compile 
 
 test:
   stage: test
   script:
     - cd Runway-Redeclaration
-    - mvn -Dtest=CalculationsTest test
+    - mvn $MAVEN_CLI_OPTS test
+    - mvn test -f "pom-testfx.xml" -DargLine="$HEADLESS_MODE"
   artifacts:
     reports:
       junit:
-        - target/surefire-reports/TEST-*.xml
+        - Runway-Redeclaration/target/surefire-reports/TEST-*.xml
   only:
     - master
+    
+.deploy:
+  stage: deploy
+  tags: 
+    - release
+  script:
+    - cd Runway-Redeclaration
+    - mvn $MAVEN_CLI_OPTS -DskipTests deploy
+
+deploy_manual:
+    extends: .deploy
+    when: manual
+
+deploy_master:
+    extends: .deploy
+    only:
+        refs:
+            - master
+        variables:
+            - $CI_COMMIT_TITLE =~ /^[Rr]elease:.*$/

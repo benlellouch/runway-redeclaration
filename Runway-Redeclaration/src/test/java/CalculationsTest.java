@@ -3,7 +3,7 @@ import Model.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class revisedRunwayTest {
+public class CalculationsTest {
 
     LogicalRunway lRunway09R = new LogicalRunway("09R",3660,3660,3660,3353);
     LogicalRunway lRunway27L = new LogicalRunway("27L",3660,3660,3660,3660);
