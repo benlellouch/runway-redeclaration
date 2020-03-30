@@ -3,7 +3,7 @@ import Model.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class revisedRunwayTest {
+public class CalculationsTest {
 
     LogicalRunway lRunway09R = new LogicalRunway("09R",3660,3660,3660,3353);
     LogicalRunway lRunway27L = new LogicalRunway("27L",3660,3660,3660,3660);
@@ -20,10 +20,10 @@ public class revisedRunwayTest {
         Position position = new Position(0,-50,3646);
         RevisedRunway revisedRunway = new RevisedRunway(runway09L27R, obstacle,position);
 
-        assertEquals(3345,revisedRunway.getLogicalRunway1().getTora());
-        assertEquals(3345,revisedRunway.getLogicalRunway1().getToda());
-        assertEquals(3345,revisedRunway.getLogicalRunway1().getAsda());
-        assertEquals(2985,revisedRunway.getLogicalRunway1().getLda());
+        assertEquals(3346,revisedRunway.getLogicalRunway1().getTora());
+        assertEquals(3346,revisedRunway.getLogicalRunway1().getToda());
+        assertEquals(3346,revisedRunway.getLogicalRunway1().getAsda());
+        assertEquals(2986,revisedRunway.getLogicalRunway1().getLda());
 
         assertEquals(2986,revisedRunway.getLogicalRunway2().getTora());
         assertEquals(2986,revisedRunway.getLogicalRunway2().getToda());
@@ -80,9 +80,9 @@ public class revisedRunwayTest {
         assertEquals(2793,revisedRunway.getLogicalRunway1().getAsda());
         assertEquals(3246,revisedRunway.getLogicalRunway1().getLda());
 
-        assertEquals( 3534,revisedRunway.getLogicalRunway2().getTora());
-        assertEquals( 3612,revisedRunway.getLogicalRunway2().getToda());
-        assertEquals(3534,revisedRunway.getLogicalRunway2().getAsda());
-        assertEquals(2774,revisedRunway.getLogicalRunway2().getLda());
+        assertEquals( 3535,revisedRunway.getLogicalRunway2().getTora());
+        assertEquals( 3613,revisedRunway.getLogicalRunway2().getToda());
+        assertEquals(3535,revisedRunway.getLogicalRunway2().getAsda());
+        assertEquals(2775,revisedRunway.getLogicalRunway2().getLda());
     }
 }
