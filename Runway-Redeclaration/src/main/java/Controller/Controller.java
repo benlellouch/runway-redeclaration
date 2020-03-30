@@ -9,20 +9,26 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -83,6 +89,8 @@ public class Controller implements Initializable {
     private Text oldRunwayText;
     @FXML
     private Label calculationBreakdown;
+    @FXML
+    private Text notificationsLog;
 
 
 
@@ -124,6 +132,8 @@ public class Controller implements Initializable {
     private HashMap<String,String> oppositePositionMap;
     private ObservableList<Obstacle> obstacles;
     private ObservableList<String> leftRight;
+    private StringBuilder notificationsString = new StringBuilder();
+    private Image tick = new Image("icons/smalltick.png", true);
 
 
 
@@ -298,7 +308,19 @@ public class Controller implements Initializable {
     @FXML
     private void defineAirport()
     {
+        Notifications airportAddedNotification;
         String newAirportName = airportName.getText().trim().replaceAll("\\s", "");
+        airportObservableList.add(new Airport(newAirportName));
+//        Image image = new Image("icons/smalltick.png", true);
+
+//        airportAddedNotification =
+//                Notifications.create()
+//                .title("Airport Added")
+//                .text("Airport: " + newAirportName + " has been added")
+//                .hideAfter(Duration.seconds(3))
+//                        .graphic(new ImageView(image))
+//                .position(Pos.BOTTOM_RIGHT);
+
         if(!newAirportName.isEmpty())
         {   airportObservableList.add(new Airport(newAirportName));
             if(!airportObservableList.isEmpty()){
@@ -313,10 +335,21 @@ public class Controller implements Initializable {
             //airportObservableList.add(new Airport(newAirportName));
             Stage stage = (Stage) airportDoneButton.getScene().getWindow();
             stage.close();
+            airportAddedNotification =
+                    Notifications.create()
+                            .title("Airport Added")
+                            .text("Airport: " + newAirportName + " has been added")
+                            .hideAfter(Duration.seconds(3))
+                            .graphic(new ImageView(tick))
+                            .position(Pos.BOTTOM_RIGHT);
+            airportAddedNotification.show();
+            notificationsString.append("Airport: ").append(newAirportName).append(" has been added").append(" (" + Time.valueOf(LocalTime.now()) + ")").append("\n");
+            notificationsLog.setText(notificationsString.toString());
         }else{
             airportObservableList.add(new Airport(newAirportName));
             Stage stage = (Stage) airportDoneButton.getScene().getWindow();
             stage.close();
+
         }
         }
         else
@@ -341,6 +374,7 @@ public class Controller implements Initializable {
     {
         //TODO add Error pop-up when fields are empty or malformed
         try {
+            Notifications runwayAddedNotification;
             if(!(runwayDegree.getValue().trim().equalsIgnoreCase("Degree"))&&!runwayPosition.getValue().trim().equalsIgnoreCase("Position")&&!airports.getValue().toString().trim().equalsIgnoreCase("Choose Airport")&&!todaLeft.getText().trim().isEmpty()&&!todaRight.getText().trim().isEmpty()&&!toraLeft.getText().trim().isEmpty()&&!toraRight.getText().trim().isEmpty()&&!asdaLeft.getText().trim().isEmpty()&&!asdaRight.getText().trim().isEmpty()&&!ldaLeft.getText().trim().isEmpty()&&!ldaRight.getText().trim().isEmpty()){
                 if(!(Integer.parseInt(todaLeft.getText().trim())<0)&&!(Integer.parseInt(todaRight.getText().trim())<0)&&!(Integer.parseInt(toraLeft.getText().trim())<0)&&!(Integer.parseInt(toraRight.getText().trim())<0)&&!(Integer.parseInt(asdaLeft.getText().trim())<0)&&!(Integer.parseInt(asdaRight.getText().trim())<0)&&!(Integer.parseInt(ldaLeft.getText().trim())<0)&&!(Integer.parseInt(ldaRight.getText().trim())<0)){
                     Airport airport = airports.getValue();
@@ -377,6 +411,7 @@ public class Controller implements Initializable {
                         LogicalRunway logicalRunway2 = new LogicalRunway(designatorRight, toraRight, todaRight, asdaRight, ldaRight);
                         Runway run = new Runway(logicalRunway1, logicalRunway2);
                         airport.addRunway(run);
+
                         for (int i = 0; i < airport.getRunways().size() - 1; i++) {
                             if (airport.getRunways().get(i).getName().equals(run.getName())) {
                                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -389,6 +424,16 @@ public class Controller implements Initializable {
 
                         Stage stage = (Stage) runwayDoneButton.getScene().getWindow();
                         stage.close();
+                        notificationsString.append("Runway: ").append(run.getName()).append(" has been added to Airport: " + airport.getName()).append(" (" + Time.valueOf(LocalTime.now()) + ")").append("\n");
+                        notificationsLog.setText(notificationsString.toString());
+                        runwayAddedNotification =
+                                Notifications.create()
+                                        .title("Runway Added")
+                                        .text("Runway: " + run.getName() + " has been added to Airport: " +airport.getName())
+                                        .hideAfter(Duration.seconds(3))
+                                        .graphic(new ImageView(tick))
+                                        .position(Pos.BOTTOM_RIGHT);
+                        runwayAddedNotification.show();
                     }
                     }
                 else {
@@ -428,6 +473,7 @@ public class Controller implements Initializable {
         //TODO create new Obstacle and add it to a List of Obstacles
         //TODO add Error pop-up when fields are empty
         try {
+            Notifications obstacleDefinedNotification;
             String newObstacleName = obstacleName.getText().trim();
 
             if (newObstacleName.isEmpty() || obstacleHeight.getText().trim().isEmpty()) {
@@ -445,6 +491,7 @@ public class Controller implements Initializable {
                 int newObstacleHeight = Integer.parseInt(obstacleHeight.getText().trim());
                 Obstacle newObstacleCreated = new Obstacle(newObstacleName,newObstacleHeight,1);
                 obstacles.add(newObstacleCreated);
+
                 for (int i=0;i<obstacles.size()-1;i++){
                     if(obstacles.get(i).getName().equalsIgnoreCase(newObstacleName)&&obstacles.get(i).getHeight()==newObstacleHeight){
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -456,7 +503,16 @@ public class Controller implements Initializable {
                 //obstacles.add(newObstacleCreated);
                 Stage stage = (Stage) obstacleDoneButton.getScene().getWindow();
                 stage.close();
-
+                obstacleDefinedNotification =
+                        Notifications.create()
+                                .title("Obstacle Added")
+                                .text("Obstacle: " + newObstacleCreated.getName() + " " + newObstacleCreated.getHeight() + "m has been added")
+                                .hideAfter(Duration.seconds(3))
+                                .graphic(new ImageView(tick))
+                                .position(Pos.BOTTOM_RIGHT);
+                obstacleDefinedNotification.show();
+                notificationsString.append("Obstacle: ").append(newObstacleCreated.getName()).append(" has been added").append(" (" + Time.valueOf(LocalTime.now()) + ")").append("\n");
+                notificationsLog.setText(notificationsString.toString());
 
             }
         } catch (NumberFormatException e) {
@@ -526,9 +582,11 @@ public class Controller implements Initializable {
 
     @FXML
     private void calculateRevisedRunway()
-    {   try{
+    {
+        try{
         Runway runwayToRevise = runwayBox.getValue();
         Obstacle obstacleOnRunway = obstacleBox.getValue();
+        Notifications revisedNotification;
 
         if(airportMainBox.getValue().toString().trim().equalsIgnoreCase("Airport")||obstacleBox.getValue().toString().trim().equalsIgnoreCase("Obstacle")||runwayBox.getValue().toString().trim().equalsIgnoreCase("Runway")||logicalRunwayBox.getValue().toString().trim().equalsIgnoreCase("Logical Runway")||leftThresholdDistance.getText().trim().isEmpty()||rightThresholdDistance.getText().trim().isEmpty()||leftRightBox.getValue().trim().equalsIgnoreCase("L/R")||centreLineDistance.getText().trim().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -545,6 +603,17 @@ public class Controller implements Initializable {
         revisedRunwayText.setText(revisedRunway.getResults());
         oldRunwayText.setText(runwayToRevise.getResults());
         calculationBreakdown.setText(revisedRunway.getCalcBreakdown());
+            revisedNotification =
+                    Notifications.create()
+                            .title("Runway Revised")
+                            .text("Runway: " + runwayToRevise.getName() + " at Airport: " + airportMainBox.getValue().toString().trim() + " has been revised")
+                            .hideAfter(Duration.seconds(3))
+                            .graphic(new ImageView(tick))
+                            .position(Pos.BOTTOM_RIGHT);
+            revisedNotification.show();
+
+            notificationsString.append("Runway: ").append(runwayToRevise.getName()).append(" at Airport: " + airportMainBox.getValue().toString().trim() + " has been revised").append(" (" + Time.valueOf(LocalTime.now()) + ")").append("\n");
+            notificationsLog.setText(notificationsString.toString());
         revisedRunwayOnDisplay = revisedRunway;
         drawRunway(revisedRunway,obstacleOnRunway,positionOfObstacle);
         }
