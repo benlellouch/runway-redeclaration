@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.*;
+import XMLParsing.ModelFactory;
 import View.SideOnView;
 import View.TopDownView;
 import javafx.collections.FXCollections;
@@ -254,39 +255,40 @@ public class Controller implements Initializable {
 
     }
 
-//    @FXML
-//    private void openImportFile(){
-//
-//        FileChooser fileChooser = new FileChooser();
-//        File file = fileChooser.showOpenDialog(null);
-//        if(file != null) {
-//            System.out.println(file.getAbsolutePath());
-//            ModelFactory mf = new ModelFactory(file);
-//
-//            for(Airport a : mf.getAirports()){
-//                boolean duplicate = false;
-//                for(Airport as : airportObservableList){
-//                    if (a.getName().equals(as.getName()))
-//                        duplicate = true;
-//                }
-//                if(!duplicate)
-//                    airportObservableList.add(a);
-//            }
-//
-//            for(Obstacle o : mf.getObstacles()){
-//                boolean dup = false;
-//                for(Obstacle os : obstacles){
-//                    if(o.getName().equals(os.getName()) && o.getHeight()==os.getHeight())
-//                        dup = true;
-//                }
-//                if(!dup)
-//                    obstacles.add(o);
-//            }
-//
-//            airportObservableList.addAll(mf.getAirports());
-//            obstacles.addAll(mf.getObstacles());
-//        }
-//    }
+    @FXML
+    private void openImportFile(){
+
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(null);
+        if(file != null) {
+            System.out.println(file.getAbsolutePath());
+            ModelFactory mf = new ModelFactory(file);
+
+            for(Airport a : mf.getAirports()){
+                boolean duplicate = false;
+                for(Airport as : airportObservableList){
+                    if (a.getName().equals(as.getName()))
+                        duplicate = true;
+                }
+                if(!duplicate)
+                    airportObservableList.add(a);
+            }
+
+            for(Obstacle o : mf.getObstacles()){
+                boolean dup = false;
+                for(Obstacle os : obstacles){
+                    if(o.getName().equals(os.getName()) && o.getHeight()==os.getHeight())
+                        dup = true;
+                }
+                if(!dup)
+                    obstacles.add(o);
+            }
+
+            airportObservableList.addAll(mf.getAirports());
+            obstacles.addAll(mf.getObstacles());
+        }
+    }
+
 
     /**
      * Reads the Textfields in AirportDefinition.fxml,

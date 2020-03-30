@@ -14,6 +14,8 @@
                 <MenuItem onAction="#openRunwayDefinition" text="Define New Runway" />
                 <!-- Opens Obstacle Definition Window -->
                 <MenuItem onAction="#openObstacleDefinition" text="Define New Obstacle" />
+                <!-- Opens Import File Window-->
+                <MenuItem onAction="#openImportFile" text="Import XML File" />
             </Menu>
         </MenuBar>
     </top>

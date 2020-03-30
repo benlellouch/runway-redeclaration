@@ -10,6 +10,7 @@ variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
   HEADLESS_MODE: "-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dglass.platform=Monocle -Dmonocle.platform=Headless -Dprism.order=sw -Dprism.text=t2k -Dtestfx.setup.timeout=2500 -Dprism.verbose=true"
 
+
 cache:
   paths:
     - .m2/repository/
@@ -19,7 +20,9 @@ build:
   stage: build
   script:
     - cd Runway-Redeclaration
+
     - mvn $MAVEN_CLI_OPTS -DskipTests compile 
+
 
 test:
   stage: test

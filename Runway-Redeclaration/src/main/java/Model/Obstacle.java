@@ -28,4 +28,5 @@ public class Obstacle {
     public int getWidth() {
         return width;
     }
+
 }
