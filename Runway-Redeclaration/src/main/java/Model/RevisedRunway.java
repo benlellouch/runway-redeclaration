@@ -42,15 +42,17 @@ public class RevisedRunway extends Runway
         int distanceFromThreshold = (runway.getDirection() == Direction.LEFT) ?
                 position.getDistLThresh() : position.getDistRThresh();
         boolean towardsObstacle = runway.getDirection() == obstacleSide;
+        int obstacleLength = runway.getTora() - position.getDistRThresh() - position.getDistLThresh() - runway.getDisplacedThreshold();
+
 
         calcBreakdown.append("Runway ").append(runway.getName()).append(":\n");
 
         int lda = towardsObstacle ?
                 calculateRevisedLDA(distanceFromThreshold) :
-                calculateRevisedLDA(runway.getLda(), distanceFromThreshold);
+                calculateRevisedLDA(runway.getLda(), distanceFromThreshold, obstacleLength);
         int tora = towardsObstacle ?
                 calculateRevisedTORA(distanceFromThreshold, runway.getDisplacedThreshold()) :
-                calculateRevisedTORA(runway.getTora(), distanceFromThreshold, runway.getDisplacedThreshold());
+                calculateRevisedTORA(runway.getTora(), distanceFromThreshold, runway.getDisplacedThreshold(), obstacleLength);
 
         int toda = tora;
         int asda = tora;
@@ -81,7 +83,7 @@ public class RevisedRunway extends Runway
         return new LogicalRunway(runway.getName(), tora, toda, asda, lda);
     }
 
-    private int calculateRevisedLDA(int lda, int distanceFromThreshold)
+    private int calculateRevisedLDA(int lda, int distanceFromThreshold, int obstacleLength)
     {
         int tempThreshold;
         int displacement;
@@ -115,7 +117,7 @@ public class RevisedRunway extends Runway
             calcBreakdown.append("Blast Allowance (").append(BLAST_ALLOWANCE);
         }
 
-        int result = lda - distanceFromThreshold - displacement;
+        int result = lda - distanceFromThreshold - displacement - obstacleLength;
 
         calcBreakdown.append(") = ").append(result).append("\n");
 
@@ -160,12 +162,12 @@ public class RevisedRunway extends Runway
         calcBreakdown.append(tempThreshold).append(") - Strip End (").append(STRIP_END)
                 .append(") = ").append(result).append("\n");
 
-        return distanceFromThreshold + displacedThreshold - tempThreshold - STRIP_END;
+        return result;
     }
 
-    private int calculateRevisedTORA(int tora, int distanceFromThreshold, int displacedThreshold)
+    private int calculateRevisedTORA(int tora, int distanceFromThreshold, int displacedThreshold, int obstacleLength)
     {
-        int result = tora - BLAST_ALLOWANCE - distanceFromThreshold - displacedThreshold;
+        int result = tora - BLAST_ALLOWANCE - distanceFromThreshold - displacedThreshold - obstacleLength;
 
         calcBreakdown.append("TORA:\nOriginal TORA (").append(tora)
                 .append(") - Blast Allowance (").append(BLAST_ALLOWANCE)
