@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
+<BorderPane prefHeight="1080.0" prefWidth="1920.0" stylesheets="style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
     <top>
         <MenuBar>
             <Menu text="File">
@@ -14,82 +14,82 @@
                 <MenuItem onAction="#openRunwayDefinition" text="Define New Runway" />
                 <!-- Opens Obstacle Definition Window -->
                 <MenuItem onAction="#openObstacleDefinition" text="Define New Obstacle" />
+                <!-- Opens Import File Window-->
+                <MenuItem onAction="#openImportFile" text="Import XML File" />
             </Menu>
         </MenuBar>
     </top>
     <center>
         <HBox>
-            <GridPane hgap="10.0" prefHeight="771.0" prefWidth="659.0" vgap="4.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
-                <Text text="Airport" GridPane.rowIndex="0" />
-                <ComboBox fx:id="airportMainBox" onAction="#updateRunwayBox" promptText="Airport" GridPane.rowIndex="1" />
+            <VBox prefHeight="200.0" prefWidth="100.0">
+                <GridPane hgap="10.0" prefHeight="366.0" prefWidth="402.0" vgap="4.0">
+                    <Text text="Airport" GridPane.rowIndex="0" />
+                    <ComboBox fx:id="airportMainBox" onAction="#updateRunwayBox" promptText="Airport" GridPane.rowIndex="1" />
 
 
-                <Text text="Runway" GridPane.rowIndex="3" />
-                <ComboBox fx:id="runwayBox" onAction="#updateLogicalRunwayBox" promptText="Runway" GridPane.rowIndex="4" />
+                    <Text text="Runway" GridPane.rowIndex="3" />
+                    <ComboBox fx:id="runwayBox" onAction="#updateLogicalRunwayBox" promptText="Runway" GridPane.rowIndex="4" />
 
 
-                <Text text="Logical Runway" GridPane.rowIndex="6" />
-                <ComboBox fx:id="logicalRunwayBox" promptText="Logical Runway" GridPane.rowIndex="7" />
+                    <Text text="Logical Runway" GridPane.rowIndex="6" />
+                    <ComboBox fx:id="logicalRunwayBox" onAction="#updateLogicalRunwayView" promptText="Logical Runway" GridPane.rowIndex="7" />
 
-                <Text text="Distance from Left Threshold" GridPane.rowIndex="9" />
-                <TextField fx:id="leftThresholdDistance" GridPane.rowIndex="10" />
+                    <Text text="Distance from Left Threshold" GridPane.rowIndex="9" />
+                    <TextField fx:id="leftThresholdDistance" GridPane.rowIndex="10" />
 
-                <Text text="Distance from Right Threshold" GridPane.rowIndex="12" />
-                <TextField fx:id="rightThresholdDistance" GridPane.rowIndex="13" />
+                    <Text text="Distance from Right Threshold" GridPane.rowIndex="12" />
+                    <TextField fx:id="rightThresholdDistance" GridPane.rowIndex="13" />
 
-            <Text text="Left / Right from Centre Line" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <ComboBox fx:id="leftRightBox" promptText="L / R " GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Text text="Left / Right from Centre Line" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <ComboBox fx:id="leftRightBox" promptText="L / R " GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-            <Text text="Distance from Centre Line" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <TextField fx:id="centreLineDistance" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                    <Text text="Distance from Centre Line" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                    <TextField fx:id="centreLineDistance" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
+                    <Button onAction="#calculateRevisedRunway" text="Calculate" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                    <ComboBox fx:id="obstacleBox" prefWidth="150.0" promptText="Obstacle" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Obstacle" GridPane.columnIndex="1" />
+               <CheckBox fx:id="orientationCheckBox" onAction="#updateLogicalRunwayView" mnemonicParsing="false" text="Rotate to match orientation" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                </GridPane>
+                <TabPane fx:id="pane" prefHeight="771.0" prefWidth="542.0">
+                    <tabs>
+                        <Tab fx:id="resultsTab" closable="false" text="Results">
+                            <SplitPane dividerPositions="0.5">
+                                <VBox>
+                                    <Text text="Original Runway" />
+                                    <Text fx:id="oldRunwayText" />
+                                </VBox>
+                                <VBox>
+                                    <Text text="Revised Runway" />
+                                    <Text fx:id="revisedRunwayText" />
+                                </VBox>
+                            </SplitPane>
 
-                <Button onAction="#calculateRevisedRunway" text="Calculate" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                <ComboBox fx:id="obstacleBox" prefWidth="150.0" promptText="Obstacle" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Obstacle" GridPane.columnIndex="1" />
-            <columnConstraints>
-               <ColumnConstraints />
-               <ColumnConstraints />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-            </rowConstraints>
-            </GridPane>
-            <TabPane fx:id="pane" prefHeight="771.0" prefWidth="542.0" BorderPane.alignment="CENTER">
-                <tabs>
-                    <Tab fx:id="resultsTab" closable="false" text="Results">
-                        <SplitPane dividerPositions="0.5">
-                            <VBox>
-                                <Text text="Old Runway" />
-                                <Text fx:id="oldRunwayText" />
-                            </VBox>
-                            <VBox>
-                                <Text text="Revised Runway" />
-                                <Text fx:id="revisedRunwayText" />
-                            </VBox>
-                        </SplitPane>
-                    </Tab>
-                    <Tab fx:id="calculationBreakdownTab" closable="false" text="Calculation Breakdown">
-                        <Pane>
-                            <VBox prefWidth="542.0">
-                                <Label fx:id="calculationBreakdown" wrapText="true" />
-                            </VBox>
-                        </Pane>
-                    </Tab>
-                </tabs>
+                        </Tab>
+                        <Tab fx:id="calculationBreakdownTab" closable="false" text="Calculation Breakdown">
+                            <Pane>
+                                <VBox prefWidth="542.0">
+                                    <Label fx:id="calculationBreakdown" wrapText="true" />
+                                </VBox>
+                            </Pane>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+            </VBox>
+            <TabPane prefHeight="1056.0" prefWidth="1531.0" tabClosingPolicy="UNAVAILABLE">
+                <Tab text="Top-down view">
+                    <FlowPane fx:id="topDownViewContainer" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="1200" />
+                </Tab>
+                <Tab text="Side-on view">
+                    <FlowPane fx:id="sideOnViewContainer" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="1200" />
+                </Tab>
+                <Tab text="Simultaneous View">
+                    <SplitPane dividerPositions="0.5">
+                        <FlowPane fx:id="simTopDownViewContainer" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="0.0" />
+                        <FlowPane fx:id="simSideOnViewContainer" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="0.0" />
+
+                    </SplitPane>
+                </Tab>
             </TabPane>
         </HBox>
 
