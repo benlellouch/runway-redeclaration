@@ -310,7 +310,6 @@ public class Controller implements Initializable {
     {
         Notifications airportAddedNotification;
         String newAirportName = airportName.getText().trim().replaceAll("\\s", "");
-        airportObservableList.add(new Airport(newAirportName));
 //        Image image = new Image("icons/smalltick.png", true);
 
 //        airportAddedNotification =
