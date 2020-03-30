@@ -45,7 +45,7 @@ public class MainTest extends ApplicationTest
 //        clickOn("Define New Airport");
 //        clickOn("#airportName").write("Heathrow");
         write("Heathrow");
-        clickOn("#airportDoneButton");
+        clickOn("Done");
     }
 
     @After
