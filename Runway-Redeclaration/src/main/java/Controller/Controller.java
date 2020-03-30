@@ -33,6 +33,8 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
+    private final boolean DEBUG = false;
+
 
     // Injected Parameters for Airport Definition Window
     @FXML
@@ -145,19 +147,22 @@ public class Controller implements Initializable {
         oppositePositionMap = generateOppositePositionMap();
         leftRight = generateLeftRight();
 
-        LogicalRunway lRunway09R = new LogicalRunway("08R",3660,3660,3660,3353);
-        LogicalRunway lRunway27L = new LogicalRunway("26L",3660,3660,3660,3660);
-        Runway runway09R27L = new Runway(lRunway09R,lRunway27L);
+        if (DEBUG) {
 
-        LogicalRunway lRunway09L = new LogicalRunway("09L", 3902,3902,3902,3595);
-        LogicalRunway lRunway27R = new LogicalRunway("27R", 3884,3962,3884,3884);
-        Runway runway09L27R = new Runway(lRunway09L,lRunway27R);
-        Airport airport = new Airport("heathrow");
+            LogicalRunway lRunway09R = new LogicalRunway("08R", 3660, 3660, 3660, 3353);
+            LogicalRunway lRunway27L = new LogicalRunway("26L", 3660, 3660, 3660, 3660);
+            Runway runway09R27L = new Runway(lRunway09R, lRunway27L);
 
-        airport.addRunway(runway09L27R);
-        airport.addRunway(runway09R27L);
+            LogicalRunway lRunway09L = new LogicalRunway("09L", 3902, 3902, 3902, 3595);
+            LogicalRunway lRunway27R = new LogicalRunway("27R", 3884, 3962, 3884, 3884);
+            Runway runway09L27R = new Runway(lRunway09L, lRunway27R);
+            Airport airport = new Airport("heathrow");
 
-        airportObservableList.add(airport);
+            airport.addRunway(runway09L27R);
+            airport.addRunway(runway09R27L);
+
+            airportObservableList.add(airport);
+        }
 
         checkForAirports();
     }
