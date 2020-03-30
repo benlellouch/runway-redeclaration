@@ -272,7 +272,7 @@ public abstract class RunwayView extends javafx.scene.canvas.Canvas {
         drawMeasuringLine(x, rTORA, y, "TORA " + rTORA + "m");
 
         if (rTODA != rTORA) {
-            drawMeasuringLine(x, rTODA, y - 10, "TODA " + rTODA + "m");
+            drawMeasuringLine(x-(rTODA-rTORA), rTODA, y - 10, "TODA " + rTODA + "m");
         } else {
             gc.fillText("TODA " + rTODA + "m", scale_x(x + rTODA  / 2) , scale_y(y - 10));
         }

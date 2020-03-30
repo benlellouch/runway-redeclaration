@@ -6,6 +6,10 @@ public class RevisedRunway extends Runway
     private final Position position;
     private final StringBuilder calcBreakdown = new StringBuilder();
 
+    //these two are necessary so that the obstacle lengths corresponds to the ones in the calcultion examples
+    private final int displacedThreshold;
+    private final int maxTora;
+
     // Constants
     private static final int RESA = 240;
     private static final int ALS = 50;
@@ -17,8 +21,11 @@ public class RevisedRunway extends Runway
     {
         super(runway.getLogicalRunway1(), runway.getLogicalRunway2());
 
+
         this.obstacle = obstacle;
         this.position = position;
+        this.displacedThreshold = Math.max(runway.getLogicalRunway1().getDisplacedThreshold(), runway.getLogicalRunway2().getDisplacedThreshold());
+        this.maxTora = Math.max(runway.getLogicalRunway1().getTora(), runway.getLogicalRunway2().getTora());
 
         calculateValues();
     }
@@ -42,7 +49,10 @@ public class RevisedRunway extends Runway
         int distanceFromThreshold = (runway.getDirection() == Direction.LEFT) ?
                 position.getDistLThresh() : position.getDistRThresh();
         boolean towardsObstacle = runway.getDirection() == obstacleSide;
-        int obstacleLength = runway.getTora() - position.getDistRThresh() - position.getDistLThresh() - runway.getDisplacedThreshold();
+
+        int obstacleLength = maxTora - position.getDistRThresh() - position.getDistLThresh() - displacedThreshold;
+
+
 
 
         calcBreakdown.append("Runway ").append(runway.getName()).append(":\n");
