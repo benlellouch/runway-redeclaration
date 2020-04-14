@@ -45,9 +45,9 @@ public class Controller implements Initializable {
 
 
     //A singleton controller is assigned to every definition window
-    private AirportDefinitionController airportDefinitionController = AirportDefinitionController.getInstance();
-    private ObstacleDefinitionController obstacleDefinitionController= ObstacleDefinitionController.getInstance();
-    private RunwayDefinitionController runwayDefinitionController = RunwayDefinitionController.getInstance(this);
+     AirportDefinitionController airportDefinitionController = AirportDefinitionController.getInstance();
+     ObstacleDefinitionController obstacleDefinitionController= ObstacleDefinitionController.getInstance();
+     RunwayDefinitionController runwayDefinitionController = RunwayDefinitionController.getInstance(this);
 
 
     @FXML
