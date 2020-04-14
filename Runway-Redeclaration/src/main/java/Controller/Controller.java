@@ -23,6 +23,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.controlsfx.control.NotificationPane;
 import org.controlsfx.control.Notifications;
 
 import java.io.File;
@@ -40,42 +41,12 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
-    private final boolean DEBUG = false;
 
+    //A singleton controller is assigned to every definition window
+    AirportDefinitionController airportDefinitionController = AirportDefinitionController.getInstance();
+    ObstacleDefinitionController obstacleDefinitionController= ObstacleDefinitionController.getInstance();
+    RunwayDefinitionController runwayDefinitionController = RunwayDefinitionController.getInstance(this);
 
-    // Injected Parameters for Airport Definition Window
-    @FXML
-    private TextField airportName;
-    @FXML
-    private Button airportDoneButton;
-
-    // Injected Parameters for Obstacle Definition Window
-    @FXML
-    private TextField obstacleName;
-    @FXML
-    private TextField obstacleHeight;
-    @FXML
-    private Button obstacleDoneButton;
-
-    // Injected Parameters for Runway Definition Window
-    @FXML
-    private TextField todaLeft;
-    @FXML
-    private TextField todaRight;
-    @FXML
-    private TextField toraLeft;
-    @FXML
-    private TextField toraRight;
-    @FXML
-    private TextField ldaLeft;
-    @FXML
-    private TextField ldaRight;
-    @FXML
-    private TextField asdaLeft;
-    @FXML
-    private TextField asdaRight;
-    @FXML
-    private Button runwayDoneButton;
 
     @FXML
     private TextField leftThresholdDistance;
@@ -94,14 +65,10 @@ public class Controller implements Initializable {
 
 
 
-    @FXML
-    private ComboBox<Airport> airports;
+
     @FXML
     private ComboBox<Airport> airportMainBox;
-    @FXML
-    private ComboBox<String> runwayDegree;
-    @FXML
-    private ComboBox<String> runwayPosition;
+
     @FXML
     private ComboBox<Obstacle> obstacleBox;
     @FXML
@@ -110,8 +77,7 @@ public class Controller implements Initializable {
     private ComboBox<LogicalRunway> logicalRunwayBox;
     @FXML
     private ComboBox<String> leftRightBox;
-    @FXML
-    private Text complementDesignatorText;
+
 
     @FXML
     private Button noAirportDefinedOK;
@@ -125,15 +91,11 @@ public class Controller implements Initializable {
     private FlowPane topDownViewContainer, sideOnViewContainer, simTopDownViewContainer, simSideOnViewContainer;
 
 
-    private ObservableList<Airport> airportObservableList;
-    private ObservableList<String> runwayDegreeList;
-    private ObservableList <String> runwayPositionList;
-    private HashMap<String,String> oppositeDegreeMap;
-    private HashMap<String,String> oppositePositionMap;
-    private ObservableList<Obstacle> obstacles;
+
+
     private ObservableList<String> leftRight;
-    private StringBuilder notificationsString = new StringBuilder();
-    private Image tick = new Image("icons/smalltick.png", true);
+    protected static final StringBuilder notificationsString = new StringBuilder();
+    protected static Image tick = new Image("icons/smalltick.png", true);
 
 
 
@@ -143,51 +105,46 @@ public class Controller implements Initializable {
      */
     public Controller()
     {
-        airports = new ComboBox<>();
-        runwayDegree = new ComboBox<>();
-        runwayPosition = new ComboBox<>();
         obstacleBox = new ComboBox<>();
         airportMainBox = new ComboBox<>();
         leftRightBox = new ComboBox<>();
-        airportObservableList = FXCollections.observableArrayList();
-        obstacles = FXCollections.observableArrayList();
-        populateObstacleList();
-        runwayDegreeList = generateDegreeList();
-        runwayPositionList = generatePositionList();
-        oppositeDegreeMap = generateOppositeDegreeMap();
-        oppositePositionMap = generateOppositePositionMap();
         leftRight = generateLeftRight();
-
-        if (DEBUG) {
-
-            LogicalRunway lRunway09R = new LogicalRunway("08R", 3660, 3660, 3660, 3353);
-            LogicalRunway lRunway27L = new LogicalRunway("26L", 3660, 3660, 3660, 3660);
-            Runway runway09R27L = new Runway(lRunway09R, lRunway27L);
-
-            LogicalRunway lRunway09L = new LogicalRunway("09L", 3902, 3902, 3902, 3595);
-            LogicalRunway lRunway27R = new LogicalRunway("27R", 3884, 3962, 3884, 3884);
-            Runway runway09L27R = new Runway(lRunway09L, lRunway27R);
-            Airport airport = new Airport("heathrow");
-
-            airport.addRunway(runway09L27R);
-            airport.addRunway(runway09R27L);
-
-            airportObservableList.add(airport);
-        }
-
         checkForAirports();
+
     }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        airports.setItems(airportObservableList);
-        airportMainBox.setItems(airportObservableList);
-        runwayDegree.setItems(runwayDegreeList);
-        runwayPosition.setItems(runwayPositionList);
-        obstacleBox.setItems(obstacles);
+        airportMainBox.setItems(airportDefinitionController.getAirportObservableList());
+        obstacleBox.setItems(obstacleDefinitionController.getObstacles());
         leftRightBox.setItems(leftRight);
+        NotificationThread notificationThread = new NotificationThread();
+        Thread thread = new Thread(notificationThread);
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    class NotificationThread implements Runnable
+    {
+
+        @Override
+        public void run() {
+            while (true)
+            {
+                try {
+                    synchronized (notificationsString)
+                    {
+                        notificationsString.wait();
+                        notificationsLog.setText(notificationsString.toString());
+                    }
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     /**
@@ -197,13 +154,17 @@ public class Controller implements Initializable {
     @FXML
     private void openAirportDefinition()
     {
+
         try
         {
-            Stage stage = (Stage) noAirportDefinedOK.getScene().getWindow();
-            stage.close();
+            Stage stage;
+            if ((stage = (Stage) noAirportDefinedOK.getScene().getWindow()) != null)
+            {
+                stage.close();
+            }
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AirportDefinition.fxml"));
-            loader.setController(this);
+            loader.setController(airportDefinitionController);
             Parent root = loader.load();
             Stage definitionStage = new Stage();
             Scene definitionScene = new Scene(root);
@@ -227,7 +188,7 @@ public class Controller implements Initializable {
         try
         {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/RunwayDefinition.fxml"));
-            loader.setController(this);
+            loader.setController(runwayDefinitionController);
             Parent root = loader.load();
             Stage definitionStage = new Stage();
             Scene definitionScene = new Scene(root);
@@ -251,7 +212,7 @@ public class Controller implements Initializable {
         try
         {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ObstacleDefinition.fxml"));
-            loader.setController(this);
+            loader.setController(obstacleDefinitionController);
             Parent root = loader.load();
             Stage definitionStage = new Stage();
             Scene definitionScene = new Scene(root);
@@ -268,6 +229,9 @@ public class Controller implements Initializable {
     @FXML
     private void openImportFile(){
 
+        ObservableList<Airport> airportObservableList = airportDefinitionController.getAirportObservableList();
+        ObservableList<Obstacle> obstacles = obstacleDefinitionController.getObstacles();
+
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
         if(file != null) {
@@ -277,8 +241,10 @@ public class Controller implements Initializable {
             for(Airport a : mf.getAirports()){
                 boolean duplicate = false;
                 for(Airport as : airportObservableList){
-                    if (a.getName().equals(as.getName()))
+                    if (a.getName().equals(as.getName())) {
                         duplicate = true;
+                        break;
+                    }
                 }
                 if(!duplicate)
                     airportObservableList.add(a);
@@ -300,263 +266,8 @@ public class Controller implements Initializable {
     }
 
 
-    /**
-     * Reads the Textfields in AirportDefinition.fxml,
-     * creates a new Airport and adds it the
-     * list of Airports stored in this Controller
-     */
     @FXML
-    private void defineAirport()
-    {
-        Notifications airportAddedNotification;
-        String newAirportName = airportName.getText().trim().replaceAll("\\s", "");
-//        Image image = new Image("icons/smalltick.png", true);
-
-//        airportAddedNotification =
-//                Notifications.create()
-//                .title("Airport Added")
-//                .text("Airport: " + newAirportName + " has been added")
-//                .hideAfter(Duration.seconds(3))
-//                        .graphic(new ImageView(image))
-//                .position(Pos.BOTTOM_RIGHT);
-
-        if(!newAirportName.isEmpty())
-        {   airportObservableList.add(new Airport(newAirportName));
-            if(!airportObservableList.isEmpty()){
-            for (int i=0;i<airportObservableList.size()-1;i++){
-                if(airportObservableList.get(i).getName().equalsIgnoreCase(newAirportName)){
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setContentText("Airport already exists");
-                    alert.showAndWait();
-                    airportObservableList.remove(airportObservableList.size()-1);
-                }
-            }
-            //airportObservableList.add(new Airport(newAirportName));
-            Stage stage = (Stage) airportDoneButton.getScene().getWindow();
-            stage.close();
-            airportAddedNotification =
-                    Notifications.create()
-                            .title("Airport Added")
-                            .text("Airport: " + newAirportName + " has been added")
-                            .hideAfter(Duration.seconds(3))
-                            .graphic(new ImageView(tick))
-                            .position(Pos.BOTTOM_RIGHT);
-            airportAddedNotification.show();
-            notificationsString.append("Airport: ").append(newAirportName).append(" has been added").append(" (" + Time.valueOf(LocalTime.now()) + ")").append("\n");
-            notificationsLog.setText(notificationsString.toString());
-        }else{
-            airportObservableList.add(new Airport(newAirportName));
-            Stage stage = (Stage) airportDoneButton.getScene().getWindow();
-            stage.close();
-
-        }
-        }
-        else
-        {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Input fields empty");
-            alert.setContentText("Please fill all input fields");
-
-            alert.showAndWait();
-        }
-
-
-    }
-
-    /**
-     * Reads the Textfields and ComboBox in RunwayDefinition.fxml
-     *  and creates a new Runway and adds it to its
-     *  respective Airport
-     */
-    @FXML
-    private void defineRunway()
-    {
-        //TODO add Error pop-up when fields are empty or malformed
-        try {
-            Notifications runwayAddedNotification;
-            if(!(runwayDegree.getValue().trim().equalsIgnoreCase("Degree"))&&!runwayPosition.getValue().trim().equalsIgnoreCase("Position")&&!airports.getValue().toString().trim().equalsIgnoreCase("Choose Airport")&&!todaLeft.getText().trim().isEmpty()&&!todaRight.getText().trim().isEmpty()&&!toraLeft.getText().trim().isEmpty()&&!toraRight.getText().trim().isEmpty()&&!asdaLeft.getText().trim().isEmpty()&&!asdaRight.getText().trim().isEmpty()&&!ldaLeft.getText().trim().isEmpty()&&!ldaRight.getText().trim().isEmpty()){
-                if(!(Integer.parseInt(todaLeft.getText().trim())<0)&&!(Integer.parseInt(todaRight.getText().trim())<0)&&!(Integer.parseInt(toraLeft.getText().trim())<0)&&!(Integer.parseInt(toraRight.getText().trim())<0)&&!(Integer.parseInt(asdaLeft.getText().trim())<0)&&!(Integer.parseInt(asdaRight.getText().trim())<0)&&!(Integer.parseInt(ldaLeft.getText().trim())<0)&&!(Integer.parseInt(ldaRight.getText().trim())<0)){
-                    Airport airport = airports.getValue();
-
-                    String designatorLeft = runwayDegree.getValue() + runwayPosition.getValue();
-                    String designatorRight = complementDesignatorText.getText();
-
-                    int todaLeft = Integer.parseInt(this.todaLeft.getText().trim());
-                    int todaRight = Integer.parseInt(this.todaRight.getText().trim());
-
-                    int toraLeft = Integer.parseInt(this.toraLeft.getText().trim());
-                    int toraRight = Integer.parseInt(this.toraRight.getText().trim());
-
-                    int asdaLeft = Integer.parseInt(this.asdaLeft.getText().trim());
-                    int asdaRight = Integer.parseInt(this.asdaRight.getText().trim());
-
-                    int ldaLeft = Integer.parseInt(this.ldaLeft.getText().trim());
-                    int ldaRight = Integer.parseInt(this.ldaRight.getText().trim());
-                    if(todaLeft<toraLeft||todaLeft<ldaLeft||todaRight<toraRight||todaRight<ldaRight){
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setContentText("TODA values have to be greater than or equal to TORA and LDA");
-                        alert.showAndWait();
-                    }else if (toraLeft<ldaLeft||toraRight<ldaRight){
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setContentText("TORA has to be greater than or equal to LDA");
-                        alert.showAndWait();
-                    }else if(asdaLeft<toraLeft||asdaLeft<ldaLeft||asdaRight<toraRight||asdaRight<ldaRight){
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setContentText("ASDA has to be greater than TORA and LDA");
-                        alert.showAndWait();
-                    }else {
-
-                        LogicalRunway logicalRunway1 = new LogicalRunway(designatorLeft, toraLeft, todaLeft, asdaLeft, ldaLeft);
-                        LogicalRunway logicalRunway2 = new LogicalRunway(designatorRight, toraRight, todaRight, asdaRight, ldaRight);
-                        Runway run = new Runway(logicalRunway1, logicalRunway2);
-                        airport.addRunway(run);
-
-                        for (int i = 0; i < airport.getRunways().size() - 1; i++) {
-                            if (airport.getRunways().get(i).getName().equals(run.getName())) {
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setContentText("Logical runway duplicate alert");
-                                alert.showAndWait();
-                                airport.getRunways().remove(run);
-                            }
-                        }
-                        updateRunwayBox();
-
-                        Stage stage = (Stage) runwayDoneButton.getScene().getWindow();
-                        stage.close();
-                        notificationsString.append("Runway: ").append(run.getName()).append(" has been added to Airport: " + airport.getName()).append(" (" + Time.valueOf(LocalTime.now()) + ")").append("\n");
-                        notificationsLog.setText(notificationsString.toString());
-                        runwayAddedNotification =
-                                Notifications.create()
-                                        .title("Runway Added")
-                                        .text("Runway: " + run.getName() + " has been added to Airport: " +airport.getName())
-                                        .hideAfter(Duration.seconds(3))
-                                        .graphic(new ImageView(tick))
-                                        .position(Pos.BOTTOM_RIGHT);
-                        runwayAddedNotification.show();
-                    }
-                    }
-                else {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setContentText("Please ensure only positive values are used for measurements");
-                    alert.showAndWait();
-                }
-            }
-            else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("Please ensure all inputs have been filled in");
-                alert.showAndWait();
-            }
-
-
-        }
-        catch (NullPointerException e){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText("Please ensure all inputs have been filled in");
-            alert.showAndWait();
-        } catch (NumberFormatException ex){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText("Please ensure only numbers are used as inputs for measurements");
-            alert.showAndWait();
-        }
-
-    }
-
-    /**
-     * Reads the Textfields in ObstacleDefinition.fxml,
-     * creates a new Obstacle and adds it to a list
-     * of Obstacles stored in this Controller
-     */
-    @FXML
-    private void defineObstacle()
-    {
-        //TODO create new Obstacle and add it to a List of Obstacles
-        //TODO add Error pop-up when fields are empty
-        try {
-            Notifications obstacleDefinedNotification;
-            String newObstacleName = obstacleName.getText().trim();
-
-            if (newObstacleName.isEmpty() || obstacleHeight.getText().trim().isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Input field empty");
-                alert.setContentText("Please fill in all input fields");
-                alert.showAndWait();
-
-            } else if (Integer.parseInt(obstacleHeight.getText().trim()) < 1) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("Please put a number greater than zero for Height");
-                alert.showAndWait();
-
-            } else {
-                int newObstacleHeight = Integer.parseInt(obstacleHeight.getText().trim());
-                Obstacle newObstacleCreated = new Obstacle(newObstacleName,newObstacleHeight,1);
-                obstacles.add(newObstacleCreated);
-
-                for (int i=0;i<obstacles.size()-1;i++){
-                    if(obstacles.get(i).getName().equalsIgnoreCase(newObstacleName)&&obstacles.get(i).getHeight()==newObstacleHeight){
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setContentText("Duplicate alert: Obstacle has not been added");
-                        alert.showAndWait();
-                        obstacles.remove(obstacles.size()-1);
-                    }
-                }
-                //obstacles.add(newObstacleCreated);
-                Stage stage = (Stage) obstacleDoneButton.getScene().getWindow();
-                stage.close();
-                obstacleDefinedNotification =
-                        Notifications.create()
-                                .title("Obstacle Added")
-                                .text("Obstacle: " + newObstacleCreated.getName() + " " + newObstacleCreated.getHeight() + "m has been added")
-                                .hideAfter(Duration.seconds(3))
-                                .graphic(new ImageView(tick))
-                                .position(Pos.BOTTOM_RIGHT);
-                obstacleDefinedNotification.show();
-                notificationsString.append("Obstacle: ").append(newObstacleCreated.getName()).append(" has been added").append(" (" + Time.valueOf(LocalTime.now()) + ")").append("\n");
-                notificationsLog.setText(notificationsString.toString());
-
-            }
-        } catch (NumberFormatException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText("Please input a number for height");
-            alert.showAndWait();
-        }
-    }
-
-    /**
-     * Fills in the obstacle list with a few predefined obstacles and their heights
-     */
-    private void populateObstacleList()
-    {
-        obstacles.add(new Obstacle("Broken Down Rover Vehicle",2,1));
-        obstacles.add(new Obstacle("Barricades",1,1));
-        obstacles.add(new Obstacle("Lighting Pole",5,1));
-        obstacles.add(new Obstacle("Broken Down Aircraft",19,1));
-    }
-
-    /**
-     * Dynamically updates the designator of the right runway
-     */
-    @FXML
-    private void updateDesignator()
-    {
-        String newDegree = getOppositeDegree(runwayDegree.getValue());
-        String newPosition =  getOppositePosition(runwayPosition.getValue());
-
-        if (newDegree == null)
-        {
-            complementDesignatorText.setText(newPosition);
-        }
-        else if ( newPosition == null)
-        {
-            complementDesignatorText.setText(newDegree);
-        }
-        else
-        {
-            complementDesignatorText.setText( newDegree + newPosition);
-        }
-    }
-
-    @FXML
-    private void updateRunwayBox()
+    protected void updateRunwayBox()
     {
         Airport airport = airportMainBox.getValue();
         if(airport != null)
@@ -611,8 +322,8 @@ public class Controller implements Initializable {
                             .position(Pos.BOTTOM_RIGHT);
             revisedNotification.show();
 
-            notificationsString.append("Runway: ").append(runwayToRevise.getName()).append(" at Airport: " + airportMainBox.getValue().toString().trim() + " has been revised").append(" (" + Time.valueOf(LocalTime.now()) + ")").append("\n");
-            notificationsLog.setText(notificationsString.toString());
+//            notificationsString.append("Runway: ").append(runwayToRevise.getName()).append(" at Airport: " + airportMainBox.getValue().toString().trim() + " has been revised").append(" (" + Time.valueOf(LocalTime.now()) + ")").append("\n");
+//            notificationsLog.setText(notificationsString.toString());
         revisedRunwayOnDisplay = revisedRunway;
         drawRunway(revisedRunway,obstacleOnRunway,positionOfObstacle);
         }
@@ -635,75 +346,9 @@ public class Controller implements Initializable {
 
     }
 
-
-    /**
-     *
-     * @param degree takes the degree of the runway designator
-     * @return the opposite degree
-     */
-    private String getOppositeDegree(String degree)
-    {
-        return oppositeDegreeMap.get(degree);
-    }
-
-    /**
-     *
-     * @param position takes the position of the runway position
-     * @return the opposite position
-     */
-    private String getOppositePosition(String position)
-    {
-        return oppositePositionMap.get(position);
-    }
-
-
-
-    private ObservableList<String> generateDegreeList()
-    {
-        return FXCollections.observableArrayList("01","02","03","04","05","06","07","08","09","10","11","12","13","14","15",
-                "16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36");
-    }
-
-
-
-    private ObservableList<String> generatePositionList()
-    {
-        return FXCollections.observableArrayList("L","R","C");
-    }
-
-    private ObservableList<String> generateLeftRight()
-    {
-        return FXCollections.observableArrayList("L","R");
-    }
-
-
-    private HashMap<String,String> generateOppositePositionMap()
-    {
-        HashMap<String,String> oppositeMap = new HashMap<>();
-        oppositeMap.put("L","R");
-        oppositeMap.put("R", "L");
-        oppositeMap.put("C", "C");
-        return oppositeMap;
-    }
-
-
-    private HashMap<String,String> generateOppositeDegreeMap()
-    {
-        HashMap<String,String> oppositeMap = new HashMap<>();
-
-        for (int i = 18; i <= 36; i++)
-        {
-            int mod = (i % 18 == 0) ? 18 : i % 18;
-            oppositeMap.put((mod < 10) ? "0" + mod : String.valueOf(mod), String.valueOf(i));
-            oppositeMap.put(String.valueOf(i), (mod < 10) ? "0" + mod : String.valueOf(mod));
-        }
-
-        return oppositeMap;
-    }
-
     private void checkForAirports()
     {
-        if(airportObservableList.isEmpty())
+        if(airportDefinitionController.getAirportObservableList().isEmpty())
         {
             try
             {
@@ -737,6 +382,11 @@ public class Controller implements Initializable {
             System.out.println("No runway currently displayed.");
         }
 
+    }
+
+    private ObservableList<String> generateLeftRight()
+    {
+        return FXCollections.observableArrayList("L","R");
     }
 
     public void drawRunway(RevisedRunway revisedRunway, Obstacle obstacle, Position position) {
