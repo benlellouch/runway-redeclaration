@@ -1,4 +1,6 @@
 import Model.*;
+import com.sun.javafx.application.LauncherImpl;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -14,6 +16,7 @@ import javafx.stage.Window;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
 import org.testfx.api.FxAssert;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
@@ -48,7 +51,7 @@ public class MainTest extends ApplicationTest
         clickOn("#airportDoneButton");
     }
 
-    @After
+    @AfterEach
     public void tearDown () throws Exception {
         FxToolkit.hideStage();
         release(new KeyCode[]{});

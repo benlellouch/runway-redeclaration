@@ -26,6 +26,8 @@ import javafx.util.Duration;
 import org.controlsfx.control.NotificationPane;
 import org.controlsfx.control.Notifications;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URL;
 import java.sql.Time;
@@ -43,9 +45,9 @@ public class Controller implements Initializable {
 
 
     //A singleton controller is assigned to every definition window
-    AirportDefinitionController airportDefinitionController = AirportDefinitionController.getInstance();
-    ObstacleDefinitionController obstacleDefinitionController= ObstacleDefinitionController.getInstance();
-    RunwayDefinitionController runwayDefinitionController = RunwayDefinitionController.getInstance(this);
+    private AirportDefinitionController airportDefinitionController = AirportDefinitionController.getInstance();
+    private ObstacleDefinitionController obstacleDefinitionController= ObstacleDefinitionController.getInstance();
+    private RunwayDefinitionController runwayDefinitionController = RunwayDefinitionController.getInstance(this);
 
 
     @FXML
@@ -62,13 +64,8 @@ public class Controller implements Initializable {
     private Label calculationBreakdown;
     @FXML
     private Text notificationsLog;
-
-
-
-
     @FXML
     private ComboBox<Airport> airportMainBox;
-
     @FXML
     private ComboBox<Obstacle> obstacleBox;
     @FXML
@@ -77,8 +74,6 @@ public class Controller implements Initializable {
     private ComboBox<LogicalRunway> logicalRunwayBox;
     @FXML
     private ComboBox<String> leftRightBox;
-
-
     @FXML
     private Button noAirportDefinedOK;
     @FXML
@@ -90,14 +85,9 @@ public class Controller implements Initializable {
     @FXML
     private FlowPane topDownViewContainer, sideOnViewContainer, simTopDownViewContainer, simSideOnViewContainer;
 
-
-
-
     private ObservableList<String> leftRight;
     protected static final StringBuilder notificationsString = new StringBuilder();
     protected static Image tick = new Image("icons/smalltick.png", true);
-
-
 
 
     /**
