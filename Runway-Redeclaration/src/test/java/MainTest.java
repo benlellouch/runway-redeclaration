@@ -1,6 +1,9 @@
+import Controller.AirportDefinitionController;
+import Controller.ObstacleDefinitionController;
 import Model.*;
 import com.sun.javafx.application.LauncherImpl;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -17,6 +20,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.testfx.api.FxAssert;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
@@ -25,35 +29,29 @@ import org.testfx.matcher.control.ComboBoxMatchers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import static org.junit.Assert.*;
 
         
 public class MainTest extends ApplicationTest
 {
-    @Override
-    public void start (Stage stage) throws Exception{
-        Parent mainNode = FXMLLoader.load(Main.class.getResource("/MainView.fxml"));
-        stage.setScene(new Scene(mainNode));
-        stage.show();
-        stage.toFront();
-    }
+
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws TimeoutException {
+        FxToolkit.registerPrimaryStage();
+        FxToolkit.setupApplication(Main.class);
         clickOn("#noAirportDefinedOK");
-        // For some reason, when running this via Monocle, we need to open the window again since it can't
-        // see the window open after confirming the initial no airport message.
-//        clickOn("File");
-//        clickOn("Define New Airport");
-//        clickOn("#airportName").write("Heathrow");
         write("Heathrow");
         clickOn("#airportDoneButton");
     }
 
-    @AfterEach
+    @After
     public void tearDown () throws Exception {
-        FxToolkit.hideStage();
+        FxToolkit.cleanupStages();
+        AirportDefinitionController.getInstance().cleanUp();
+        ObstacleDefinitionController.getInstance().cleanUp();
         release(new KeyCode[]{});
         release(new MouseButton[]{});
     }
