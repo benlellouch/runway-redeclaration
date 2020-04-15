@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,6 +38,16 @@ import static org.junit.Assert.*;
 public class MainTest extends ApplicationTest
 {
 
+    @BeforeClass
+    public static void setUpHeadlessMode()
+    {
+            System.setProperty("testfx.robot", "glass");
+            System.setProperty("testfx.headless", "true");
+            System.setProperty("prism.order", "sw");
+            System.setProperty("prism.text", "t2k");
+            System.setProperty("java.awt.headless", "true");
+    }
+
     @Override
     public void start (Stage stage) throws Exception{
         Parent mainNode = FXMLLoader.load(Main.class.getResource("/MainView.fxml"));
@@ -50,8 +61,8 @@ public class MainTest extends ApplicationTest
         clickOn("#noAirportDefinedOK");
         // For some reason, when running this via Monocle, we need to open the window again since it can't
         // see the window open after confirming the initial no airport message.
-        clickOn("File");
-        clickOn("Define New Airport");
+//        clickOn("File");
+//        clickOn("Define New Airport");
         clickOn("#airportName").write("Heathrow");
 //        write("Heathrow");
         clickOn("#airportDoneButton");
