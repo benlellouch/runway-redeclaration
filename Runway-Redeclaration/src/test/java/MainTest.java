@@ -63,8 +63,8 @@ public class MainTest extends ApplicationTest
         // see the window open after confirming the initial no airport message.
 //        clickOn("File");
 //        clickOn("Define New Airport");
-        clickOn("#airportName").write("Heathrow");
-//        write("Heathrow");
+//        clickOn("#airportName").write("Heathrow");
+        write("Heathrow");
         clickOn("#airportDoneButton");
     }
 
