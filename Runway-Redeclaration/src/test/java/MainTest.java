@@ -37,15 +37,26 @@ import static org.junit.Assert.*;
 public class MainTest extends ApplicationTest
 {
 
+    @Override
+    public void start (Stage stage) throws Exception{
+        Parent mainNode = FXMLLoader.load(Main.class.getResource("/MainView.fxml"));
+        stage.setScene(new Scene(mainNode));
+        stage.show();
+        stage.toFront();
+    }
 
     @Before
     public void setUp() throws TimeoutException {
-        FxToolkit.registerPrimaryStage();
-        FxToolkit.setupApplication(Main.class);
         clickOn("#noAirportDefinedOK");
+        // For some reason, when running this via Monocle, we need to open the window again since it can't
+        // see the window open after confirming the initial no airport message.
+//        clickOn("File");
+//        clickOn("Define New Airport");
+//        clickOn("#airportName").write("Heathrow");
         write("Heathrow");
         clickOn("#airportDoneButton");
     }
+
 
     @After
     public void tearDown () throws Exception {
