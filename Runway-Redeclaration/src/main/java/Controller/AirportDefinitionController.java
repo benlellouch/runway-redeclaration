@@ -115,4 +115,9 @@ public class AirportDefinitionController {
     public ObservableList<Airport> getAirportObservableList() {
         return airportObservableList;
     }
+
+    /**
+     * Used for TestFX testing
+     */
+    public void cleanUp () { airportObservableList.clear(); }
 }

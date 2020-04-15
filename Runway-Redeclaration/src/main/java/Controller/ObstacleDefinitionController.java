@@ -125,4 +125,9 @@ public static ObstacleDefinitionController getInstance()
     public ObservableList<Obstacle> getObstacles() {
         return obstacles;
     }
+
+    /**
+     * Used for TestFX testing
+     */
+    public void cleanUp(){obstacles.clear(); populateObstacleList();}
 }
