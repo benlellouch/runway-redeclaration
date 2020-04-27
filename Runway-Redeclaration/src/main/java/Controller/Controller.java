@@ -2,8 +2,8 @@ package Controller;
 
 import Model.*;
 import XMLParsing.ModelFactory;
-import View.SideOnView;
-import View.TopDownView;
+import View.SideRunwayView;
+import View.TopRunwayView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,8 +12,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,16 +21,10 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.controlsfx.control.NotificationPane;
 import org.controlsfx.control.Notifications;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URL;
-import java.sql.Time;
-import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 
 /**
@@ -428,32 +420,32 @@ public class Controller implements Initializable {
         boolean rotateView = orientationCheckBox.isSelected();
 
         //TODO  very hacked together needs to change
-        TopDownView topDownView = new TopDownView(runway, revisedLRunway, position, obstacle, rotateView);
-        topDownView.widthProperty().bind(topDownViewContainer.widthProperty());
-        topDownView.heightProperty().bind(topDownViewContainer.heightProperty());
+        TopRunwayView topRunwayView = new TopRunwayView(runway, revisedLRunway, position, obstacle, rotateView);
+        topRunwayView.widthProperty().bind(topDownViewContainer.widthProperty());
+        topRunwayView.heightProperty().bind(topDownViewContainer.heightProperty());
 
 
 
 
 
         // Add everything to top down view tab
-        pane.getChildren().addAll(topDownView );
+        pane.getChildren().addAll(topRunwayView);
         topDownViewContainer.getChildren().add(pane);
 
-        TopDownView simTopDownView = new TopDownView(runway, revisedLRunway, position, obstacle, rotateView);
-        simTopDownView.widthProperty().bind(simTopDownViewContainer.widthProperty());
-        simTopDownView.heightProperty().bind(simTopDownViewContainer.heightProperty());
-        simTopDownViewContainer.getChildren().add(simTopDownView);
+        TopRunwayView simTopRunwayView = new TopRunwayView(runway, revisedLRunway, position, obstacle, rotateView);
+        simTopRunwayView.widthProperty().bind(simTopDownViewContainer.widthProperty());
+        simTopRunwayView.heightProperty().bind(simTopDownViewContainer.heightProperty());
+        simTopDownViewContainer.getChildren().add(simTopRunwayView);
 
-        SideOnView sideOnView = new SideOnView(runway, revisedLRunway, position, obstacle, rotateView);
-        sideOnView.widthProperty().bind(sideOnViewContainer.widthProperty());
-        sideOnView.heightProperty().bind(sideOnViewContainer.heightProperty());
-        sideOnViewContainer.getChildren().add(sideOnView);
+        SideRunwayView sideRunwayView = new SideRunwayView(runway, revisedLRunway, position, obstacle);
+        sideRunwayView.widthProperty().bind(sideOnViewContainer.widthProperty());
+        sideRunwayView.heightProperty().bind(sideOnViewContainer.heightProperty());
+        sideOnViewContainer.getChildren().add(sideRunwayView);
 
-        SideOnView simSideOnView = new SideOnView(runway, revisedLRunway, position, obstacle, rotateView);
-        simSideOnView.widthProperty().bind(simTopDownViewContainer.widthProperty());
-        simSideOnView.heightProperty().bind(simTopDownViewContainer.heightProperty());
-        simSideOnViewContainer.getChildren().add(simSideOnView);
+        SideRunwayView simSideRunwayView = new SideRunwayView(runway, revisedLRunway, position, obstacle);
+        simSideRunwayView.widthProperty().bind(simTopDownViewContainer.widthProperty());
+        simSideRunwayView.heightProperty().bind(simTopDownViewContainer.heightProperty());
+        simSideOnViewContainer.getChildren().add(simSideRunwayView);
 
 
 
@@ -461,10 +453,10 @@ public class Controller implements Initializable {
 
 
         if (position != null) {
-            topDownView.drawObstacle();
-            sideOnView.drawObstacle();
-            simSideOnView.drawObstacle();
-            simTopDownView.drawObstacle();
+            topRunwayView.renderObstacle();
+            sideRunwayView.renderObstacle();
+            simSideRunwayView.renderObstacle();
+            simTopRunwayView.renderObstacle();
         }
 
     }
