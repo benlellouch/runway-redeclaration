@@ -149,6 +149,8 @@ public class Controller implements Initializable {
             loader.setController(airportDefinitionController);
             Parent root = loader.load();
             Stage definitionStage = new Stage();
+            definitionStage.setTitle("Define New Airport");
+            definitionStage.getIcons().add(new Image("icons/icon.png"));
             Scene definitionScene = new Scene(root);
             definitionStage.setScene(definitionScene);
             definitionStage.show();
@@ -175,6 +177,8 @@ public class Controller implements Initializable {
             Stage definitionStage = new Stage();
             Scene definitionScene = new Scene(root);
             definitionStage.setScene(definitionScene);
+            definitionStage.setTitle("Define New Runway");
+            definitionStage.getIcons().add(new Image("icons/icon.png"));
             definitionStage.show();
         }
         catch (Exception e)
@@ -198,6 +202,8 @@ public class Controller implements Initializable {
             Parent root = loader.load();
             Stage definitionStage = new Stage();
             Scene definitionScene = new Scene(root);
+            definitionStage.setTitle("Define New Obstacle");
+            definitionStage.getIcons().add(new Image("icons/icon.png"));
             definitionStage.setScene(definitionScene);
             definitionStage.show();
         }
@@ -339,6 +345,8 @@ public class Controller implements Initializable {
                 Parent root = loader.load();
                 Stage definitionStage = new Stage();
                 Scene definitionScene = new Scene(root);
+                definitionStage.setTitle("No Airports Defined");
+                definitionStage.getIcons().add(new Image("icons/icon.png"));
                 definitionStage.setScene(definitionScene);
                 definitionStage.requestFocus();
                 definitionStage.show();
