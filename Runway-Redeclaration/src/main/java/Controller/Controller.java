@@ -300,7 +300,7 @@ public class Controller implements Initializable {
                 || logicalRunwayBox.getValue().toString().trim().equalsIgnoreCase("Logical Runway")
                 || leftThresholdDistance.getText().trim().isEmpty()
                 || rightThresholdDistance.getText().trim().isEmpty()
-                || centreLinePositionBox.getValue().trim().equalsIgnoreCase("L/R")
+                || centreLinePositionBox.getValue().trim().equalsIgnoreCase("N/S")
                 || centreLineDistance.getText().trim().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("Please fill in all inputs");
@@ -311,7 +311,7 @@ public class Controller implements Initializable {
         int rightTHRDistance = Integer.parseInt(rightThresholdDistance.getText().trim());
         int centerLineDistance = Integer.parseInt(centreLineDistance.getText().trim());
         if(centerLineDistance>=0){
-        Position positionOfObstacle = new Position(centerLineDistance,leftTHRDistance,rightTHRDistance);
+        Position positionOfObstacle = new Position((centreLinePositionBox.getValue().equals("N") ? centerLineDistance : -centerLineDistance),leftTHRDistance,rightTHRDistance);
         RevisedRunway revisedRunway = new RevisedRunway(runwayToRevise,obstacleOnRunway,positionOfObstacle);
         revisedRunwayText.setText(revisedRunway.getResults());
         oldRunwayText.setText(runwayToRevise.getResults());

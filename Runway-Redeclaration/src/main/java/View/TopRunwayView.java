@@ -9,6 +9,8 @@ public class TopRunwayView extends AbstractRunwayView {
     protected boolean rotateView;
     private int bearing;
 
+    private static final int Y_SCALE = 2;
+
     public TopRunwayView(Runway originalRunways, LogicalRunway revisedRunway, Position obstaclePosition, Obstacle obstacle, boolean rotateView) {
         super(originalRunways,revisedRunway, obstaclePosition,obstacle, Color.WHITE);
         this.rotateView = rotateView;
@@ -53,11 +55,9 @@ public class TopRunwayView extends AbstractRunwayView {
 
 
             if (Integer.parseInt(runway.getName().substring(0, 2)) <= 18) {
-                obstacle_y = runway.getDirection() == Direction.LEFT ?
-                        150 - obstaclePosition.getDistCenter() : 150 + obstaclePosition.getDistCenter();
+                obstacle_y = 150 - (obstaclePosition.getDistCenter() / Y_SCALE);
             } else {
-                obstacle_y = runway.getDirection() == Direction.LEFT ?
-                        150 + obstaclePosition.getDistCenter() : 150 - obstaclePosition.getDistCenter();
+                obstacle_y = 150 + (obstaclePosition.getDistCenter() / Y_SCALE);
             }
 
 
