@@ -20,7 +20,7 @@ public class SideRunwayView extends AbstractRunwayView {
         int displacedThr =
                 Math.max(originalRunways.getLogicalRunway1().getDisplacedThreshold(), originalRunways.getLogicalRunway2().getDisplacedThreshold());
         int obstacleLength =
-                TORA - obstaclePosition.getDistRThresh() - obstaclePosition.getDistLThresh();
+                TORA - obstaclePosition.getDistRThresh() - obstaclePosition.getDistLThresh() - displacedThr;
         int obstacleHeight = obstacle.getHeight();
 
         render();
