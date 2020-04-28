@@ -85,9 +85,10 @@ public abstract class AbstractRunwayView extends javafx.scene.canvas.Canvas {
     }
 
     private void renderDesignatorHelper(int y, double designatorOrientationR, double designatorOrientationL) {
-        String designator1 = runway.getName().substring(0, 2) + "\n" + runway.getName().substring(2);
-        String otherRunwayName = leftRunway ? originalRunways.getLogicalRunway2().getName() : originalRunways.getLogicalRunway1().getName() ;
-        String designator2  = otherRunwayName.substring(0,2) + "\n" + otherRunwayName.substring(2);
+        String designator1Name = originalRunways.getLogicalRunway1().getName();
+        String designator1 = designator1Name.substring(0, 2) + "\n" + designator1Name.substring(2);
+        String designator2Name = originalRunways.getLogicalRunway2().getName();
+        String designator2  = designator2Name.substring(0,2) + "\n" + designator2Name.substring(2);
 
         gc.save();
         gc.translate( x_scale(TORA / 7 + leftSpace), y_scale(y));
