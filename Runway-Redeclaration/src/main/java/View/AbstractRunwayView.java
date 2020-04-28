@@ -86,7 +86,7 @@ public abstract class AbstractRunwayView extends javafx.scene.canvas.Canvas {
 
     private void renderDesignatorHelper(int y, double designatorOrientationR, double designatorOrientationL) {
         String designator1 = runway.getName().substring(0, 2) + "\n" + runway.getName().substring(2);
-        String otherRunwayName = leftRunway ? originalRunways.getLogicalRunway2().getName() : originalRunways.getLogicalRunway1().getName() ;
+        String otherRunwayName = (runway.getDegree() == originalRunways.getLogicalRunway1().getDegree()) ? originalRunways.getLogicalRunway2().getName() : originalRunways.getLogicalRunway1().getName() ;
         String designator2  = otherRunwayName.substring(0,2) + "\n" + otherRunwayName.substring(2);
 
         gc.save();
@@ -209,8 +209,6 @@ public abstract class AbstractRunwayView extends javafx.scene.canvas.Canvas {
         int lda = runway.getLda();
         int displacedThs = Math.max(originalRunways.getLogicalRunway1().getDisplacedThreshold(), originalRunways.getLogicalRunway2().getDisplacedThreshold());
         int slopeCalculation = Math.max((obstacle.getHeight() * 50), RESA);
-
-
 
         if (obstaclePosition.getDistLThresh() < obstaclePosition.getDistRThresh()) {
             if (obstaclePosition.getDistLThresh() > 0) {
