@@ -251,9 +251,7 @@ public class Controller implements Initializable {
                 if(!dup)
                     obstacles.add(o);
             }
-
-            airportObservableList.addAll(mf.getAirports());
-            obstacles.addAll(mf.getObstacles());
+            
         }
     }
 
