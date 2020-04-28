@@ -48,10 +48,13 @@ public class TopRunwayView extends AbstractRunwayView {
         try {
             render();
 
-            int displacedThr = Math.max(originalRunways.getLogicalRunway1().getDisplacedThreshold(), originalRunways.getLogicalRunway2().getDisplacedThreshold());
+            int distanceFromThreshold = (leftRunway) ? obstaclePosition.getDistLThresh() : obstaclePosition.getDistRThresh();
+
+            int maxDisplacedThr = Math.max(originalRunways.getLogicalRunway1().getDisplacedThreshold(), originalRunways.getLogicalRunway2().getDisplacedThreshold());
+            int displacedThr = (runway.getDirection() == originalRunways.getLogicalRunway1().getDirection()) ? originalRunways.getLogicalRunway1().getDisplacedThreshold() : originalRunways.getLogicalRunway2().getDisplacedThreshold();
             int obstacle_x;
             int obstacle_y;
-            obstacle_x = obstaclePosition.getDistLThresh() + leftSpace + displacedThr;
+            obstacle_x = distanceFromThreshold + leftSpace + displacedThr;
 
 
             if (Integer.parseInt(runway.getName().substring(0, 2)) <= 18) {
@@ -61,7 +64,7 @@ public class TopRunwayView extends AbstractRunwayView {
             }
 
 
-            int obstacleLength = TORA - obstaclePosition.getDistRThresh() - obstaclePosition.getDistLThresh() - displacedThr;
+            int obstacleLength = TORA - obstaclePosition.getDistRThresh() - obstaclePosition.getDistLThresh() - maxDisplacedThr;
 
             renderDistances(obstacleLength, 210, 110);
 

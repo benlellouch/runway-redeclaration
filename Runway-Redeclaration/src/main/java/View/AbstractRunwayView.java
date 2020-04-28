@@ -129,14 +129,15 @@ public abstract class AbstractRunwayView extends javafx.scene.canvas.Canvas {
     }
 
     protected void renderDisplacedTSH() {
-        int displacedTsh = TORA - LDA;
+        int displacedTsh = (runway.getDirection() == originalRunways.getLogicalRunway1().getDirection()) ? originalRunways.getLogicalRunway1().getDisplacedThreshold() : originalRunways.getLogicalRunway2().getDisplacedThreshold();
+        int otherDisplacedTsh = (runway.getDirection() == originalRunways.getLogicalRunway1().getDirection()) ? originalRunways.getLogicalRunway2().getDisplacedThreshold() : originalRunways.getLogicalRunway1().getDisplacedThreshold();
 
-        if (displacedTsh > 0) {
-            if (leftRunway) {
-                renderRuler(0, displacedTsh, 80, "Displaced TSH");
-            } else {
-                renderRuler(leftSpace + LDA, displacedTsh, 80, "Displaced TSH");
-            }
+        if (displacedTsh > otherDisplacedTsh) {
+            renderRuler(0, displacedTsh, 80, "Displaced TSH");
+        } else {
+            int lda = (runway.getDirection() == originalRunways.getLogicalRunway1().getDirection()) ? originalRunways.getLogicalRunway2().getLda() : originalRunways.getLogicalRunway1().getLda();
+
+            renderRuler(leftSpace + lda, otherDisplacedTsh, 80, "Displaced TSH");
         }
     }
 
@@ -207,15 +208,18 @@ public abstract class AbstractRunwayView extends javafx.scene.canvas.Canvas {
 
         int tora = runway.getTora();
         int lda = runway.getLda();
-        int displacedThs = Math.max(originalRunways.getLogicalRunway1().getDisplacedThreshold(), originalRunways.getLogicalRunway2().getDisplacedThreshold());
+        int displacedThs = (runway.getDirection() == originalRunways.getLogicalRunway1().getDirection()) ? originalRunways.getLogicalRunway1().getDisplacedThreshold() : originalRunways.getLogicalRunway2().getDisplacedThreshold();
         int slopeCalculation = Math.max((obstacle.getHeight() * 50), RESA);
 
-        if (obstaclePosition.getDistLThresh() < obstaclePosition.getDistRThresh()) {
-            if (obstaclePosition.getDistLThresh() > 0) {
-                renderRuler(leftSpace + displacedThs, obstaclePosition.getDistLThresh(), yObstacle, Integer.toString(obstaclePosition.getDistLThresh()) + "m");
+        int distanceFromLowerThreshold = (leftRunway) ? obstaclePosition.getDistLThresh() : obstaclePosition.getDistRThresh();
+        int distanceFromHigherThreshold = (leftRunway) ? obstaclePosition.getDistRThresh() : obstaclePosition.getDistLThresh();
+
+        if (distanceFromLowerThreshold < distanceFromHigherThreshold) {
+            if (distanceFromLowerThreshold > 0) {
+                renderRuler(leftSpace + displacedThs, distanceFromLowerThreshold, yObstacle, Integer.toString(distanceFromLowerThreshold) + "m");
             }
-            renderRuler(obstaclePosition.getDistLThresh() + leftSpace+displacedThs, oLength, yObstacle, "Obstacle");
-            int endObstacle = leftSpace + obstaclePosition.getDistLThresh() + oLength + displacedThs;
+            renderRuler(distanceFromLowerThreshold + leftSpace+displacedThs, oLength, yObstacle, "Obstacle");
+            int endObstacle = leftSpace + distanceFromLowerThreshold + oLength + displacedThs;
 
             if (leftRunway) {
                 renderRuler(endObstacle, 300, yDistances, "blast protection");
@@ -231,7 +235,7 @@ public abstract class AbstractRunwayView extends javafx.scene.canvas.Canvas {
                 renderRuler(endObstacle + 300, lda , yDistances + 10, "LDA " + lda + "m");
             }
         } else {
-            int startObstacle = leftSpace + obstaclePosition.getDistLThresh() + displacedThs;
+            int startObstacle = leftSpace + distanceFromLowerThreshold + displacedThs;
 
             if (leftRunway) {
                 renderTORA_TODA_ASDA(0, yDistances);
@@ -248,8 +252,8 @@ public abstract class AbstractRunwayView extends javafx.scene.canvas.Canvas {
             }
 
             renderRuler(startObstacle, oLength, yObstacle, "Obstacle");
-            if (obstaclePosition.getDistRThresh() > 0) {
-                renderRuler(startObstacle + oLength, obstaclePosition.getDistRThresh(), yObstacle, obstaclePosition.getDistRThresh() + "m");
+            if (distanceFromHigherThreshold > 0) {
+                renderRuler(startObstacle + oLength, distanceFromHigherThreshold, yObstacle, distanceFromHigherThreshold + "m");
             }
         }
     }

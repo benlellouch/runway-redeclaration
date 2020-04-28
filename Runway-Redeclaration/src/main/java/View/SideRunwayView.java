@@ -18,14 +18,18 @@ public class SideRunwayView extends AbstractRunwayView {
             return;
         }
         int displacedThr =
+                (runway.getDirection() == originalRunways.getLogicalRunway1().getDirection()) ? originalRunways.getLogicalRunway1().getDisplacedThreshold() : originalRunways.getLogicalRunway2().getDisplacedThreshold();
+        int maxDisplacedThr =
                 Math.max(originalRunways.getLogicalRunway1().getDisplacedThreshold(), originalRunways.getLogicalRunway2().getDisplacedThreshold());
         int obstacleLength =
-                TORA - obstaclePosition.getDistRThresh() - obstaclePosition.getDistLThresh() - displacedThr;
+                TORA - obstaclePosition.getDistRThresh() - obstaclePosition.getDistLThresh() - maxDisplacedThr;
         int obstacleHeight = obstacle.getHeight();
 
         render();
 
-        int obstacle_x = obstaclePosition.getDistLThresh() + leftSpace + displacedThr;
+        int distanceFromThreshold = (leftRunway) ? obstaclePosition.getDistLThresh() : obstaclePosition.getDistRThresh();
+
+        int obstacle_x = distanceFromThreshold + leftSpace + displacedThr;
 
         gc.setFill(Color.RED);
         gc.setGlobalAlpha(0.5);
@@ -44,18 +48,21 @@ public class SideRunwayView extends AbstractRunwayView {
 
     private void renderSlope(int obstacleLength, int slopeCalculation) {
 
-        int displacedThr = Math.max(originalRunways.getLogicalRunway1().getDisplacedThreshold(), originalRunways.getLogicalRunway2().getDisplacedThreshold());
+        int displacedThr = (runway.getDirection() == originalRunways.getLogicalRunway1().getDirection()) ? originalRunways.getLogicalRunway1().getDisplacedThreshold() : originalRunways.getLogicalRunway2().getDisplacedThreshold();
         int obstacleHeight = this.obstacle.getHeight();
+
+        int distanceFromLowerThreshold = (leftRunway) ? obstaclePosition.getDistLThresh() : obstaclePosition.getDistRThresh();
+        int distanceFromHigherThreshold = (leftRunway) ? obstaclePosition.getDistRThresh() : obstaclePosition.getDistLThresh();
 
         gc.setFill(Color.BLUE);
         gc.setGlobalAlpha(0.5);
 
-        if (obstaclePosition.getDistLThresh() >= obstaclePosition.getDistRThresh()) {
-            int startObstacle = leftSpace + obstaclePosition.getDistLThresh() + displacedThr;
+        if (distanceFromLowerThreshold >= distanceFromHigherThreshold) {
+            int startObstacle = leftSpace + distanceFromLowerThreshold + displacedThr;
 
             gc.fillPolygon(new double[]{x_scale(startObstacle - slopeCalculation), x_scale(startObstacle), x_scale(startObstacle)}, new double[]{y_scale(149), y_scale(149), y_scale(149 - obstacleHeight)}, 3);
         } else {
-            int endObstacle = leftSpace + obstaclePosition.getDistLThresh() + obstacleLength + displacedThr;
+            int endObstacle = leftSpace + distanceFromLowerThreshold + obstacleLength + displacedThr;
 
             gc.fillPolygon(new double[]{x_scale(endObstacle), x_scale(endObstacle), x_scale(endObstacle + slopeCalculation)}, new double[]{y_scale(149 - obstacleHeight), y_scale(149), y_scale(149)}, 3);
         }
