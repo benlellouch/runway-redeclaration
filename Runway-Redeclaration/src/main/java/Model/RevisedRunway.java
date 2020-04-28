@@ -164,7 +164,7 @@ public class RevisedRunway extends Runway
         else
         {
             tempThreshold = RESA;
-            calcBreakdown.append("RESA (");
+            calcBreakdown.append(" - RESA (");
         }
 
         int result = distanceFromThreshold + displacedThreshold - tempThreshold - STRIP_END;
