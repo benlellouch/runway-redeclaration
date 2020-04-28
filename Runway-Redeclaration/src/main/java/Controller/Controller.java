@@ -89,6 +89,8 @@ public class Controller implements Initializable {
     {
         obstacleBox = new ComboBox<>();
         airportMainBox = new ComboBox<>();
+        runwayBox = new ComboBox<>();
+        logicalRunwayBox = new ComboBox<>();
         leftRightBox = new ComboBox<>();
         leftRight = generateLeftRight();
         checkForAirports();
@@ -102,6 +104,8 @@ public class Controller implements Initializable {
         airportMainBox.setItems(airportDefinitionController.getAirportObservableList());
         obstacleBox.setItems(obstacleDefinitionController.getObstacles());
         leftRightBox.setItems(leftRight);
+        runwayBox.setDisable(true);
+        logicalRunwayBox.setDisable(true);
         NotificationThread notificationThread = new NotificationThread();
         Thread thread = new Thread(notificationThread);
         thread.setDaemon(true);
@@ -258,11 +262,13 @@ public class Controller implements Initializable {
     protected void updateRunwayBox()
     {
         Airport airport = airportMainBox.getValue();
+
         if(airport != null)
         {
             ObservableList<Runway> runwayObservableList = FXCollections.observableArrayList();
             runwayObservableList.addAll(airport.getRunways());
             runwayBox.setItems(runwayObservableList);
+            runwayBox.setDisable(false);
         }
     }
 
@@ -270,11 +276,13 @@ public class Controller implements Initializable {
     private void updateLogicalRunwayBox()
     {
         Runway runway = runwayBox.getValue();
+
         if(runway != null)
         {
             ObservableList<LogicalRunway> logicalRunwayObservableList = FXCollections.observableArrayList();
             logicalRunwayObservableList.addAll(runway.getLogicalRunway1(), runway.getLogicalRunway2());
             logicalRunwayBox.setItems(logicalRunwayObservableList);
+            logicalRunwayBox.setDisable(false);
         }
     }
 
@@ -286,7 +294,14 @@ public class Controller implements Initializable {
         Obstacle obstacleOnRunway = obstacleBox.getValue();
         Notifications revisedNotification;
 
-        if(airportMainBox.getValue().toString().trim().equalsIgnoreCase("Airport")||obstacleBox.getValue().toString().trim().equalsIgnoreCase("Obstacle")||runwayBox.getValue().toString().trim().equalsIgnoreCase("Runway")||logicalRunwayBox.getValue().toString().trim().equalsIgnoreCase("Logical Runway")||leftThresholdDistance.getText().trim().isEmpty()||rightThresholdDistance.getText().trim().isEmpty()||leftRightBox.getValue().trim().equalsIgnoreCase("L/R")||centreLineDistance.getText().trim().isEmpty()){
+        if(airportMainBox.getValue().toString().trim().equalsIgnoreCase("Airport")
+                || obstacleBox.getValue().toString().trim().equalsIgnoreCase("Obstacle")
+                || runwayBox.getValue().toString().trim().equalsIgnoreCase("Runway")
+                || logicalRunwayBox.getValue().toString().trim().equalsIgnoreCase("Logical Runway")
+                || leftThresholdDistance.getText().trim().isEmpty()
+                || rightThresholdDistance.getText().trim().isEmpty()
+                || leftRightBox.getValue().trim().equalsIgnoreCase("L/R")
+                || centreLineDistance.getText().trim().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("Please fill in all inputs");
             alert.showAndWait();
