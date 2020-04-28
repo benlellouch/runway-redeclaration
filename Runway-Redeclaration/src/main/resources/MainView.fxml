@@ -40,8 +40,8 @@
                     <Text text="Distance from Right Threshold" GridPane.rowIndex="12" />
                     <TextField fx:id="rightThresholdDistance" GridPane.rowIndex="13" />
 
-                    <Text text="Left / Right from Centre Line" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                    <ComboBox fx:id="leftRightBox" promptText="L / R " GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Text text="North/South of Centre Line" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <ComboBox fx:id="centreLinePositionBox" promptText="N / S " GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
                     <Text text="Distance from Centre Line" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                     <TextField fx:id="centreLineDistance" GridPane.columnIndex="1" GridPane.rowIndex="7" />

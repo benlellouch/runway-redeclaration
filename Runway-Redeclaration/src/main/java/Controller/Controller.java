@@ -65,7 +65,7 @@ public class Controller implements Initializable {
     @FXML
     private ComboBox<LogicalRunway> logicalRunwayBox;
     @FXML
-    private ComboBox<String> leftRightBox;
+    private ComboBox<String> centreLinePositionBox;
     @FXML
     private Button noAirportDefinedOK;
     @FXML
@@ -77,7 +77,7 @@ public class Controller implements Initializable {
     @FXML
     private FlowPane topDownViewContainer, sideOnViewContainer, simTopDownViewContainer, simSideOnViewContainer;
 
-    private ObservableList<String> leftRight;
+    private ObservableList<String> centreLinePosition;
     protected static final StringBuilder notificationsString = new StringBuilder();
     protected static Image tick = new Image("icons/smalltick.png", true);
 
@@ -91,8 +91,8 @@ public class Controller implements Initializable {
         airportMainBox = new ComboBox<>();
         runwayBox = new ComboBox<>();
         logicalRunwayBox = new ComboBox<>();
-        leftRightBox = new ComboBox<>();
-        leftRight = generateLeftRight();
+        centreLinePositionBox = new ComboBox<>();
+        centreLinePosition = generatecentreLinePosition();
         checkForAirports();
 
     }
@@ -103,7 +103,7 @@ public class Controller implements Initializable {
     {
         airportMainBox.setItems(airportDefinitionController.getAirportObservableList());
         obstacleBox.setItems(obstacleDefinitionController.getObstacles());
-        leftRightBox.setItems(leftRight);
+        centreLinePositionBox.setItems(centreLinePosition);
         runwayBox.setDisable(true);
         logicalRunwayBox.setDisable(true);
         NotificationThread notificationThread = new NotificationThread();
@@ -300,7 +300,7 @@ public class Controller implements Initializable {
                 || logicalRunwayBox.getValue().toString().trim().equalsIgnoreCase("Logical Runway")
                 || leftThresholdDistance.getText().trim().isEmpty()
                 || rightThresholdDistance.getText().trim().isEmpty()
-                || leftRightBox.getValue().trim().equalsIgnoreCase("L/R")
+                || centreLinePositionBox.getValue().trim().equalsIgnoreCase("L/R")
                 || centreLineDistance.getText().trim().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("Please fill in all inputs");
@@ -389,9 +389,9 @@ public class Controller implements Initializable {
 
     }
 
-    private ObservableList<String> generateLeftRight()
+    private ObservableList<String> generatecentreLinePosition()
     {
-        return FXCollections.observableArrayList("L","R");
+        return FXCollections.observableArrayList("N","S");
     }
 
     public void drawRunway(RevisedRunway revisedRunway, Obstacle obstacle, Position position) {

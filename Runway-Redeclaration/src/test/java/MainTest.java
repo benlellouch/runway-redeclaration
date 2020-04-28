@@ -150,7 +150,7 @@ public class MainTest extends ApplicationTest
         clickOn("#logicalRunwayBox").clickOn("09R");
         clickOn("#leftThresholdDistance").write("2853");
         clickOn("#rightThresholdDistance").write("500");
-        clickOn("#leftRightBox").clickOn("L");
+        clickOn("#centreLinePositionBox").clickOn("L");
         clickOn("#centreLineDistance").write("20");
 
         clickOn("Calculate");
@@ -260,7 +260,7 @@ public class MainTest extends ApplicationTest
         clickOn("#logicalRunwayBox").clickOn("09R");
         clickOn("#leftThresholdDistance").write("2853");
         clickOn("#rightThresholdDistance").write("string 500");
-        clickOn("#leftRightBox").clickOn("L");
+        clickOn("#centreLinePositionBox").clickOn("L");
         clickOn("#centreLineDistance").write("20");
 
         clickOn("Calculate");

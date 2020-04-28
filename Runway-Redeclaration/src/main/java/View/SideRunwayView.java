@@ -25,8 +25,7 @@ public class SideRunwayView extends AbstractRunwayView {
 
         render();
 
-        int obstacle_x = (obstaclePosition.getDistLThresh() < obstaclePosition.getDistRThresh()) ?
-                obstaclePosition.getDistLThresh() + leftSpace + displacedThr : obstaclePosition.getDistLThresh() + leftSpace;
+        int obstacle_x = obstaclePosition.getDistLThresh() + leftSpace + displacedThr;
 
         gc.setFill(Color.RED);
         gc.setGlobalAlpha(0.5);
@@ -41,9 +40,6 @@ public class SideRunwayView extends AbstractRunwayView {
         renderSlope(obstacleLength, slopeCalculation);
 
         renderDistances(obstacleLength, 200, 110);
-
-
-
     }
 
     private void renderSlope(int obstacleLength, int slopeCalculation) {
@@ -55,7 +51,7 @@ public class SideRunwayView extends AbstractRunwayView {
         gc.setGlobalAlpha(0.5);
 
         if (obstaclePosition.getDistLThresh() >= obstaclePosition.getDistRThresh()) {
-            int startObstacle = leftSpace + obstaclePosition.getDistLThresh();
+            int startObstacle = leftSpace + obstaclePosition.getDistLThresh() + displacedThr;
 
             gc.fillPolygon(new double[]{x_scale(startObstacle - slopeCalculation), x_scale(startObstacle), x_scale(startObstacle)}, new double[]{y_scale(149), y_scale(149), y_scale(149 - obstacleHeight)}, 3);
         } else {
