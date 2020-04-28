@@ -378,7 +378,7 @@ public class Controller implements Initializable {
     private void updateLogicalRunwayView()
     {
         try {
-            if (revisedRunwayOnDisplay.getName().equals(runwayBox.getValue().getName())) {
+            if (revisedRunwayOnDisplay.getName().equals(runwayBox.getValue().getName()) && logicalRunwayBox.getValue() != null) {
                 calculateRevisedRunway();
             }
         }
