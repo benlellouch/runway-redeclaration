@@ -85,7 +85,12 @@ public static ObstacleDefinitionController getInstance()
                 alert.setContentText("Please put a number greater than zero for Height");
                 alert.showAndWait();
 
-            } else {
+            } else if (Integer.parseInt(obstacleHeight.getText().trim()) > 100) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("Please put a number less than one hundred for Height");
+                alert.showAndWait();
+            }
+            else {
                 int newObstacleHeight = Integer.parseInt(obstacleHeight.getText().trim());
                 Obstacle newObstacleCreated = new Obstacle(newObstacleName,newObstacleHeight,1);
                 obstacles.add(newObstacleCreated);

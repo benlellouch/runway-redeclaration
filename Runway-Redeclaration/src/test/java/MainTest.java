@@ -197,15 +197,30 @@ public class MainTest extends ApplicationTest
     // Boundary Tests ////////////////////////////////////////////////////////////////////////////
 
     @Test
-    public void boundaryTest_Obstacle()
+    public void boundaryTest_lowerObstacle()
     {
         clickOn("File").clickOn("Define New Obstacle");
-        clickOn("#obstacleName").write("Boundary Obstacle");
+        clickOn("#obstacleName").write("Crate");
         clickOn("#obstacleHeight").write("1");
         clickOn("#obstacleDoneButton");
+        clickOn("#obstacleBox").clickOn("Crate(1m)");
         FxAssert.verifyThat("#obstacleBox", (ComboBox<Obstacle> o) -> {
             String val = o.getValue().getName();
-            return val.equals("Boundary Obstacle") && o.getValue().getHeight() == 1;
+            return val.equals("Crate") && o.getValue().getHeight() == 1;
+        });
+    }
+
+    @Test
+    public void boundaryTest_upperObstacle()
+    {
+        clickOn("File").clickOn("Define New Obstacle");
+        clickOn("#obstacleName").write("Crane");
+        clickOn("#obstacleHeight").write("100");
+        clickOn("#obstacleDoneButton");
+        clickOn("#obstacleBox").clickOn("Crane(100m)");
+        FxAssert.verifyThat("#obstacleBox", (ComboBox<Obstacle> o) -> {
+            String val = o.getValue().getName();
+            return val.equals("Crane") && o.getValue().getHeight() == 100;
         });
     }
 
@@ -410,6 +425,14 @@ public class MainTest extends ApplicationTest
         clickOn("#obstacleHeight").write("0");
         clickOn("#obstacleDoneButton");
         alert_dialog_has_header_and_content("Message","Please put a number greater than zero for Height");
+    }
+    @Test
+    public void fail_obstacleLargeHeight(){
+        clickOn("File").clickOn("Define New Obstacle");
+        clickOn("#obstacleName").write("Pole");
+        clickOn("#obstacleHeight").write("101");
+        clickOn("#obstacleDoneButton");
+        alert_dialog_has_header_and_content("Message","Please put a number less than one hundred for Height");
     }
 
     @Test
