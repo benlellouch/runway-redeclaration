@@ -1,0 +1,65 @@
+<?xml version = "1.0"?>
+<Models>
+
+<Airport name = "Heathrow">
+	<Runway>
+		<LogicalRunway degree="09">
+                   <direction>R</direction> 
+                   <TORA>3</TORA> 
+                   <TODA>3</TODA> 
+                   <ASDA>3</ASDA>  
+                   <LDA>4</LDA>
+		</LogicalRunway>
+
+		<LogicalRunway degree="27">
+                <direction>L</direction> 
+                   <TORA>3</TORA> 
+                   <TODA>3</TODA> 
+                   <ASDA>3</ASDA>  
+                   <LDA>4</LDA>
+		</LogicalRunway>
+
+	</Runway>
+</Airport>
+
+<Airport name = "Gatwick">
+	<Runway>
+		<LogicalRunway degree="10">
+                   <direction>R</direction> 
+                   <TORA>3</TORA> 
+                   <TODA>3</TODA> 
+                   <ASDA>3</ASDA>  
+                   <LDA>4</LDA>
+		</LogicalRunway>
+
+		<LogicalRunway degree="28">
+                <direction> L </direction> 
+                   <TORA>3</TORA> 
+                   <TODA>3</TODA> 
+                   <ASDA>3</ASDA>  
+                   <LDA>4</LDA>
+		</LogicalRunway>
+	</Runway>
+</Airport>
+
+<Airport name = "Stansted">
+	<Runway>
+		<LogicalRunway degree="07">
+                   <direction>R</direction> 
+                   <TORA>3</TORA> 
+                   <TODA>3</TODA> 
+                   <ASDA>3</ASDA>  
+                   <LDA>4</LDA>
+		</LogicalRunway>
+
+		<LogicalRunway degree="25">
+                <direction> L </direction> 
+                   <TORA>3</TORA> 
+                   <TODA>3</TODA> 
+                   <ASDA>3</ASDA>  
+                   <LDA>4</LDA>
+		</LogicalRunway>
+	</Runway>
+</Airport>
+
+</Models>

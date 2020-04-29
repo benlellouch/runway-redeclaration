@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DialogPane;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.text.Text;
@@ -78,7 +79,7 @@ public class MainTest extends ApplicationTest
         release(new MouseButton[]{});
     }
 
-        // Successful Tests ////////////////////////////////////////////////////////////////////////////
+    // Successful Tests ////////////////////////////////////////////////////////////////////////////
         
     @Test
     public void addedNewAirportOnStartUp () {
@@ -88,16 +89,22 @@ public class MainTest extends ApplicationTest
             String val = c.getValue().getName();
             return val.equals("Heathrow");
         });
+        FxAssert.verifyThat("#notificationsLog", (Text s) -> s.getText().contains("Airport: " + "Heathrow" + " has been added"));
     }
 
     @Test
     public void successfulAirportDef (){
         clickOn("File");
         clickOn("Define New Airport");
-        clickOn("#airportName").write("Some other Airport");
+        clickOn("#airportName").write("Gatwick");
         clickOn("#airportDoneButton");
         //clickOn("#airportMainBox");
         FxAssert.verifyThat("#airportMainBox", ComboBoxMatchers.hasItems(2));
+        FxAssert.verifyThat("#airportMainBox", (ComboBox<Airport> c) -> {
+            String val = c.getItems().get(1).getName();
+            return val.equals(("Gatwick"));
+        });
+        FxAssert.verifyThat("#notificationsLog", (Text s) -> s.getText().contains("Airport: " + "Gatwick" + " has been added"));
     }
 
     public void prepareRunway(){
@@ -117,7 +124,22 @@ public class MainTest extends ApplicationTest
 
         addedNewAirportOnStartUp();
         clickOn("#runwayBox").clickOn("09R/27L");
+
+        FxAssert.verifyThat("#runwayBox", (ComboBox<Runway> r) -> {
+            String val = r.getItems().get(0).getName();
+            return val.equals("09R/27L");
+        });
+
         clickOn("#logicalRunwayBox").clickOn("09R");
+
+        FxAssert.verifyThat("#logicalRunwayBox", (ComboBox<LogicalRunway> l) -> {
+            String l1 = l.getItems().get(0).getName();
+            String l2 = l.getItems().get(1).getName();
+            int size = l.getItems().size();
+            return (size == 2) && (l1.equals("09R")) && (l2.equals("27L")) && (!l.isDisabled());
+        });
+
+        FxAssert.verifyThat("#notificationsLog", (Text s) -> s.getText().contains("Runway: " + "09R/27L" + " has been added to Airport: Heathrow"));
 
         try{
             //Thread.sleep(3000);
@@ -129,14 +151,15 @@ public class MainTest extends ApplicationTest
     @Test
     public void successfulObstacleDef (){
         clickOn("File").clickOn("Define New Obstacle");
-        clickOn("#obstacleName").write("Obstacle Scenario 2");
+        clickOn("#obstacleName").write("Boeing");
         clickOn("#obstacleHeight").write("25");
         clickOn("#obstacleDoneButton");
-        clickOn("#obstacleBox").clickOn("Obstacle Scenario 2(25m)");
+        clickOn("#obstacleBox").clickOn("Boeing(25m)");
         FxAssert.verifyThat("#obstacleBox", (ComboBox<Obstacle> o) -> {
             String val = o.getValue().getName();
-            return val.equals("Obstacle Scenario 2") && o.getValue().getHeight() == 25;
+            return val.equals("Boeing") && o.getValue().getHeight() == 25;
         });
+        FxAssert.verifyThat("#notificationsLog", (Text s) -> s.getText().contains("Obstacle: " + "Boeing" + " has been added"));
     }
 
         
@@ -150,7 +173,7 @@ public class MainTest extends ApplicationTest
         clickOn("#logicalRunwayBox").clickOn("09R");
         clickOn("#leftThresholdDistance").write("2853");
         clickOn("#rightThresholdDistance").write("500");
-        clickOn("#centreLinePositionBox").clickOn("L");
+        clickOn("#centreLinePositionBox").clickOn("N");
         clickOn("#centreLineDistance").write("20");
 
         clickOn("Calculate");
@@ -171,8 +194,164 @@ public class MainTest extends ApplicationTest
         });
     }
 
+    // Boundary Tests ////////////////////////////////////////////////////////////////////////////
+
+    @Test
+    public void boundaryTest_Obstacle()
+    {
+        clickOn("File").clickOn("Define New Obstacle");
+        clickOn("#obstacleName").write("Boundary Obstacle");
+        clickOn("#obstacleHeight").write("1");
+        clickOn("#obstacleDoneButton");
+        FxAssert.verifyThat("#obstacleBox", (ComboBox<Obstacle> o) -> {
+            String val = o.getValue().getName();
+            return val.equals("Boundary Obstacle") && o.getValue().getHeight() == 1;
+        });
+    }
+
+    @Test
+    public void boundaryTest_Runway(){
+        prepareRunway();
+        runwayDefFillAll("0");
+        addedNewAirportOnStartUp();
+        clickOn("#runwayBox").clickOn("09R/27L");
+        FxAssert.verifyThat("#runwayBox", (ComboBox<Runway> r) -> {
+            String val = r.getItems().get(0).getName();
+            return val.equals("09R/27L");
+        });
+        clickOn("#logicalRunwayBox").clickOn("09R");
+        FxAssert.verifyThat("#logicalRunwayBox", (ComboBox<LogicalRunway> l) -> {
+            String l1 = l.getItems().get(0).getName();
+            String l2 = l.getItems().get(1).getName();
+            int size = l.getItems().size();
+            return (size == 2) && (l1.equals("09R")) && (l2.equals("27L")) && (!l.isDisabled());
+        });
+    }
+
+    // Scenario Tests /////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Scenario 1: Lauren (Runway Technician)
+    @Test
+    public void scenario1()
+    {
+        clickOn("File").clickOn("Define New Airport");
+        write("Bristol").clickOn("#airportDoneButton");
+        clickOn("#airportMainBox").clickOn("Bristol");
+        clickOn("File").clickOn("Define New Runway");
+        clickOn("#runwayDegree").clickOn("09");
+        clickOn("#runwayPosition").clickOn("C");
+
+        clickOn("#todaLeft").write("7500");
+        clickOn("#toraLeft").write("7500");
+        clickOn("#asdaLeft").write("7500");
+        clickOn("#ldaLeft").write("5000;");
+
+        clickOn("#todaRight").write("7500");
+        clickOn("#toraRight").write("7500");
+        clickOn("#asdaRight").write("-7500");
+        clickOn("#ldaRight").write("5000");
+
+        clickOn("#airports").clickOn("Bristol");
+        clickOn("#runwayDoneButton");
+
+        alert_dialog_has_header_and_content("Message","Please ensure only positive values are used for measurements");
+
+        clickOn("#asdaRight");
+        clearTextField(5);
+        write("7500");
+
+        clickOn("#runwayDoneButton");
+
+        alert_dialog_has_header_and_content("Message","Please ensure only numbers are used as inputs for measurements");
+
+        clickOn("#ldaLeft");
+        clearTextField(1);
+
+        clickOn("#runwayDoneButton");
+
+        clickOn("File").clickOn("Define New Obstacle");
+
+        clickOn("#obstacleName").write("Jumbo Jet");
+        clickOn("#obstacleHeight").write("tall");
+        clickOn("#obstacleDoneButton");
+
+        alert_dialog_has_header_and_content("Message","Please input a number for height");
+
+        clickOn("#obstacleHeight");
+        clearTextField(4);
+        write("30");
+
+        clickOn("#obstacleDoneButton");
+
+        clickOn("#runwayBox").clickOn("09C/27C");
+        clickOn("#logicalRunwayBox").clickOn("09C");
+        clickOn("#obstacleBox").clickOn("Jumbo Jet(30m)");
+    }
+
+    // Scenario 2: Charles (Airfield Operations Manager)
+    @Test
+    public void scenario2()
+    {
+        scenario1();
+
+        clickOn("#leftThresholdDistance").write("-50");
+        clickOn("#rightThresholdDistance").write("7550");
+        clickOn("#centreLinePositionBox").clickOn("N");
+        clickOn("#centreLineDistance").write("20");
+        clickOn("Calculate");
+        clickOn("Side-on view");
+
+        try
+        {
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException ex)
+        {
+            ex.printStackTrace();
+        }
+
+        clickOn("Top-down view");
+
+        try
+        {
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException ex)
+        {
+            ex.printStackTrace();
+        }
+
+        clickOn("Calculation Breakdown");
+
+        try
+        {
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException ex)
+        {
+            ex.printStackTrace();
+        }
+
+        clickOn("Simultaneous View");
+
+        try
+        {
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    // Scenario 3: Aaron (Runway Technician)
+    // (This test cannot currently be implemented since it is designed to test the import XML functionality.)
+    // TODO: (Maybe) Refactor to allow for Import XML tests.
+
+    // Scenario 4: James (Airfield Operations Manager)
+    // Apart from the error made in this scenario, this test would be identical to that of Scenario 2 (and just as useless since we can't tell if the visualisation is correct through TestFX)
         
-        // Tests Giving Undesired Outputs /////////////////////////////////////////////////////////////////////////////
+    // Tests Giving Undesired Outputs /////////////////////////////////////////////////////////////////////////////
         
     @Test
     public void fail_emptyInputAirport(){
@@ -225,6 +404,15 @@ public class MainTest extends ApplicationTest
     }
 
     @Test
+    public void fail_obstacleZeroHeight(){
+        clickOn("File").clickOn("Define New Obstacle");
+        clickOn("#obstacleName").write("Pole");
+        clickOn("#obstacleHeight").write("0");
+        clickOn("#obstacleDoneButton");
+        alert_dialog_has_header_and_content("Message","Please put a number greater than zero for Height");
+    }
+
+    @Test
     public void fail_emptyInputRunwayDef(){
         prepareRunway();
         clickOn("#runwayDoneButton");
@@ -266,10 +454,8 @@ public class MainTest extends ApplicationTest
         clickOn("Calculate");
         alert_dialog_has_header_and_content("Message","Please input numbers for distances");
     }
-
         
-        
-        //Helper Methods ----------------------------------------------------------------------//
+    //Helper Methods ----------------------------------------------------------------------//
         
     /*Helper Method to retrieve Java FX GUI components */
     public  <T extends Node> T find(final String query){
@@ -315,4 +501,22 @@ public class MainTest extends ApplicationTest
         clickOn("#runwayDoneButton");
     }
 
+    public void runwayDefFillAll(String input) {
+        clickOn("#todaLeft").write(input);
+        clickOn("#toraLeft").write(input);
+        clickOn("#asdaLeft").write(input);
+        clickOn("#ldaLeft").write(input);
+
+        clickOn("#todaRight").write(input);
+        clickOn("#toraRight").write(input);
+        clickOn("#asdaRight").write(input);
+        clickOn("#ldaRight").write(input);
+
+        clickOn("#airports").clickOn("Heathrow");
+        clickOn("#runwayDoneButton");
+    }
+
+    public void clearTextField(int size) {
+        for (int i = 0; i < size; i++) { push(KeyCode.BACK_SPACE); }
+    }
 }

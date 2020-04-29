@@ -1,0 +1,24 @@
+<?xml version = "1.0"?>
+<Models>
+
+<Obstacle name="Lighting Pole">
+ <height>5</height>
+ <width>1</width>
+</Obstacle>
+
+<Obstacle name="Barricades">
+ <height>1</height>
+ <width>2</width>
+</Obstacle>
+
+<Obstacle name="Broken Down Rover Vehicle">
+ <height>2</height>
+ <width>2</width>
+</Obstacle>
+
+<Obstacle name="Broken Down Aircraft">
+ <height>19</height>
+ <width>75</width>
+</Obstacle>
+
+</Models>
