@@ -1,32 +1,49 @@
 package Controller;
 
 import Model.*;
+import View.AbstractRunwayView;
 import XMLParsing.ModelFactory;
 import View.SideRunwayView;
 import View.TopRunwayView;
+import com.sun.javafx.runtime.VersionInfo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
+import javax.imageio.ImageIO;
+import javax.tools.Tool;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Time;
 import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -72,6 +89,14 @@ public class Controller implements Initializable {
     private Button noAirportDefinedOK;
     @FXML
     private CheckBox orientationCheckBox;
+    @FXML
+    private ComboBox<String> viewExportBox;
+    @FXML
+    private ComboBox<String> fileTypeBox;
+    @FXML
+    private TextField fileName;
+    @FXML
+    private Button exportViewButton;
 
     private RevisedRunway revisedRunwayOnDisplay;
 
@@ -80,6 +105,9 @@ public class Controller implements Initializable {
     private FlowPane topDownViewContainer, sideOnViewContainer, simTopDownViewContainer, simSideOnViewContainer;
 
     private ObservableList<String> centreLinePosition;
+    private ObservableList<String> runwayViews;
+    private ObservableList<String> filetype;
+    private Map<String, AbstractRunwayView> runwayViewMap;
     protected static final StringBuilder notificationsString = new StringBuilder();
     protected static Image tick = new Image("icons/smalltick.png", true);
 
@@ -94,7 +122,12 @@ public class Controller implements Initializable {
         runwayBox = new ComboBox<>();
         logicalRunwayBox = new ComboBox<>();
         centreLinePositionBox = new ComboBox<>();
+        fileTypeBox = new ComboBox<>();
+        viewExportBox = new ComboBox<>();
         centreLinePosition = generatecentreLinePosition();
+        filetype = generateFileTypes();
+        runwayViews = FXCollections.observableArrayList("Top View", "Side View");
+        runwayViewMap = new HashMap<>();
         checkForAirports();
 
     }
@@ -106,8 +139,16 @@ public class Controller implements Initializable {
         airportMainBox.setItems(airportDefinitionController.getAirportObservableList());
         obstacleBox.setItems(obstacleDefinitionController.getObstacles());
         centreLinePositionBox.setItems(centreLinePosition);
-        runwayBox.setDisable(true);
-        logicalRunwayBox.setDisable(true);
+        if(runwayBox.getValue() == null)
+        {
+            runwayBox.setDisable(true);
+        }
+        if(logicalRunwayBox.getValue() == null)
+        {
+            logicalRunwayBox.setDisable(true);
+        }
+        viewExportBox.setItems(runwayViews);
+        fileTypeBox.setItems(filetype);
         NotificationThread notificationThread = new NotificationThread();
         Thread thread = new Thread(notificationThread);
         thread.setDaemon(true);
@@ -221,6 +262,38 @@ public class Controller implements Initializable {
     }
 
     @FXML
+    private void openViewExport()
+    {
+        if (runwayViewMap.isEmpty())
+        {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("No Runway View to save.");
+            alert.showAndWait();
+        }
+        else
+        {
+            try
+            {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/runway_image_export.fxml"));
+                loader.setController(this);
+                Parent root = loader.load();
+                Stage definitionStage = new Stage();
+                Scene definitionScene = new Scene(root);
+                definitionStage.setTitle("Export Runway View");
+                definitionStage.getIcons().add(new Image("icons/icon.png"));
+                definitionStage.setScene(definitionScene);
+                definitionStage.show();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
+    @FXML
     private void openImportFile(){
 
         ObservableList<Airport> airportObservableList = airportDefinitionController.getAirportObservableList();
@@ -302,6 +375,67 @@ public class Controller implements Initializable {
     }
 
     @FXML
+    private void exportView()
+    {
+        if (fileTypeBox.getValue() == null || viewExportBox.getValue() == null || fileName.getText().trim().isEmpty())
+        {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Please fill in all inputs");
+            alert.showAndWait();
+        }else
+        {
+            String fileType = fileTypeBox.getValue();
+            AbstractRunwayView runway = runwayViewMap.get(viewExportBox.getValue());
+            File file = new File(fileName.getText());
+
+
+            if (fileType.equals("jpg"))
+            {
+                try{
+                WritableImage wi;
+
+                SnapshotParameters parameters = new SnapshotParameters();
+                parameters.setFill(Color.WHITE);
+
+                int imageWidth = (int) runway.getBoundsInLocal().getWidth();
+                int imageHeight = (int) runway.getBoundsInLocal().getHeight();
+
+                wi = new WritableImage(imageWidth, imageHeight);
+                runway.snapshot(parameters, wi);
+                BufferedImage bufImageARGB = SwingFXUtils.fromFXImage(wi, null);
+                BufferedImage bufImageRGB = new BufferedImage(bufImageARGB.getWidth(), bufImageARGB.getHeight(), BufferedImage.OPAQUE);
+                Graphics2D graphics = bufImageRGB.createGraphics();
+                graphics.drawImage(bufImageARGB, 0, 0, null);
+                ImageIO.write(bufImageRGB, "jpg", file);
+                graphics.dispose();
+                Stage stage = (Stage) exportViewButton.getScene().getWindow();
+                stage.close();
+            } catch (IOException ex) { ex.printStackTrace(); }
+
+            }
+            else
+            {
+                //Prompt user to select a file
+
+                try {
+                    //Pad the capture area
+                    WritableImage writableImage = new WritableImage((int)runway.getWidth() + 20,
+                            (int)runway.getHeight() + 20);
+                    runway.snapshot(null, writableImage);
+                    RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
+                    //Write the snapshot to the chosen file
+                    ImageIO.write(renderedImage, fileType, file);
+                    Stage stage = (Stage) exportViewButton.getScene().getWindow();
+                    stage.close();
+                } catch (IOException ex) { ex.printStackTrace(); }
+            }
+
+        }
+
+
+    }
+
+    @FXML
     private void calculateRevisedRunway()
     {
         try{
@@ -355,6 +489,7 @@ public class Controller implements Initializable {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("Please fill in all inputs");
         alert.showAndWait();
+        e.printStackTrace();
     }catch (NumberFormatException ex){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("Please input numbers for distances");
@@ -408,13 +543,13 @@ public class Controller implements Initializable {
     {
         return FXCollections.observableArrayList("N","S");
     }
+    private ObservableList<String> generateFileTypes() {return FXCollections.observableArrayList("jpg", "png", "gif");}
 
     public void drawRunway(RevisedRunway revisedRunway, Obstacle obstacle, Position position) {
         topDownViewContainer.getChildren().clear();
         sideOnViewContainer.getChildren().clear();
         simSideOnViewContainer.getChildren().clear();
         simTopDownViewContainer.getChildren().clear();
-
 
         Runway runway = runwayBox.getSelectionModel().getSelectedItem();
         LogicalRunway originalRunway = logicalRunwayBox.getSelectionModel().getSelectedItem();
@@ -463,9 +598,6 @@ public class Controller implements Initializable {
         topRunwayView.heightProperty().bind(topDownViewContainer.heightProperty());
 
 
-
-
-
         // Add everything to top down view tab
         pane.getChildren().addAll(topRunwayView);
         topDownViewContainer.getChildren().add(pane);
@@ -485,8 +617,6 @@ public class Controller implements Initializable {
         simSideRunwayView.heightProperty().bind(simTopDownViewContainer.heightProperty());
         simSideOnViewContainer.getChildren().add(simSideRunwayView);
 
-
-
         // Draw side on view
 
 
@@ -496,6 +626,9 @@ public class Controller implements Initializable {
             simSideRunwayView.renderObstacle();
             simTopRunwayView.renderObstacle();
         }
+
+        runwayViewMap.put("Top View", topRunwayView);
+        runwayViewMap.put("Side View", sideRunwayView);
 
     }
 
