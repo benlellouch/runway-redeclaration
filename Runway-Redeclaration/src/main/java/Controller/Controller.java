@@ -25,6 +25,8 @@ import org.controlsfx.control.Notifications;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
 
 /**
@@ -239,7 +241,15 @@ public class Controller implements Initializable {
                     }
                 }
                 if(!duplicate)
+                {
                     airportObservableList.add(a);
+                    notificationsString.append("Airport: ").append(a.getName()).append(" has been added").append(" (").append(Time.valueOf(LocalTime.now())).append(")").append("\n");
+                    synchronized (Controller.notificationsString)
+                    {
+                        notificationsString.notify();
+                    }
+                }
+
             }
 
             for(Obstacle o : mf.getObstacles()){
@@ -249,7 +259,14 @@ public class Controller implements Initializable {
                         dup = true;
                 }
                 if(!dup)
+                {
                     obstacles.add(o);
+                    notificationsString.append("Obstacle: ").append(o.getName()).append(" has been added").append(" (").append(Time.valueOf(LocalTime.now())).append(")").append("\n");
+                    synchronized (Controller.notificationsString)
+                    {
+                        notificationsString.notify();
+                    }
+                }
             }
             
         }

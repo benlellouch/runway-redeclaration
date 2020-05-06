@@ -5,18 +5,18 @@
 	<Runway>
 		<LogicalRunway degree="09">
                    <direction>R</direction> 
-                   <TORA>3</TORA> 
-                   <TODA>3</TODA> 
-                   <ASDA>3</ASDA>  
-                   <LDA>4</LDA>
+                   <TORA>3902</TORA> 
+                   <TODA>3902</TODA> 
+                   <ASDA>3902</ASDA>  
+                   <LDA>3595</LDA>
 		</LogicalRunway>
 
 		<LogicalRunway degree="27">
                 <direction>L</direction> 
-                   <TORA>3</TORA> 
-                   <TODA>3</TODA> 
-                   <ASDA>3</ASDA>  
-                   <LDA>4</LDA>
+                   <TORA>3884</TORA> 
+                   <TODA>3962</TODA> 
+                   <ASDA>3884</ASDA>  
+                   <LDA>3884</LDA>
 		</LogicalRunway>
 
 	</Runway>
@@ -33,26 +33,6 @@
 		</LogicalRunway>
 
 		<LogicalRunway degree="28">
-                <direction> L </direction> 
-                   <TORA>3</TORA> 
-                   <TODA>3</TODA> 
-                   <ASDA>3</ASDA>  
-                   <LDA>4</LDA>
-		</LogicalRunway>
-	</Runway>
-</Airport>
-
-<Airport name = "Stansted">
-	<Runway>
-		<LogicalRunway degree="07">
-                   <direction>R</direction> 
-                   <TORA>3</TORA> 
-                   <TODA>3</TODA> 
-                   <ASDA>3</ASDA>  
-                   <LDA>4</LDA>
-		</LogicalRunway>
-
-		<LogicalRunway degree="25">
                 <direction> L </direction> 
                    <TORA>3</TORA> 
                    <TODA>3</TODA> 

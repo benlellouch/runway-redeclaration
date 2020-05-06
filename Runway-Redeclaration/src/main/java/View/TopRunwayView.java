@@ -113,6 +113,7 @@ public class TopRunwayView extends AbstractRunwayView {
         renderClearWay();
 
         renderDisplacedTSH();
+        renderTOLDirection();
 
 
     }

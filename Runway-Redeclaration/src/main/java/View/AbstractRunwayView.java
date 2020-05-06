@@ -148,9 +148,9 @@ public abstract class AbstractRunwayView extends javafx.scene.canvas.Canvas {
         gc.setFont(Font.font("Consolas", 14));
         gc.setTextAlign(TextAlignment.RIGHT);
         if (!leftRunway) {
-            gc.fillText("Take-off/landing direction: ->", getWidth() - x_scale(60), y_scale(290));
-        } else {
             gc.fillText("Take-off/landing direction: <-", getWidth() - x_scale(60), y_scale(290));
+        } else {
+            gc.fillText("Take-off/landing direction: ->", getWidth() - x_scale(60), y_scale(290));
         }
     }
 
