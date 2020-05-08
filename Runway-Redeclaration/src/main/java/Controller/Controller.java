@@ -767,8 +767,8 @@ public class Controller implements Initializable {
         sideOnViewContainer.getChildren().add(sideRunwayView);
 
         SideRunwayView simSideRunwayView = new SideRunwayView(runway, revisedLRunway, position, obstacle);
-        simSideRunwayView.widthProperty().bind(simTopDownViewContainer.widthProperty());
-        simSideRunwayView.heightProperty().bind(simTopDownViewContainer.heightProperty());
+        simSideRunwayView.widthProperty().bind(simSideOnViewContainer.widthProperty());
+        simSideRunwayView.heightProperty().bind(simSideOnViewContainer.heightProperty());
         simSideOnViewContainer.getChildren().add(simSideRunwayView);
 
         if (position != null) {
