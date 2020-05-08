@@ -16,6 +16,8 @@
                 <MenuItem onAction="#openObstacleDefinition" text="Define New Obstacle" />
                 <!-- Opens Import File Window-->
                 <MenuItem onAction="#openImportFile" text="Import XML File" />
+
+                <MenuItem onAction="#openPrinterView" text="Print View"/>
             </Menu>
         </MenuBar>
     </top>
