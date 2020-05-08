@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          prefHeight="400.0" prefWidth="600.0">
+    <Text text="Choose View to export" GridPane.rowIndex="1"/>
+    <ComboBox fx:id="viewExportBox"  promptText="Choose View" GridPane.rowIndex="2"/>
+    <Text text="Choose name of file" GridPane.rowIndex="3"/>
+    <TextField fx:id="fileName" GridPane.rowIndex="4"/>
+    <Text text="Choose file type" GridPane.rowIndex="5"/>
+    <ComboBox fx:id="fileTypeBox" GridPane.rowIndex="6" />
+    <Button fx:id="exportViewButton" text="Export View" onAction="#exportView" GridPane.rowIndex="7" />
+</GridPane>

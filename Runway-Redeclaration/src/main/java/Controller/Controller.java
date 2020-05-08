@@ -2,31 +2,49 @@ package Controller;
 
 import Model.*;
 import XMLParsing.*;
+import com.sun.javafx.runtime.VersionInfo;
+import Printer.ViewPrinter;
+import View.AbstractRunwayView;
 import View.SideRunwayView;
 import View.TopRunwayView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
+import javax.imageio.ImageIO;
+import javax.tools.Tool;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Time;
 import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -36,7 +54,6 @@ import java.util.ResourceBundle;
  */
 
 public class Controller implements Initializable {
-
 
     //A singleton controller is assigned to every definition window
      AirportDefinitionController airportDefinitionController = AirportDefinitionController.getInstance();
@@ -72,6 +89,16 @@ public class Controller implements Initializable {
     private Button noAirportDefinedOK;
     @FXML
     private CheckBox orientationCheckBox;
+    @FXML
+    private ComboBox<String> viewExportBox;
+    @FXML
+    private ComboBox<String> fileTypeBox;
+    @FXML
+    private TextField fileName;
+    @FXML
+    private Button exportViewButton;
+    @FXML
+    private ComboBox<String> printBox;
 
     private RevisedRunway revisedRunwayOnDisplay;
 
@@ -80,8 +107,14 @@ public class Controller implements Initializable {
     private FlowPane topDownViewContainer, sideOnViewContainer, simTopDownViewContainer, simSideOnViewContainer;
 
     private ObservableList<String> centreLinePosition;
-    protected static final StringBuilder notificationsString = new StringBuilder();
+    private ObservableList<String> runwayViews;
+    private ObservableList<String> filetype;
+    private ObservableList<String> printBoxList;
+
+    public static final StringBuilder notificationsString = new StringBuilder();
     protected static Image tick = new Image("icons/smalltick.png", true);
+    private AbstractRunwayView topView;
+    private AbstractRunwayView sideView;
 
 
     /**
@@ -94,20 +127,36 @@ public class Controller implements Initializable {
         runwayBox = new ComboBox<>();
         logicalRunwayBox = new ComboBox<>();
         centreLinePositionBox = new ComboBox<>();
+        fileTypeBox = new ComboBox<>();
+        viewExportBox = new ComboBox<>();
+        centreLinePosition = generatecentreLinePosition();
+        filetype = generateFileTypes();
+        runwayViews = FXCollections.observableArrayList("Top View", "Side View");
+        printBoxList = FXCollections.observableArrayList();
+        printBoxList.setAll("Result", "Top View", "Side View");
+        printBox = new ComboBox<>();
         centreLinePosition = generatecentreLinePosition();
         checkForAirports();
-
     }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
         airportMainBox.setItems(airportDefinitionController.getAirportObservableList());
         obstacleBox.setItems(obstacleDefinitionController.getObstacles());
+        printBox.setItems(printBoxList);
         centreLinePositionBox.setItems(centreLinePosition);
-        runwayBox.setDisable(true);
-        logicalRunwayBox.setDisable(true);
+        if(runwayBox.getValue() == null)
+        {
+            runwayBox.setDisable(true);
+        }
+        if(logicalRunwayBox.getValue() == null)
+        {
+            logicalRunwayBox.setDisable(true);
+        }
+        viewExportBox.setItems(runwayViews);
+        fileTypeBox.setItems(filetype);
+        printBox.setItems(printBoxList);
         NotificationThread notificationThread = new NotificationThread();
         Thread thread = new Thread(notificationThread);
         thread.setDaemon(true);
@@ -165,7 +214,6 @@ public class Controller implements Initializable {
         {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -191,7 +239,6 @@ public class Controller implements Initializable {
         {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -217,6 +264,37 @@ public class Controller implements Initializable {
         {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void openViewExport()
+    {
+        if (sideView == null || topView == null)
+        {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("No Runway View to save.");
+            alert.showAndWait();
+        }
+        else
+        {
+            try
+            {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/runway_image_export.fxml"));
+                loader.setController(this);
+                Parent root = loader.load();
+                Stage definitionStage = new Stage();
+                Scene definitionScene = new Scene(root);
+                definitionStage.setTitle("Export Runway View");
+                definitionStage.getIcons().add(new Image("icons/icon.png"));
+                definitionStage.setScene(definitionScene);
+                definitionStage.show();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
 
     }
 
@@ -254,8 +332,10 @@ public class Controller implements Initializable {
             for(Obstacle o : mf.getObstacles()){
                 boolean dup = false;
                 for(Obstacle os : obstacles){
-                    if(o.getName().equals(os.getName()) && o.getHeight()==os.getHeight())
+                    if (o.getName().equals(os.getName()) && o.getHeight() == os.getHeight()) {
                         dup = true;
+                        break;
+                    }
                 }
                 if(!dup)
                 {
@@ -293,6 +373,86 @@ public class Controller implements Initializable {
             }
         }
 
+    @FXML
+    private void openPrinterView()
+    {
+        try
+        {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/PrinterView.fxml"));
+            loader.setController(this);
+            Parent root = loader.load();
+            Stage definitionStage = new Stage();
+            Scene definitionScene = new Scene(root);
+            definitionStage.setTitle("Print View");
+            definitionStage.getIcons().add(new Image("icons/icon.png"));
+            definitionStage.setScene(definitionScene);
+            definitionStage.show();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void print()
+    {
+        String result = printBox.getValue();
+        if(result == null)
+        {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Please select a view to print");
+            alert.showAndWait();
+        }
+        else
+        {
+            switch (result)
+            {
+                case "Result":
+                    if (revisedRunwayText.getText().isEmpty())
+                    {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setContentText("No result to print");
+                        alert.showAndWait();
+                    }
+                    else
+                    {
+                        ViewPrinter.printResult(revisedRunwayText,(Stage) revisedRunwayText.getScene().getWindow());
+                    }
+                    break;
+                case "Top View":
+                    if (topView != null)
+                    {
+                        ViewPrinter.printRunway(topView, (Stage) revisedRunwayText.getScene().getWindow());
+                    }
+                    else
+                    {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setContentText("No runway to print");
+                        alert.showAndWait();
+                    }
+
+                    break;
+                case "Side View":
+                    if(sideView != null)
+                    {
+                        ViewPrinter.printRunway(sideView, (Stage) revisedRunwayText.getScene().getWindow());
+                    }
+                    else
+                    {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setContentText("No runway to print");
+                        alert.showAndWait();
+                    }
+                    break;
+
+            }
+
+        }
+
+        Stage stage = (Stage) printBox.getScene().getWindow();
+        stage.close();
+>>>>>>> Runway-Redeclaration/src/main/java/Controller/Controller.java
     }
 
 
@@ -322,6 +482,81 @@ public class Controller implements Initializable {
             logicalRunwayBox.setItems(logicalRunwayObservableList);
             logicalRunwayBox.setDisable(false);
         }
+    }
+
+    @FXML
+    private void exportView()
+    {
+        if (fileTypeBox.getValue() == null || viewExportBox.getValue() == null || fileName.getText().trim().isEmpty())
+        {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Please fill in all inputs");
+            alert.showAndWait();
+        }else
+        {
+            String fileType = fileTypeBox.getValue();
+            AbstractRunwayView runway = viewExportBox.getValue() == "Top View" ? topView : sideView;
+            File file = new File(fileName.getText());
+
+
+            if (fileType.equals("jpg"))
+            {
+                try{
+                WritableImage wi;
+
+                SnapshotParameters parameters = new SnapshotParameters();
+                parameters.setFill(Color.WHITE);
+
+                int imageWidth = (int) runway.getBoundsInLocal().getWidth();
+                int imageHeight = (int) runway.getBoundsInLocal().getHeight();
+
+                wi = new WritableImage(imageWidth, imageHeight);
+                runway.snapshot(parameters, wi);
+                BufferedImage bufImageARGB = SwingFXUtils.fromFXImage(wi, null);
+                BufferedImage bufImageRGB = new BufferedImage(bufImageARGB.getWidth(), bufImageARGB.getHeight(), BufferedImage.OPAQUE);
+                Graphics2D graphics = bufImageRGB.createGraphics();
+                graphics.drawImage(bufImageARGB, 0, 0, null);
+                ImageIO.write(bufImageRGB, "jpg", file);
+                graphics.dispose();
+                Stage stage = (Stage) exportViewButton.getScene().getWindow();
+                stage.close();
+            } catch (IOException ex) { ex.printStackTrace(); }
+
+            }
+            else
+            {
+                //Prompt user to select a file
+
+                try {
+                    //Pad the capture area
+                    WritableImage writableImage = new WritableImage((int)runway.getWidth() + 20,
+                            (int)runway.getHeight() + 20);
+                    runway.snapshot(null, writableImage);
+                    RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
+                    //Write the snapshot to the chosen file
+                    ImageIO.write(renderedImage, fileType, file);
+                    Stage stage = (Stage) exportViewButton.getScene().getWindow();
+                    stage.close();
+                } catch (IOException ex) { ex.printStackTrace(); }
+            }
+
+        }
+
+        notificationsString.append("Export: successfully exported ")
+                .append(viewExportBox.getValue())
+                .append(" to ")
+                .append(fileName.getText().trim())
+                .append(" in the ")
+                .append(fileTypeBox.getValue())
+                .append(" format").append(" (")
+                .append(Time.valueOf(LocalTime.now())).append(")").append("\n");
+
+        synchronized (Controller.notificationsString)
+        {
+            notificationsString.notify();
+        }
+
+
     }
 
     @FXML
@@ -363,8 +598,6 @@ public class Controller implements Initializable {
                             .position(Pos.BOTTOM_RIGHT);
             revisedNotification.show();
 
-//            notificationsString.append("Runway: ").append(runwayToRevise.getName()).append(" at Airport: " + airportMainBox.getValue().toString().trim() + " has been revised").append(" (" + Time.valueOf(LocalTime.now()) + ")").append("\n");
-//            notificationsLog.setText(notificationsString.toString());
         revisedRunwayOnDisplay = revisedRunway;
         drawRunway(revisedRunway,obstacleOnRunway,positionOfObstacle);
         }
@@ -378,6 +611,7 @@ public class Controller implements Initializable {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("Please fill in all inputs");
         alert.showAndWait();
+        e.printStackTrace();
     }catch (NumberFormatException ex){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("Please input numbers for distances");
@@ -431,13 +665,13 @@ public class Controller implements Initializable {
     {
         return FXCollections.observableArrayList("N","S");
     }
+    private ObservableList<String> generateFileTypes() {return FXCollections.observableArrayList("jpg", "png", "gif");}
 
     public void drawRunway(RevisedRunway revisedRunway, Obstacle obstacle, Position position) {
         topDownViewContainer.getChildren().clear();
         sideOnViewContainer.getChildren().clear();
         simSideOnViewContainer.getChildren().clear();
         simTopDownViewContainer.getChildren().clear();
-
 
         Runway runway = runwayBox.getSelectionModel().getSelectedItem();
         LogicalRunway originalRunway = logicalRunwayBox.getSelectionModel().getSelectedItem();
@@ -447,36 +681,17 @@ public class Controller implements Initializable {
             if (runway == null) {
                 if (runwayBox.getItems().size() > 0) {
                     runway = runwayBox.getItems().get(0);
-                    // Default to the left virtual runway
                     originalRunway = runway.getLogicalRunway1();
                 }
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            // There is no runway yet
             return;
         }
 
         if (originalRunway == null) {
             return;
         }
-
         Pane pane = new Pane();
-
-        String designator_String = originalRunway.getName();
-        Integer designator = Integer.parseInt(designator_String.replaceAll("[^\\d.]", ""));
-
-        // Calculate bearing of runway
-        double bearing;
-        if (designator <= 18) {
-            bearing = designator * 10;
-        } else {
-            bearing = (designator - 18) * 10;
-        }
-
-        // Rotate compass accordingly
-
-
-        // Draw static elements: measuring line, take-off direction, compass
 
         boolean rotateView = orientationCheckBox.isSelected();
 
@@ -485,11 +700,6 @@ public class Controller implements Initializable {
         topRunwayView.widthProperty().bind(topDownViewContainer.widthProperty());
         topRunwayView.heightProperty().bind(topDownViewContainer.heightProperty());
 
-
-
-
-
-        // Add everything to top down view tab
         pane.getChildren().addAll(topRunwayView);
         topDownViewContainer.getChildren().add(pane);
 
@@ -508,11 +718,6 @@ public class Controller implements Initializable {
         simSideRunwayView.heightProperty().bind(simTopDownViewContainer.heightProperty());
         simSideOnViewContainer.getChildren().add(simSideRunwayView);
 
-
-
-        // Draw side on view
-
-
         if (position != null) {
             topRunwayView.renderObstacle();
             sideRunwayView.renderObstacle();
@@ -520,6 +725,8 @@ public class Controller implements Initializable {
             simTopRunwayView.renderObstacle();
         }
 
+        topView = topRunwayView;
+        sideView =sideRunwayView;
     }
 
 }

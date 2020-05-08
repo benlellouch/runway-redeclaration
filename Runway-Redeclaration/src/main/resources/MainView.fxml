@@ -18,6 +18,11 @@
                 <MenuItem onAction="#openImportFile" text="Import XML File" />
                 <!-- Opens Export File Window -->
                 <MenuItem onAction="#openExportFile" text="Export to XML File"/>
+                <!-- Opens Image Export Window -->
+                <MenuItem onAction="#openViewExport" text="Export Runway View"/>
+                <!-- Opens View Printer Window -->
+                <MenuItem onAction="#openPrinterView" text="Print View"/>
+
             </Menu>
         </MenuBar>
     </top>
