@@ -98,7 +98,7 @@ public class Controller implements Initializable {
     private TextField fileName;
     @FXML
     private Button exportViewButton;
-
+    @FXML
     private ComboBox<String> printBox;
 
     private RevisedRunway revisedRunwayOnDisplay;
@@ -110,7 +110,6 @@ public class Controller implements Initializable {
     private ObservableList<String> centreLinePosition;
     private ObservableList<String> runwayViews;
     private ObservableList<String> filetype;
-    private Map<String, AbstractRunwayView> runwayViewMap;
     private ObservableList<String> printBoxList;
 
     public static final StringBuilder notificationsString = new StringBuilder();
@@ -134,11 +133,10 @@ public class Controller implements Initializable {
         centreLinePosition = generatecentreLinePosition();
         filetype = generateFileTypes();
         runwayViews = FXCollections.observableArrayList("Top View", "Side View");
-        runwayViewMap = new HashMap<>();
-        printBox = new ComboBox<>();
-        centreLinePosition = generatecentreLinePosition();
         printBoxList = FXCollections.observableArrayList();
         printBoxList.setAll("Result", "Top View", "Side View");
+        printBox = new ComboBox<>();
+        centreLinePosition = generatecentreLinePosition();
         checkForAirports();
     }
 
@@ -159,6 +157,7 @@ public class Controller implements Initializable {
         }
         viewExportBox.setItems(runwayViews);
         fileTypeBox.setItems(filetype);
+        printBox.setItems(printBoxList);
         NotificationThread notificationThread = new NotificationThread();
         Thread thread = new Thread(notificationThread);
         thread.setDaemon(true);
@@ -271,7 +270,7 @@ public class Controller implements Initializable {
     @FXML
     private void openViewExport()
     {
-        if (runwayViewMap.isEmpty())
+        if (sideView == null || topView == null)
         {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("No Runway View to save.");
@@ -475,7 +474,7 @@ public class Controller implements Initializable {
         }else
         {
             String fileType = fileTypeBox.getValue();
-            AbstractRunwayView runway = runwayViewMap.get(viewExportBox.getValue());
+            AbstractRunwayView runway = viewExportBox.getValue() == "Top View" ? topView : sideView;
             File file = new File(fileName.getText());
 
 
@@ -690,10 +689,6 @@ public class Controller implements Initializable {
             simSideRunwayView.renderObstacle();
             simTopRunwayView.renderObstacle();
         }
-
-        runwayViewMap.put("Top View", topRunwayView);
-        runwayViewMap.put("Side View", sideRunwayView);
-
 
         topView = topRunwayView;
         sideView =sideRunwayView;
