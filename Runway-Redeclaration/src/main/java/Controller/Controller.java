@@ -372,6 +372,7 @@ public class Controller implements Initializable {
                 notificationsString.notify();
             }
         }
+    }
 
     @FXML
     private void openPrinterView()
@@ -452,7 +453,6 @@ public class Controller implements Initializable {
 
         Stage stage = (Stage) printBox.getScene().getWindow();
         stage.close();
->>>>>>> Runway-Redeclaration/src/main/java/Controller/Controller.java
     }
 
 
