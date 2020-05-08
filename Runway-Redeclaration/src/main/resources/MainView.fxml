@@ -14,12 +14,15 @@
                 <MenuItem onAction="#openRunwayDefinition" text="Define New Runway" />
                 <!-- Opens Obstacle Definition Window -->
                 <MenuItem onAction="#openObstacleDefinition" text="Define New Obstacle" />
-                <!-- Opens Import File Window-->
+                <!-- Opens Import File Window -->
                 <MenuItem onAction="#openImportFile" text="Import XML File" />
-
+                <!-- Opens Export File Window -->
+                <MenuItem onAction="#openExportFile" text="Export to XML File"/>
+                <!-- Opens Image Export Window -->
                 <MenuItem onAction="#openViewExport" text="Export Runway View"/>
-                
+                <!-- Opens View Printer Window -->
                 <MenuItem onAction="#openPrinterView" text="Print View"/>
+
             </Menu>
         </MenuBar>
     </top>

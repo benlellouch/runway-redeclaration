@@ -33,6 +33,10 @@ public class LogicalRunway
 
     public int getDegree() { return degree * 10; }
 
+    public String getDegreeString(){ return ((degree < 10) ? "0" + degree : Integer.toString(degree)); }
+
+    public String getDesignation(){ return designation; }
+
     public Direction getDirection() { return direction; }
 
     public int getLda() {
