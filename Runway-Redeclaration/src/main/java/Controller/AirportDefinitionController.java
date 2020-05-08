@@ -19,8 +19,6 @@ import java.time.LocalTime;
 public class AirportDefinitionController {
 
     private static AirportDefinitionController SINGLE_INSTANCE = null;
-    private Controller mainController;
-
     // Injected Parameters for Airport Definition Window
     @FXML
     private TextField airportName;
