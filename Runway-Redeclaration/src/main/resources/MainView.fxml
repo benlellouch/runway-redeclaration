@@ -17,6 +17,8 @@
                 <!-- Opens Import File Window-->
                 <MenuItem onAction="#openImportFile" text="Import XML File" />
 
+                <MenuItem onAction="#openViewExport" text="Export Runway View"/>
+                
                 <MenuItem onAction="#openPrinterView" text="Print View"/>
             </Menu>
         </MenuBar>

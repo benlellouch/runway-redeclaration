@@ -18,7 +18,6 @@ public class TopRunwayView extends AbstractRunwayView {
     }
 
 
-
     private void renderBackground(GraphicsContext gc)
     {
         gc.setFill(Color.GREEN);
