@@ -1,7 +1,7 @@
 package Controller;
 
 import Model.*;
-import XMLParsing.ModelFactory;
+import XMLParsing.*;
 import View.SideRunwayView;
 import View.TopRunwayView;
 import javafx.collections.FXCollections;
@@ -249,7 +249,6 @@ public class Controller implements Initializable {
                         notificationsString.notify();
                     }
                 }
-
             }
 
             for(Obstacle o : mf.getObstacles()){
@@ -268,8 +267,32 @@ public class Controller implements Initializable {
                     }
                 }
             }
-            
         }
+    }
+
+    @FXML
+    private void openExportFile(){
+        FileChooser fc = new FileChooser();
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("XML Files","*.xml");
+        fc.getExtensionFilters().add(filter);
+        fc.setInitialFileName("Models.xml");
+
+        File file = fc.showSaveDialog(null);
+        if(file!=null){
+            ObservableList<Airport> airportObservableList = airportDefinitionController.getAirportObservableList();
+            ObservableList<Obstacle> obstacles = obstacleDefinitionController.getObstacles();
+
+            ExportXML exportXML = new ExportXML(file,airportObservableList,obstacles);
+
+            exportXML.saveToXML();
+
+            notificationsString.append("Model data exported to ").append(file.getName()).append(" (").append(Time.valueOf(LocalTime.now())).append(")").append("\n");
+            synchronized (Controller.notificationsString)
+            {
+                notificationsString.notify();
+            }
+        }
+
     }
 
 

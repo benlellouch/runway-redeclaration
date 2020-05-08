@@ -37,11 +37,11 @@ public class ModelFactory {
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse(file);
             doc.getDocumentElement().normalize();
-            System.out.println("Root Elem :" + doc.getDocumentElement().getNodeName());
+
             NodeList airportList = doc.getElementsByTagName("Airport");
             NodeList obstacleList = doc.getElementsByTagName("Obstacle");
 
-            makeAiports(airportList);
+            makeAirports(airportList);
             makeObstacle(obstacleList);
 
 
@@ -57,10 +57,10 @@ public class ModelFactory {
         }
     }
 
-    private void makeAiports(NodeList a){
+    private void makeAirports(NodeList a){
         for(int n = 0; n < a.getLength(); n++){
             Node nNode = a.item(n);
-            System.out.println("\nCurrent Element :" + nNode.getNodeName());
+
 
             if(nNode.getNodeType() == Node.ELEMENT_NODE){
                 Element element = (Element) nNode;
