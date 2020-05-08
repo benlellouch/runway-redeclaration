@@ -521,6 +521,20 @@ public class Controller implements Initializable {
 
         }
 
+        notificationsString.append("Export: successfully exported ")
+                .append(viewExportBox.getValue())
+                .append(" to ")
+                .append(fileName.getText().trim())
+                .append(" in the ")
+                .append(fileTypeBox.getValue())
+                .append(" format").append(" (")
+                .append(Time.valueOf(LocalTime.now())).append(")").append("\n");
+
+        synchronized (Controller.notificationsString)
+        {
+            notificationsString.notify();
+        }
+
 
     }
 
