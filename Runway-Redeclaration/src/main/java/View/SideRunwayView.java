@@ -27,7 +27,7 @@ public class SideRunwayView extends AbstractRunwayView {
 
         int obstacle_x = obstaclePosition.getDistLThresh() + leftSpace + displacedThr;
 
-        gc.setFill(Color.RED);
+        gc.setFill(ColourMode.getColourMode().getObstacleColour());
         gc.setGlobalAlpha(0.5);
         scaledFillRect(obstacle_x, 149 - obstacleHeight, obstacleLength, obstacleHeight);
         gc.setGlobalAlpha(1.0);
@@ -47,7 +47,7 @@ public class SideRunwayView extends AbstractRunwayView {
         int displacedThr = Math.max(originalRunways.getLogicalRunway1().getDisplacedThreshold(), originalRunways.getLogicalRunway2().getDisplacedThreshold());
         int obstacleHeight = this.obstacle.getHeight();
 
-        gc.setFill(Color.BLUE);
+        gc.setFill(ColourMode.getColourMode().getSlopeColour());
         gc.setGlobalAlpha(0.5);
 
         if (obstaclePosition.getDistLThresh() >= obstaclePosition.getDistRThresh()) {

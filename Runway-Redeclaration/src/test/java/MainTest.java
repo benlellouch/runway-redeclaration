@@ -426,6 +426,7 @@ public class MainTest extends ApplicationTest
         clickOn("#obstacleDoneButton");
         alert_dialog_has_header_and_content("Message","Please put a number greater than zero for Height");
     }
+
     @Test
     public void fail_obstacleLargeHeight(){
         clickOn("File").clickOn("Define New Obstacle");

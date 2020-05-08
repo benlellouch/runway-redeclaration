@@ -22,7 +22,8 @@
                 <MenuItem onAction="#openViewExport" text="Export Runway View"/>
                 <!-- Opens View Printer Window -->
                 <MenuItem onAction="#openPrinterView" text="Print View"/>
-
+                <!-- Opens Colour Blind Settings Window -->
+                <MenuItem onAction="#openColourBlindSettings" text="Colour Blind Settings"/>
             </Menu>
         </MenuBar>
     </top>

@@ -134,9 +134,9 @@ public abstract class AbstractRunwayView extends javafx.scene.canvas.Canvas {
 
         if (displacedTsh > 0) {
             if (leftRunway) {
-                renderRuler(0, displacedTsh, 80, "Displaced TSH");
+                renderRuler(0, displacedTsh, 90, "Displaced TSH");
             } else {
-                renderRuler(leftSpace + LDA, displacedTsh, 80, "Displaced TSH");
+                renderRuler(leftSpace + LDA, displacedTsh, 90, "Displaced TSH");
             }
         }
     }

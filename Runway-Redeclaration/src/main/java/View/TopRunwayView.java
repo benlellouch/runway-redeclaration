@@ -20,7 +20,7 @@ public class TopRunwayView extends AbstractRunwayView {
 
     private void renderBackground(GraphicsContext gc)
     {
-        gc.setFill(Color.GREEN);
+        gc.setFill(ColourMode.getColourMode().getBackgroundColour());
         gc.fillRect(0,0,getWidth(),getHeight());
     }
 
@@ -37,7 +37,7 @@ public class TopRunwayView extends AbstractRunwayView {
     }
 
     private void renderClearedAndGradedArea(GraphicsContext gc, int offset) {
-        gc.setFill(Color.DARKBLUE);
+        gc.setFill(ColourMode.getColourMode().getClearAndGradedAreaColour());
 
         gc.fillPolygon(getX_scale(offset), getY_scale(), 12);
     }
@@ -66,7 +66,7 @@ public class TopRunwayView extends AbstractRunwayView {
 
             //TODO add obstacle width
 
-            gc.setFill(Color.RED);
+            gc.setFill(ColourMode.getColourMode().getObstacleColour());
             gc.setGlobalAlpha(0.5);
             scaledFillRect(obstacle_x, obstacle_y - 10, obstacleLength, 20);
             gc.setGlobalAlpha(1.0);

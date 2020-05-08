@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          prefHeight="150.0" prefWidth="300.0">
+    <Text text="Colour Blind Settings"  GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+    <fx:define>
+        <ToggleGroup fx:id="colourBlindModes" />
+    </fx:define>
+    <RadioButton fx:id="normalMode" GridPane.rowIndex="2" GridPane.columnIndex="1" text="Normal Mode" toggleGroup="$colourBlindModes"/>
+    <RadioButton fx:id="protanopia" GridPane.rowIndex="3" GridPane.columnIndex="1" text="Protanopia" toggleGroup="$colourBlindModes"/>
+    <RadioButton fx:id="deuteranopia" GridPane.rowIndex="4" GridPane.columnIndex="1" text="Deuteranopia" toggleGroup="$colourBlindModes"/>
+    <RadioButton fx:id="tritanopia" GridPane.rowIndex="5" GridPane.columnIndex="1" text="Tritanopia" toggleGroup="$colourBlindModes"/>
+    <Button fx:id="confirmColourModeButton" onAction="#changeColourMode" GridPane.rowIndex="6" GridPane.columnIndex="1" text="Confirm"/>
+</GridPane>

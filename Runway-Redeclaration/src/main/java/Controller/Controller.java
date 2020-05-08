@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.*;
+import View.ColourMode;
 import XMLParsing.*;
 import com.sun.javafx.runtime.VersionInfo;
 import Printer.ViewPrinter;
@@ -10,6 +11,7 @@ import View.TopRunwayView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -99,6 +101,10 @@ public class Controller implements Initializable {
     private Button exportViewButton;
     @FXML
     private ComboBox<String> printBox;
+    @FXML
+    private ToggleGroup colourBlindModes;
+    @FXML
+    private Button confirmColourModeButton;
 
     private RevisedRunway revisedRunwayOnDisplay;
 
@@ -135,6 +141,7 @@ public class Controller implements Initializable {
         printBoxList = FXCollections.observableArrayList();
         printBoxList.setAll("Result", "Top View", "Side View");
         printBox = new ComboBox<>();
+        colourBlindModes = new ToggleGroup();
         centreLinePosition = generatecentreLinePosition();
         checkForAirports();
     }
@@ -396,6 +403,58 @@ public class Controller implements Initializable {
     }
 
     @FXML
+    private void openColourBlindSettings()
+    {
+        try
+        {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ColourBlindSettings.fxml"));
+            loader.setController(this);
+            Parent root = loader.load();
+            Stage definitionStage = new Stage();
+            Scene definitionScene = new Scene(root);
+            definitionStage.setTitle("Colour Blind Settings");
+            definitionStage.getIcons().add(new Image("icons/icon.png"));
+            definitionStage.setScene(definitionScene);
+            definitionStage.show();
+            colourBlindModes.selectToggle(colourBlindModes.getToggles().get(ColourMode.getColourMode().getColourModeIndex()));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void changeColourMode()
+    {
+        int selectedButton = colourBlindModes.getToggles().indexOf(colourBlindModes.getSelectedToggle());
+
+        switch (selectedButton)
+        {
+            case 0:
+                ColourMode.getColourMode().normalMode();
+                break;
+            case 1:
+                ColourMode.getColourMode().protanopiaMode();
+                break;
+            case 2:
+                ColourMode.getColourMode().deuteranopiaMode();
+                break;
+            case 3:
+                ColourMode.getColourMode().tritanopiaMode();
+                break;
+        }
+
+        if (!calculationValuesMissing())
+        {
+            calculateRevisedRunway();
+        }
+
+        Stage stage = (Stage) confirmColourModeButton.getScene().getWindow();
+        stage.close();
+    }
+
+    @FXML
     private void print()
     {
         String result = printBox.getValue();
@@ -567,14 +626,8 @@ public class Controller implements Initializable {
         Obstacle obstacleOnRunway = obstacleBox.getValue();
         Notifications revisedNotification;
 
-        if(airportMainBox.getValue().toString().trim().equalsIgnoreCase("Airport")
-                || obstacleBox.getValue().toString().trim().equalsIgnoreCase("Obstacle")
-                || runwayBox.getValue().toString().trim().equalsIgnoreCase("Runway")
-                || logicalRunwayBox.getValue().toString().trim().equalsIgnoreCase("Logical Runway")
-                || leftThresholdDistance.getText().trim().isEmpty()
-                || rightThresholdDistance.getText().trim().isEmpty()
-                || centreLinePositionBox.getValue().trim().equalsIgnoreCase("N/S")
-                || centreLineDistance.getText().trim().isEmpty()){
+        if(calculationValuesMissing())
+        {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("Please fill in all inputs");
             alert.showAndWait();
@@ -729,4 +782,22 @@ public class Controller implements Initializable {
         sideView =sideRunwayView;
     }
 
+    private boolean calculationValuesMissing()
+    {
+        try
+        {
+            return airportMainBox.getValue().toString().trim().equalsIgnoreCase("Airport")
+                    || obstacleBox.getValue().toString().trim().equalsIgnoreCase("Obstacle")
+                    || runwayBox.getValue().toString().trim().equalsIgnoreCase("Runway")
+                    || logicalRunwayBox.getValue().toString().trim().equalsIgnoreCase("Logical Runway")
+                    || leftThresholdDistance.getText().trim().isEmpty()
+                    || rightThresholdDistance.getText().trim().isEmpty()
+                    || centreLinePositionBox.getValue().trim().equalsIgnoreCase("N/S")
+                    || centreLineDistance.getText().trim().isEmpty();
+        }
+        catch (NullPointerException ex)
+        {
+            return true;
+        }
+    }
 }
