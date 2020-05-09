@@ -4,55 +4,85 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane hgap="3.0" prefHeight="400.0" prefWidth="600.0" vgap="3.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
 
-    <Text text="Left Runway Designator" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-    <Text text="Right Runway Designator" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-    <!--Reads designator for right logical runway-->
+    <GridPane hgap="10.0" layoutX="78.0" layoutY="34.0" vgap="5.0">
+        <Text smooth="false" text="Left Runway Designator" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></Text>
+        <Text smooth="false" text="Right Runway Designator" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="0">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></Text>
+        <!--Reads designator for right logical runway-->
 
-    <Text text="TODA (m)" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-    <Text text="TODA (m)" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+        <Text text="TODA (m)" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Text text="TODA (m)" GridPane.columnIndex="2" GridPane.rowIndex="2" />
 
-    <!--Reads TODA for left logical runway-->
-    <TextField fx:id="todaLeft" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-    <!--Reads TODA for right logical runway-->
-    <TextField fx:id="todaRight" prefWidth="212.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+        <!--Reads TODA for left logical runway-->
+        <TextField fx:id="todaLeft" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <!--Reads TODA for right logical runway-->
+        <TextField fx:id="todaRight" prefWidth="212.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
 
-    <Text text="TORA (m)" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-    <Text text="TORA (m)" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+        <Text text="TORA (m)" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <Text text="TORA (m)" GridPane.columnIndex="2" GridPane.rowIndex="4" />
 
-    <!--Reads TORA for left logical runway-->
-    <TextField fx:id="toraLeft" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-    <!--Reads TORA for right logical runway-->
-    <TextField fx:id="toraRight" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+        <!--Reads TORA for left logical runway-->
+        <TextField fx:id="toraLeft" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <!--Reads TORA for right logical runway-->
+        <TextField fx:id="toraRight" GridPane.columnIndex="2" GridPane.rowIndex="5" />
 
-    <Text text="ASDA (m)" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-    <Text text="ASDA (m)" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+        <Text text="ASDA (m)" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+        <Text text="ASDA (m)" GridPane.columnIndex="2" GridPane.rowIndex="6" />
 
-    <!--Reads ASDA for left logical runway-->
-    <TextField fx:id="asdaLeft" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-    <!--Reads ASDA for right logical runway-->
-    <TextField fx:id="asdaRight" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+        <!--Reads ASDA for left logical runway-->
+        <TextField fx:id="asdaLeft" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+        <!--Reads ASDA for right logical runway-->
+        <TextField fx:id="asdaRight" GridPane.columnIndex="2" GridPane.rowIndex="7" />
 
-    <Text text="LDA (m)" GridPane.columnIndex="0" GridPane.rowIndex="8" />
-    <Text text="LDA (m)" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+        <Text text="LDA (m)" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+        <Text text="LDA (m)" GridPane.columnIndex="2" GridPane.rowIndex="8" />
 
-    <!--Reads LDA for left logical runway-->
-    <TextField fx:id="ldaLeft" GridPane.columnIndex="0" GridPane.rowIndex="9" />
-    <!--Reads LDA for left logical runway-->
-    <TextField fx:id="ldaRight" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+        <!--Reads LDA for left logical runway-->
+        <TextField fx:id="ldaLeft" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+        <!--Reads LDA for left logical runway-->
+        <TextField fx:id="ldaRight" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+        <SplitPane dividerPositions="0.5" prefHeight="30.0" GridPane.rowIndex="1">
+            <items>
+                <ComboBox fx:id="runwayDegree" onAction="#updateDesignator" promptText=" Degree" />
+                <ComboBox fx:id="runwayPosition" onAction="#updateDesignator" promptText=" Position" />
+            </items>
+        </SplitPane>
+        <Text fx:id="complementDesignatorText" layoutX="10.0" layoutY="171.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <columnConstraints>
+         <ColumnConstraints />
+         <ColumnConstraints />
+         <ColumnConstraints />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
+    </GridPane>
 
-    <!--When pressed, the button calls the runway definition function in Controller-->
-    <Button fx:id="runwayDoneButton" alignment="CENTER" onAction="#defineRunway" text="Done" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
+     <!--When pressed, the button calls the runway definition function in Controller-->
+     <Button fx:id="runwayDoneButton" alignment="CENTER" layoutX="250.0" layoutY="341.0" onAction="#defineRunway" text="Add Runway">
+      <font>
+         <Font name="System Bold" size="13.0" />
+      </font></Button>
 
-    <!--ComboBox containing all the defined airports. The select the airport to which the airport will be added -->
-    <ComboBox fx:id="airports" prefWidth="150.0" promptText="Choose Airport" GridPane.columnIndex="2" GridPane.rowIndex="10" />
-   <SplitPane dividerPositions="0.5" prefHeight="30.0" GridPane.rowIndex="1">
-      <items>
-         <ComboBox fx:id="runwayDegree" onAction="#updateDesignator" promptText=" Degree" />
-         <ComboBox fx:id="runwayPosition" onAction="#updateDesignator" promptText=" Position" />
-      </items>
-   </SplitPane>
-   <Text fx:id="complementDesignatorText" layoutX="10.0" layoutY="171.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <!--ComboBox containing all the defined airports. The select the airport to which the airport will be added -->
+     <ComboBox fx:id="airports" layoutX="226.0" layoutY="305.0" prefWidth="150.0" promptText="Choose Airport" />
 
-</GridPane>
+
+</AnchorPane>

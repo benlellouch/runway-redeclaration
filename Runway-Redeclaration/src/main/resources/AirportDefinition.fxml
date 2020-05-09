@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.text.Text?>
-<GridPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
 
-    <Text text="Airport Name" GridPane.rowIndex="0"/>
-    <!-- Reads airport Name-->
-    <TextField fx:id="airportName" GridPane.rowIndex="1"/>
+    <Text layoutX="257.0" layoutY="167.0" text="Airport Name" />
     <!-- When pressed, the button calls airport definition function in Controller Class.-->
-    <Button fx:id="airportDoneButton" text="Done" onAction="#defineAirport" GridPane.rowIndex="2"/>
+    <Button fx:id="airportDoneButton" layoutX="249.0" layoutY="222.0" onAction="#defineAirport" text="Add Airport">
+      <font>
+         <Font name="System Bold" size="13.0" />
+      </font></Button>
+    <!-- Reads airport Name-->
+    <TextField fx:id="airportName" layoutX="215.0" layoutY="187.0" />
 
-</GridPane>
+</AnchorPane>

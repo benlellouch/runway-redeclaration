@@ -2,13 +2,14 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.text.Text?>
-<GridPane xmlns="http://javafx.com/javafx"
-          xmlns:fx="http://javafx.com/fxml"
-          prefHeight="100.0" prefWidth="250.0">
-    <Text text="Choose view to print"  GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-    <ComboBox fx:id="printBox" GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="Choose view"/>
-    <Button onAction="#print" GridPane.rowIndex="3" GridPane.columnIndex="1" text="Print"/>
+<AnchorPane prefHeight="100.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <Text layoutX="59.0" layoutY="19.0" text="Choose view to print" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+    <ComboBox fx:id="printBox" layoutX="61.0" layoutY="29.0" promptText="Choose view" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+    <Button layoutX="98.0" layoutY="60.0" onAction="#print" text="Print" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <font>
+         <Font name="System Bold" size="13.0" />
+      </font></Button>
 
-</GridPane>
+</AnchorPane>

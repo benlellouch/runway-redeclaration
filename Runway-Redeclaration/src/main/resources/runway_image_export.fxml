@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.text.Text?>
-<GridPane xmlns="http://javafx.com/javafx"
-          xmlns:fx="http://javafx.com/fxml"
-          prefHeight="400.0" prefWidth="600.0">
-    <Text text="Choose View to export" GridPane.rowIndex="1"/>
-    <ComboBox fx:id="viewExportBox"  promptText="Choose View" GridPane.rowIndex="2"/>
-    <Text text="Choose name of file" GridPane.rowIndex="3"/>
-    <TextField fx:id="fileName" GridPane.rowIndex="4"/>
-    <Text text="Choose file type" GridPane.rowIndex="5"/>
-    <ComboBox fx:id="fileTypeBox" GridPane.rowIndex="6" />
-    <Button fx:id="exportViewButton" text="Export View" onAction="#exportView" GridPane.rowIndex="7" />
-</GridPane>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <Text layoutX="228.0" layoutY="84.0" text="Choose View to export" GridPane.rowIndex="1" />
+    <ComboBox fx:id="viewExportBox" layoutX="248.0" layoutY="100.0" promptText="Top, Side" GridPane.rowIndex="2" />
+    <Text layoutX="237.0" layoutY="152.0" text="Choose name of file" GridPane.rowIndex="3" />
+    <TextField fx:id="fileName" layoutX="215.0" layoutY="165.0" GridPane.rowIndex="4" />
+    <Text layoutX="249.0" layoutY="213.0" text="Choose file type" GridPane.rowIndex="5" />
+    <ComboBox fx:id="fileTypeBox" layoutX="233.0" layoutY="225.0" promptText="JPG, PNG, GIF" GridPane.rowIndex="6" />
+    <Button fx:id="exportViewButton" layoutX="247.0" layoutY="273.0" onAction="#exportView" text="Export View" GridPane.rowIndex="7">
+      <font>
+         <Font name="System Bold" size="13.0" />
+      </font></Button>
+</AnchorPane>
