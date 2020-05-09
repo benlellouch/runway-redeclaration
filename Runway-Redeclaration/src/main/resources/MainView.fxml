@@ -4,26 +4,32 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="1080.0" prefWidth="1920.0"  xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
+<BorderPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
     <top>
         <MenuBar>
             <Menu text="File">
-                <!-- Opens Airport Definition Window -->
-                <MenuItem onAction="#openAirportDefinition" text="Define New Airport" />
-                <!-- Opens Runway Definition Window -->
-                <MenuItem onAction="#openRunwayDefinition" text="Define New Runway" />
-                <!-- Opens Obstacle Definition Window -->
-                <MenuItem onAction="#openObstacleDefinition" text="Define New Obstacle" />
-                <!-- Opens Import File Window -->
-                <MenuItem onAction="#openImportFile" text="Import XML File" />
-                <!-- Opens Export File Window -->
-                <MenuItem onAction="#openExportFile" text="Export to XML File"/>
+                <Menu text="Define">
+                    <!-- Opens Airport Definition Window -->
+                    <MenuItem onAction="#openAirportDefinition" text="New Airport" />
+                    <!-- Opens Runway Definition Window -->
+                    <MenuItem onAction="#openRunwayDefinition" text="New Runway" />
+                    <!-- Opens Obstacle Definition Window -->
+                    <MenuItem onAction="#openObstacleDefinition" text="New Obstacle" />
+                </Menu>
+                <Menu text="XML">
+                    <!-- Opens Import File Window -->
+                    <MenuItem onAction="#openImportFile" text="Import XML File" />
+                    <!-- Opens Export File Window -->
+                    <MenuItem onAction="#openExportFile" text="Export XML File" />
+                </Menu>
                 <!-- Opens Image Export Window -->
-                <MenuItem onAction="#openViewExport" text="Export Runway View"/>
+                <MenuItem onAction="#openViewExport" text="Export Runway" />
                 <!-- Opens View Printer Window -->
-                <MenuItem onAction="#openPrinterView" text="Print View"/>
+                <MenuItem onAction="#openPrinterView" text="Print View" />
+            </Menu>
+            <Menu text="Accessibility">
                 <!-- Opens Colour Blind Settings Window -->
-                <MenuItem onAction="#openColourBlindSettings" text="Colour Blind Settings"/>
+                <MenuItem onAction="#openColourBlindSettings" text="Colour Blind Settings" />
             </Menu>
         </MenuBar>
     </top>
@@ -57,7 +63,27 @@
                     <Button onAction="#calculateRevisedRunway" text="Calculate" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                     <ComboBox fx:id="obstacleBox" prefWidth="150.0" promptText="Obstacle" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Obstacle" GridPane.columnIndex="1" />
-               <CheckBox fx:id="orientationCheckBox" onAction="#updateLogicalRunwayView" mnemonicParsing="false" text="Match orientation" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+               <CheckBox fx:id="orientationCheckBox" mnemonicParsing="false" onAction="#updateLogicalRunwayView" text="Match orientation" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+               <columnConstraints>
+                  <ColumnConstraints />
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
                 </GridPane>
                 <TabPane fx:id="pane" prefHeight="771.0" prefWidth="542.0">
                     <tabs>
@@ -110,7 +136,7 @@
         <tabs>
           <Tab text="Notifications">
               <ScrollPane>
-                  <Text fx:id="notificationsLog"/>
+                  <Text fx:id="notificationsLog" />
               </ScrollPane>
           </Tab>
         </tabs>
