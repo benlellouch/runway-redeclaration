@@ -141,9 +141,9 @@ public abstract class AbstractRunwayView extends javafx.scene.canvas.Canvas {
         }
     }
 
-    protected void renderTOLDirection() {
-        gc.setFill(Color.BLACK);
-        gc.setStroke(Color.BLACK);
+    protected void renderTOLDirection(boolean imageBackground) {
+        gc.setFill(imageBackground ? Color.WHITE : Color.BLACK);
+        gc.setStroke(imageBackground ? Color.WHITE : Color.BLACK);
         gc.setLineWidth(y_scale(0.5));
         gc.setFont(Font.font("Consolas", 14));
         gc.setTextAlign(TextAlignment.RIGHT);

@@ -2,12 +2,16 @@ package View;
 
 
 import Model.*;
+import com.sun.deploy.security.SelectableSecurityManager;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class TopRunwayView extends AbstractRunwayView {
     protected boolean rotateView;
     private int bearing;
+    private Image background;
 
     private static final int Y_SCALE = 2;
 
@@ -15,6 +19,14 @@ public class TopRunwayView extends AbstractRunwayView {
         super(originalRunways,revisedRunway, obstaclePosition,obstacle, Color.WHITE);
         this.rotateView = rotateView;
         this.bearing = originalRunways.getLogicalRunway1().getDegree();
+        this.background = null;
+    }
+
+    public TopRunwayView(Runway originalRunways, LogicalRunway revisedRunway, Position obstaclePosition, Obstacle obstacle, Image background)
+    {
+        super(originalRunways,revisedRunway, obstaclePosition,obstacle, Color.WHITE);
+        this.rotateView = false;
+        this.background = background;
     }
 
 
@@ -93,13 +105,23 @@ public class TopRunwayView extends AbstractRunwayView {
         GraphicsContext gc = getGraphicsContext2D();
 
         gc.clearRect(0, 0, width, height);
-        renderBackground(gc);
 
-        if (rotateView) {
-            this.setRotate(bearing - 90);
-            this.setScaleX(0.0089*bearing+0.2);
+        if (background != null)
+        {
+            gc.drawImage(background, 0, 0, getWidth(), getHeight());
         }
-        renderClearedAndGradedArea(gc, leftSpace);
+        else
+        {
+            renderBackground(gc);
+
+            if (rotateView)
+            {
+                this.setRotate(bearing - 90);
+                this.setScaleX(0.0089*bearing+0.2);
+            }
+
+            renderClearedAndGradedArea(gc, leftSpace);
+        }
 
         gc.setFill(Color.web("333"));
         scaledFillRect(leftSpace, 125, TORA, 50);
@@ -112,7 +134,7 @@ public class TopRunwayView extends AbstractRunwayView {
         renderClearWay();
 
         renderDisplacedTSH();
-        renderTOLDirection();
+        renderTOLDirection(background != null);
 
 
     }

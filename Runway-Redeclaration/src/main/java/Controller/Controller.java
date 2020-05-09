@@ -110,7 +110,7 @@ public class Controller implements Initializable {
 
     //TODO make the views seperate fxml files so that we don't need this many containers
     @FXML
-    private FlowPane topDownViewContainer, sideOnViewContainer, simTopDownViewContainer, simSideOnViewContainer;
+    private FlowPane topDownViewContainer, sideOnViewContainer, simTopDownViewContainer, simSideOnViewContainer, mapViewContainer;
 
     private ObservableList<String> centreLinePosition;
     private ObservableList<String> runwayViews;
@@ -725,6 +725,7 @@ public class Controller implements Initializable {
         sideOnViewContainer.getChildren().clear();
         simSideOnViewContainer.getChildren().clear();
         simTopDownViewContainer.getChildren().clear();
+        mapViewContainer.getChildren().clear();
 
         Runway runway = runwayBox.getSelectionModel().getSelectedItem();
         LogicalRunway originalRunway = logicalRunwayBox.getSelectionModel().getSelectedItem();
@@ -771,15 +772,21 @@ public class Controller implements Initializable {
         simSideRunwayView.heightProperty().bind(simSideOnViewContainer.heightProperty());
         simSideOnViewContainer.getChildren().add(simSideRunwayView);
 
+        TopRunwayView mapOverlayView = new TopRunwayView(runway, revisedLRunway, position, obstacle, new Image("images/map_background.png"));
+        mapOverlayView.widthProperty().bind(mapViewContainer.widthProperty());
+        mapOverlayView.heightProperty().bind(mapViewContainer.heightProperty());
+        mapViewContainer.getChildren().add(mapOverlayView);
+
         if (position != null) {
             topRunwayView.renderObstacle();
             sideRunwayView.renderObstacle();
             simSideRunwayView.renderObstacle();
             simTopRunwayView.renderObstacle();
+            mapOverlayView.renderObstacle();
         }
 
         topView = topRunwayView;
-        sideView =sideRunwayView;
+        sideView = sideRunwayView;
     }
 
     private boolean calculationValuesMissing()

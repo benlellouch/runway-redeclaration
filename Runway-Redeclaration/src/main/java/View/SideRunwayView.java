@@ -78,7 +78,7 @@ public class SideRunwayView extends AbstractRunwayView {
         renderClearWay();
 
         renderDisplacedTSH();
-        renderTOLDirection();
+        renderTOLDirection(false);
     }
 
 }
