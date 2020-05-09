@@ -2,8 +2,6 @@ package View;
 
 
 import Model.*;
-import com.sun.deploy.security.SelectableSecurityManager;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
