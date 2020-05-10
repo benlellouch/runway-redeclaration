@@ -28,7 +28,7 @@ test:
   stage: test
   script:
     - cd Runway-Redeclaration
-    - mvn $MAVEN_CLI_OPTS test
+    - mvn $MAVEN_CLI_OPTS -Dtest=CalculationsTest test
     #- mvn test -f "pom-testfx.xml" -DargLine="$HEADLESS_MODE"
   artifacts:
     reports:
