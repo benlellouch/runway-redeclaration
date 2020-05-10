@@ -99,7 +99,7 @@ public class RevisedRunway extends Runway
         int displacement;
 
         calcBreakdown.append("LDA:\nOriginal LDA (").append(lda)
-                .append(") - Distance from Threshold (").append(distanceFromThreshold).append(") - ");
+                .append(") - Distance From Threshold (").append(distanceFromThreshold).append(") - ");
 
         // Ensure the largest of the possible two values is picked to enforce safety.
         if (obstacle.getHeight() * ALS >= RESA)
@@ -150,7 +150,7 @@ public class RevisedRunway extends Runway
     {
         int tempThreshold;
 
-        calcBreakdown.append("TORA:\nDistance from Threshold (").append(distanceFromThreshold).append(")");
+        calcBreakdown.append("TORA:\nDistance From Threshold (").append(distanceFromThreshold).append(")");
 
         if (displacedThreshold != 0)
                 calcBreakdown.append(" + Displaced Threshold (").append(displacedThreshold).append(")");

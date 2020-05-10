@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.text.Text;
@@ -176,7 +177,25 @@ public class MainTest
                     "TORA: 2860\n" +
                     "TODA: 2860\n" +
                     "ASDA: 2860\n\n";
+
             return val.equals(expectedResults);
+        });
+
+        FxAssert.verifyThat("#calculationBreakdown", (Label label) -> {
+            String val = label.getText();
+            String expectedCalcBreakdown = "Runway 09R:\n" +
+                    "LDA:\nDistance From Threshold (2853) - RESA (240) - Strip End (60) = 2553\n" +
+                    "TORA:\nDistance From Threshold (2853) + Displaced Threshold (307) - Slope Calculation (1250) - Strip End (60) = 1850\n" +
+                    "TODA:\nRevised TORA (1850) = 1850\n" +
+                    "ASDA:\nRevised TORA (1850) = 1850\n" +
+                    "\n" +
+                    "Runway 27L:\n" +
+                    "LDA:\nOriginal LDA (3660) - Distance From Threshold (500) - Slope Calculation (1250) - Strip End (60) = 1850\n" +
+                    "TORA:\nOriginal TORA (3660) - Blast Allowance (300) - Distance From Threshold (500) = 2860\n" +
+                    "TODA:\nRevised TORA (2860) + Clearway (0) = 2860\n" +
+                    "ASDA:\nRevised TORA (2860) + Stopway (0) = 2860\n\n";
+
+            return val.equals(expectedCalcBreakdown);
         });
     }
 
