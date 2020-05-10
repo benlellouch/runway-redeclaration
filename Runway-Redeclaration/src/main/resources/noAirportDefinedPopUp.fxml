@@ -5,9 +5,9 @@
 <?import javafx.scene.text.*?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+<AnchorPane prefHeight="80.0" prefWidth="390.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
             xmlns:fx="http://javafx.com/fxml/1">
-    <Text layoutX="70.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0"
+    <Text layoutX="20.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0"
           text="You have not defined any airports yet. Please define a new airport."/>
-    <Button layoutX="282.0" fx:id="noAirportDefinedOK" onAction="#openAirportDefinition" layoutY="150.0" mnemonicParsing="false" text="OK"/>
+    <Button layoutX="175.0" fx:id="noAirportDefinedOK" onAction="#openAirportDefinition" layoutY="40.0" mnemonicParsing="false" text="OK"/>
 </AnchorPane>

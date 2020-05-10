@@ -4,15 +4,20 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.text.Text?>
-<GridPane xmlns="http://javafx.com/javafx"
+<?import javafx.scene.text.Font?>
+<AnchorPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          prefHeight="100.0" prefWidth="300.0">
+          prefHeight="150.0" prefWidth="300.0">
     <fx:define>
         <ToggleGroup fx:id="colourBlindModes" />
     </fx:define>
-    <RadioButton fx:id="normalMode" GridPane.rowIndex="1" GridPane.columnIndex="1" text="Normal Mode" toggleGroup="$colourBlindModes"/>
-    <RadioButton fx:id="protanopia" GridPane.rowIndex="2" GridPane.columnIndex="1" text="Protanopia" toggleGroup="$colourBlindModes"/>
-    <RadioButton fx:id="deuteranopia" GridPane.rowIndex="3" GridPane.columnIndex="1" text="Deuteranopia" toggleGroup="$colourBlindModes"/>
-    <RadioButton fx:id="tritanopia" GridPane.rowIndex="4" GridPane.columnIndex="1" text="Tritanopia" toggleGroup="$colourBlindModes"/>
-    <Button fx:id="confirmColourModeButton" onAction="#changeColourMode" GridPane.rowIndex="5" GridPane.columnIndex="1" text="Confirm"/>
-</GridPane>
+    <RadioButton fx:id="normalMode" layoutX="100.0" layoutY="15.0" GridPane.rowIndex="1" GridPane.columnIndex="1" text="Normal Mode" toggleGroup="$colourBlindModes"/>
+    <RadioButton fx:id="protanopia" layoutX="100.0" layoutY="35.0" GridPane.rowIndex="2" GridPane.columnIndex="1" text="Protanopia" toggleGroup="$colourBlindModes"/>
+    <RadioButton fx:id="deuteranopia" layoutX="100.0" layoutY="55.0" GridPane.rowIndex="3" GridPane.columnIndex="1" text="Deuteranopia" toggleGroup="$colourBlindModes"/>
+    <RadioButton fx:id="tritanopia" layoutX="100.0" layoutY="75.0" GridPane.rowIndex="4" GridPane.columnIndex="1" text="Tritanopia" toggleGroup="$colourBlindModes"/>
+    <Button fx:id="confirmColourModeButton" onAction="#changeColourMode" layoutX="117.5" layoutY="100.0" GridPane.rowIndex="5" GridPane.columnIndex="1" text="Confirm">
+        <font>
+            <Font name="System Bold" size="13.0" />
+        </font>
+    </Button>
+</AnchorPane>

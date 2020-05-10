@@ -4,9 +4,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="150.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
 
-        <GridPane layoutX="215.0" layoutY="145.0">
+        <GridPane layoutX="75.0" layoutY="15.0">
             <Text text="Name of Obstacle" GridPane.rowIndex="0" />
             <!--Reads obstacle name-->
             <TextField fx:id="obstacleName" GridPane.rowIndex="1" />
@@ -24,7 +24,7 @@
       </rowConstraints>
         </GridPane>
         <!--When pressed, the button calls obstacle definition function in Controller-->
-        <Button fx:id="obstacleDoneButton" layoutX="242.0" layoutY="237.0" onAction="#defineObstacle" text="Add Obstacle" textAlignment="CENTER">
+        <Button fx:id="obstacleDoneButton" layoutX="100.0" layoutY="110.0" onAction="#defineObstacle" text="Add Obstacle" textAlignment="CENTER">
       <font>
          <Font name="System Bold" size="13.0" />
       </font></Button>
