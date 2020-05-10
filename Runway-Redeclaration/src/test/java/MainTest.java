@@ -72,7 +72,7 @@ public class MainTest
     // Successful Tests ////////////////////////////////////////////////////////////////////////////
         
     @Test
-    @DisplayName("TC1: Airport successfully added on startup")
+    @DisplayName("TC5: Airport successfully added on startup")
     public void addedNewAirportOnStartUp (FxRobot robot) {
         robot.clickOn("#airportMainBox");
         robot.clickOn("Heathrow");
@@ -84,7 +84,7 @@ public class MainTest
     }
 
     @Test
-    @DisplayName("TC2: Successful airport definition")
+    @DisplayName("TC6: Successful airport definition")
     public void successfulAirportDef (FxRobot robot){
         robot.clickOn("File");
         robot.clickOn("Define").clickOn("New Airport");
@@ -100,7 +100,7 @@ public class MainTest
     }
 
     @Test
-    @DisplayName("TC3: Successful runway definition")
+    @DisplayName("TC7: Successful runway definition")
     public void successfulRunwayDef (FxRobot robot){
         prepareRunway(robot);
         FxAssert.verifyThat("#complementDesignatorText", (Text text) -> text.getText().equals("27L"));
@@ -133,7 +133,7 @@ public class MainTest
     }
 
     @Test
-    @DisplayName("TC4: Successful obstacle definition")
+    @DisplayName("TC8: Successful obstacle definition")
     public void successfulObstacleDef (FxRobot robot){
         robot.clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
         robot.clickOn("#obstacleName").write("Boeing");
@@ -149,7 +149,7 @@ public class MainTest
 
         
     @Test
-    @DisplayName("TC5: Correct results calculated and displayed")
+    @DisplayName("TC9: Correct results calculated and displayed")
     public void correctResultsScenario2(FxRobot robot){
         successfulAirportDef(robot);
         successfulRunwayDef(robot);
@@ -183,7 +183,7 @@ public class MainTest
     // Boundary Tests ////////////////////////////////////////////////////////////////////////////
 
     @Test
-    @DisplayName("TC6: Lower boundary test on obstacle (1m)")
+    @DisplayName("TC10: Lower boundary test on obstacle (1m)")
     public void boundaryTest_lowerObstacle(FxRobot robot)
     {
         robot.clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
@@ -198,7 +198,7 @@ public class MainTest
     }
 
     @Test
-    @DisplayName("TC7: Upper boundary test on obstacle (100m)")
+    @DisplayName("TC11: Upper boundary test on obstacle (100m)")
     public void boundaryTest_upperObstacle(FxRobot robot)
     {
         robot.clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
@@ -213,7 +213,7 @@ public class MainTest
     }
 
     @Test
-    @DisplayName("TC8: Lower boundary test on runway (0m)")
+    @DisplayName("TC12: Lower boundary test on runway (0m)")
     public void boundaryTest_Runway(FxRobot robot){
         prepareRunway(robot);
         runwayDefFillAll(robot,"0");
@@ -234,9 +234,8 @@ public class MainTest
 
     // Scenario Tests /////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Scenario 1: Lauren (Runway Technician)
     @Test
-    @DisplayName("TC9: Test replicating Scenario 1 (Lauren - Runway Technician)")
+    @DisplayName("TC13: Test replicating Scenario 1 (Lauren - Runway Technician)")
     public void scenario1(FxRobot robot)
     {
         robot.clickOn("File").clickOn("Define").clickOn("New Airport");
@@ -293,9 +292,8 @@ public class MainTest
         robot.clickOn("#obstacleBox").clickOn("Jumbo Jet(30m)");
     }
 
-    // Scenario 2: Charles (Airfield Operations Manager)
     @Test
-    @DisplayName("TC10: Test replicating Scenario 2 (Charles - Airfield Operations Manager)")
+    @DisplayName("TC14: Test replicating Scenario 2 (Charles - Airfield Operations Manager)")
     public void scenario2(FxRobot robot)
     {
         scenario1(robot);
@@ -360,7 +358,7 @@ public class MainTest
     // Tests Giving Undesired Outputs /////////////////////////////////////////////////////////////////////////////
         
     @Test
-    @DisplayName("TC11: Failure caused by blank airport name")
+    @DisplayName("TC15: Failure caused by blank airport name")
     public void fail_emptyInputAirport(FxRobot robot){
         robot.clickOn("File");
         robot.clickOn("Define").clickOn("New Airport");
@@ -369,7 +367,7 @@ public class MainTest
     }
 
     @Test
-    @DisplayName("TC12: Failure caused by existing airport name")
+    @DisplayName("TC16: Failure caused by existing airport name")
     public void fail_airportAlreadyExist(FxRobot robot){
         robot.clickOn("File");
         robot.clickOn("Define").clickOn("New Airport");
@@ -379,7 +377,7 @@ public class MainTest
     }
 
     @Test
-    @DisplayName("TC13: Failure caused by existing obstacle name")
+    @DisplayName("TC17: Failure caused by existing obstacle name")
     public void fail_obstacleAlreadyExist(FxRobot robot){
         robot.clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
         robot.clickOn("#obstacleName").write("Barricades");
@@ -389,7 +387,7 @@ public class MainTest
     }
 
     @Test
-    @DisplayName("TC14: Failure caused by non-numeric obstacle height")
+    @DisplayName("TC18: Failure caused by non-numeric obstacle height")
     public void fail_obstacleEmptyInput_stringHeight(FxRobot robot){
         robot.clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
         robot.clickOn("#obstacleDoneButton");
@@ -405,7 +403,7 @@ public class MainTest
     }
 
     @Test
-    @DisplayName("TC15: Failure caused by negative obstacle height")
+    @DisplayName("TC19: Failure caused by negative obstacle height")
     public void fail_obstacleNegativeHeight(FxRobot robot){
         robot.clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
         robot.clickOn("#obstacleName").write("Pole");
@@ -415,7 +413,7 @@ public class MainTest
     }
 
     @Test
-    @DisplayName("TC16: Failure caused by an obstacle height of zero")
+    @DisplayName("TC20: Failure caused by an obstacle height of zero")
     public void fail_obstacleZeroHeight(FxRobot robot){
         robot.clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
         robot.clickOn("#obstacleName").write("Pole");
@@ -425,7 +423,7 @@ public class MainTest
     }
 
     @Test
-    @DisplayName("TC17: Failure caused by large obstacle height (101m)")
+    @DisplayName("TC21: Failure caused by large obstacle height (101m)")
     public void fail_obstacleLargeHeight(FxRobot robot){
         robot.clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
         robot.clickOn("#obstacleName").write("Pole");
@@ -435,7 +433,7 @@ public class MainTest
     }
 
     @Test
-    @DisplayName("TC18: Failure caused by blank runway definition fields")
+    @DisplayName("TC22: Failure caused by blank runway definition fields")
     public void fail_emptyInputRunwayDef(FxRobot robot){
         prepareRunway(robot);
         robot.clickOn("#runwayDoneButton");
@@ -443,7 +441,7 @@ public class MainTest
     }
 
     @Test
-    @DisplayName("TC19: Failure caused by negative runway dimension")
+    @DisplayName("TC23: Failure caused by negative runway dimension")
     public void fail_negativeInputRunwayDef(FxRobot robot){
         prepareRunway(robot);
         runwayDefFill(robot,"-1");
@@ -451,7 +449,7 @@ public class MainTest
     }
 
     @Test
-    @DisplayName("TC20: Failure caused by non-numeric runway dimension")
+    @DisplayName("TC24: Failure caused by non-numeric runway dimension")
     public void fail_stringInputRunwayDef(FxRobot robot){
         prepareRunway(robot);
         runwayDefFill(robot,"String");
@@ -459,14 +457,14 @@ public class MainTest
     }
 
     @Test
-    @DisplayName("TC21: Failure caused by empty calculation fields")
+    @DisplayName("TC25: Failure caused by empty calculation fields")
     public void fail_emptyInputCalulation (FxRobot robot){
         robot.clickOn("Calculate");
         alert_dialog_has_header_and_content(robot,"Message","Please fill in all inputs");
     }
 
     @Test
-    @DisplayName("TC22: Failure caused by non-numeric thresholds")
+    @DisplayName("TC26: Failure caused by non-numeric thresholds")
     public void fail_stringInputCalculation(FxRobot robot){
         successfulAirportDef(robot);
         successfulRunwayDef(robot);
