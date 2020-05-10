@@ -13,12 +13,13 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.api.FxRobot;
+import org.testfx.framework.junit5.ApplicationExtension;
+import org.testfx.framework.junit5.Start;
 import org.testfx.api.FxAssert;
 import org.testfx.api.FxToolkit;
-import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.matcher.control.ComboBoxMatchers;
 
 import java.util.ArrayList;
@@ -26,10 +27,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-        
-public class MainTest extends ApplicationTest
+@ExtendWith(ApplicationExtension.class)
+public class MainTest
 {
 
 //    @BeforeClass
@@ -42,7 +43,7 @@ public class MainTest extends ApplicationTest
 //            System.setProperty("java.awt.headless", "true");
 //    }
 
-    @Override
+    @Start
     public void start (Stage stage) throws Exception{
         Parent mainNode = FXMLLoader.load(Main.class.getResource("/MainView.fxml"));
         stage.setScene(new Scene(mainNode));
@@ -50,30 +51,31 @@ public class MainTest extends ApplicationTest
         stage.toFront();
     }
 
-    @Before
-    public void setUp() throws TimeoutException {
-        clickOn("#noAirportDefinedOK");
-        clickOn("#airportName");
-        write("Heathrow");
-        clickOn("#airportDoneButton");
+    @BeforeEach
+    public void setUp(FxRobot robot) throws TimeoutException {
+        robot.clickOn("#noAirportDefinedOK");
+        robot.clickOn("#airportName");
+        robot.write("Heathrow");
+        robot.clickOn("#airportDoneButton");
     }
 
 
-    @After
-    public void tearDown () throws Exception {
+    @AfterEach
+    public void tearDown (FxRobot robot) throws Exception {
         FxToolkit.cleanupStages();
         AirportDefinitionController.getInstance().cleanUp();
         ObstacleDefinitionController.getInstance().cleanUp();
-        release(new KeyCode[]{});
-        release(new MouseButton[]{});
+        robot.release(new KeyCode[]{});
+        robot.release(new MouseButton[]{});
     }
 
     // Successful Tests ////////////////////////////////////////////////////////////////////////////
         
     @Test
-    public void addedNewAirportOnStartUp () {
-        clickOn("#airportMainBox");
-        clickOn("Heathrow");
+    @DisplayName("TC1: Airport successfully added on startup")
+    public void addedNewAirportOnStartUp (FxRobot robot) {
+        robot.clickOn("#airportMainBox");
+        robot.clickOn("Heathrow");
         FxAssert.verifyThat("#airportMainBox", (ComboBox<Airport> c) -> {
             String val = c.getValue().getName();
             return val.equals("Heathrow");
@@ -82,12 +84,13 @@ public class MainTest extends ApplicationTest
     }
 
     @Test
-    public void successfulAirportDef (){
-        clickOn("File");
-        clickOn("Define").clickOn("New Airport");
-        clickOn("#airportName").write("Gatwick");
-        clickOn("#airportDoneButton");
-        //clickOn("#airportMainBox");
+    @DisplayName("TC2: Successful airport definition")
+    public void successfulAirportDef (FxRobot robot){
+        robot.clickOn("File");
+        robot.clickOn("Define").clickOn("New Airport");
+        robot.clickOn("#airportName").write("Gatwick");
+        robot.clickOn("#airportDoneButton");
+        //robot.clickOn("#airportMainBox");
         FxAssert.verifyThat("#airportMainBox", ComboBoxMatchers.hasItems(2));
         FxAssert.verifyThat("#airportMainBox", (ComboBox<Airport> c) -> {
             String val = c.getItems().get(1).getName();
@@ -96,30 +99,22 @@ public class MainTest extends ApplicationTest
         FxAssert.verifyThat("#notificationsLog", (Text s) -> s.getText().contains("Airport: " + "Gatwick" + " has been added"));
     }
 
-    public void prepareRunway(){
-        clickOn("File");
-        clickOn("Define").moveTo("New Airport").clickOn("New Runway");
-        clickOn("#runwayDegree");
-        clickOn("09");
-        clickOn("#runwayPosition");
-        clickOn("R");
-    }
-
     @Test
-    public void successfulRunwayDef (){
-        prepareRunway();
+    @DisplayName("TC3: Successful runway definition")
+    public void successfulRunwayDef (FxRobot robot){
+        prepareRunway(robot);
         FxAssert.verifyThat("#complementDesignatorText", (Text text) -> text.getText().equals("27L"));
-        runwayDefFill("3660");
+        runwayDefFill(robot,"3660");
 
-        addedNewAirportOnStartUp();
-        clickOn("#runwayBox").clickOn("09R/27L");
+        addedNewAirportOnStartUp(robot);
+        robot.clickOn("#runwayBox").clickOn("09R/27L");
 
         FxAssert.verifyThat("#runwayBox", (ComboBox<Runway> r) -> {
             String val = r.getItems().get(0).getName();
             return val.equals("09R/27L");
         });
 
-        clickOn("#logicalRunwayBox").clickOn("09R");
+        robot.clickOn("#logicalRunwayBox").clickOn("09R");
 
         FxAssert.verifyThat("#logicalRunwayBox", (ComboBox<LogicalRunway> l) -> {
             String l1 = l.getItems().get(0).getName();
@@ -138,12 +133,13 @@ public class MainTest extends ApplicationTest
     }
 
     @Test
-    public void successfulObstacleDef (){
-        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
-        clickOn("#obstacleName").write("Boeing");
-        clickOn("#obstacleHeight").write("25");
-        clickOn("#obstacleDoneButton");
-        clickOn("#obstacleBox").clickOn("Boeing(25m)");
+    @DisplayName("TC4: Successful obstacle definition")
+    public void successfulObstacleDef (FxRobot robot){
+        robot.clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
+        robot.clickOn("#obstacleName").write("Boeing");
+        robot.clickOn("#obstacleHeight").write("25");
+        robot.clickOn("#obstacleDoneButton");
+        robot.clickOn("#obstacleBox").clickOn("Boeing(25m)");
         FxAssert.verifyThat("#obstacleBox", (ComboBox<Obstacle> o) -> {
             String val = o.getValue().getName();
             return val.equals("Boeing") && o.getValue().getHeight() == 25;
@@ -153,19 +149,20 @@ public class MainTest extends ApplicationTest
 
         
     @Test
-    public void correctResultsScenario2(){
-        successfulAirportDef();
-        successfulRunwayDef();
-        successfulObstacleDef();
+    @DisplayName("TC5: Correct results calculated and displayed")
+    public void correctResultsScenario2(FxRobot robot){
+        successfulAirportDef(robot);
+        successfulRunwayDef(robot);
+        successfulObstacleDef(robot);
         FxAssert.verifyThat("#obstacleBox", ComboBoxMatchers.hasItems(5));
 
-        clickOn("#logicalRunwayBox").clickOn("09R");
-        clickOn("#leftThresholdDistance").write("2853");
-        clickOn("#rightThresholdDistance").write("500");
-        clickOn("#centreLinePositionBox").clickOn("N");
-        clickOn("#centreLineDistance").write("20");
+        robot.clickOn("#logicalRunwayBox").clickOn("09R");
+        robot.clickOn("#leftThresholdDistance").write("2853");
+        robot.clickOn("#rightThresholdDistance").write("500");
+        robot.clickOn("#centreLinePositionBox").clickOn("N");
+        robot.clickOn("#centreLineDistance").write("20");
 
-        clickOn("Calculate");
+        robot.clickOn("Calculate");
 
         FxAssert.verifyThat("#revisedRunwayText", (Text text) -> {
             String val = text.getText();
@@ -186,13 +183,14 @@ public class MainTest extends ApplicationTest
     // Boundary Tests ////////////////////////////////////////////////////////////////////////////
 
     @Test
-    public void boundaryTest_lowerObstacle()
+    @DisplayName("TC6: Lower boundary test on obstacle (1m)")
+    public void boundaryTest_lowerObstacle(FxRobot robot)
     {
-        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
-        clickOn("#obstacleName").write("Crate");
-        clickOn("#obstacleHeight").write("1");
-        clickOn("#obstacleDoneButton");
-        clickOn("#obstacleBox").clickOn("Crate(1m)");
+        robot.clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
+        robot.clickOn("#obstacleName").write("Crate");
+        robot.clickOn("#obstacleHeight").write("1");
+        robot.clickOn("#obstacleDoneButton");
+        robot.clickOn("#obstacleBox").clickOn("Crate(1m)");
         FxAssert.verifyThat("#obstacleBox", (ComboBox<Obstacle> o) -> {
             String val = o.getValue().getName();
             return val.equals("Crate") && o.getValue().getHeight() == 1;
@@ -200,13 +198,14 @@ public class MainTest extends ApplicationTest
     }
 
     @Test
-    public void boundaryTest_upperObstacle()
+    @DisplayName("TC7: Upper boundary test on obstacle (100m)")
+    public void boundaryTest_upperObstacle(FxRobot robot)
     {
-        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
-        clickOn("#obstacleName").write("Crane");
-        clickOn("#obstacleHeight").write("100");
-        clickOn("#obstacleDoneButton");
-        clickOn("#obstacleBox").clickOn("Crane(100m)");
+        robot.clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
+        robot.clickOn("#obstacleName").write("Crane");
+        robot.clickOn("#obstacleHeight").write("100");
+        robot.clickOn("#obstacleDoneButton");
+        robot.clickOn("#obstacleBox").clickOn("Crane(100m)");
         FxAssert.verifyThat("#obstacleBox", (ComboBox<Obstacle> o) -> {
             String val = o.getValue().getName();
             return val.equals("Crane") && o.getValue().getHeight() == 100;
@@ -214,16 +213,17 @@ public class MainTest extends ApplicationTest
     }
 
     @Test
-    public void boundaryTest_Runway(){
-        prepareRunway();
-        runwayDefFillAll("0");
-        addedNewAirportOnStartUp();
-        clickOn("#runwayBox").clickOn("09R/27L");
+    @DisplayName("TC8: Lower boundary test on runway (0m)")
+    public void boundaryTest_Runway(FxRobot robot){
+        prepareRunway(robot);
+        runwayDefFillAll(robot,"0");
+        addedNewAirportOnStartUp(robot);
+        robot.clickOn("#runwayBox").clickOn("09R/27L");
         FxAssert.verifyThat("#runwayBox", (ComboBox<Runway> r) -> {
             String val = r.getItems().get(0).getName();
             return val.equals("09R/27L");
         });
-        clickOn("#logicalRunwayBox").clickOn("09R");
+        robot.clickOn("#logicalRunwayBox").clickOn("09R");
         FxAssert.verifyThat("#logicalRunwayBox", (ComboBox<LogicalRunway> l) -> {
             String l1 = l.getItems().get(0).getName();
             String l2 = l.getItems().get(1).getName();
@@ -236,85 +236,76 @@ public class MainTest extends ApplicationTest
 
     // Scenario 1: Lauren (Runway Technician)
     @Test
-    public void scenario1()
+    @DisplayName("TC9: Test replicating Scenario 1 (Lauren - Runway Technician)")
+    public void scenario1(FxRobot robot)
     {
-        clickOn("File").clickOn("Define").clickOn("New Airport");
-        clickOn("#airportName").write("Bristol").clickOn("#airportDoneButton");
-        clickOn("#airportMainBox").clickOn("Bristol");
-        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Runway");
-        clickOn("#runwayDegree").clickOn("09");
-        clickOn("#runwayPosition").clickOn("C");
+        robot.clickOn("File").clickOn("Define").clickOn("New Airport");
+        robot.clickOn("#airportName").write("Bristol").clickOn("#airportDoneButton");
+        robot.clickOn("#airportMainBox").clickOn("Bristol");
+        robot.clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Runway");
+        robot.clickOn("#runwayDegree").clickOn("09");
+        robot.clickOn("#runwayPosition").clickOn("C");
 
-        clickOn("#todaLeft").write("7500");
-        clickOn("#toraLeft").write("7500");
-        clickOn("#asdaLeft").write("7500");
-        clickOn("#ldaLeft").write("5000;");
+        robot.clickOn("#todaLeft").write("7500");
+        robot.clickOn("#toraLeft").write("7500");
+        robot.clickOn("#asdaLeft").write("7500");
+        robot.clickOn("#ldaLeft").write("5000;");
 
-        clickOn("#todaRight").write("7500");
-        clickOn("#toraRight").write("7500");
-        clickOn("#asdaRight").write("-7500");
-        clickOn("#ldaRight").write("5000");
+        robot.clickOn("#todaRight").write("7500");
+        robot.clickOn("#toraRight").write("7500");
+        robot.clickOn("#asdaRight").write("-7500");
+        robot.clickOn("#ldaRight").write("5000");
 
-        clickOn("#airports").clickOn("Bristol");
-        clickOn("#runwayDoneButton");
+        robot.clickOn("#airports").clickOn("Bristol");
+        robot.clickOn("#runwayDoneButton");
 
-        alert_dialog_has_header_and_content("Message","Please ensure only positive values are used for measurements");
+        alert_dialog_has_header_and_content(robot, "Message","Please ensure only positive values are used for measurements");
 
-        clickOn("#asdaRight");
-        clearTextField(5);
-        write("7500");
+        robot.clickOn("#asdaRight");
+        clearTextField(robot,5);
+        robot.write("7500");
 
-        clickOn("#runwayDoneButton");
+        robot.clickOn("#runwayDoneButton");
 
-        alert_dialog_has_header_and_content("Message","Please ensure only numbers are used as inputs for measurements");
+        alert_dialog_has_header_and_content(robot, "Message","Please ensure only numbers are used as inputs for measurements");
 
-        clickOn("#ldaLeft");
-        clearTextField(1);
+        robot.clickOn("#ldaLeft");
+        clearTextField(robot,1);
 
-        clickOn("#runwayDoneButton");
+        robot.clickOn("#runwayDoneButton");
 
-        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
+        robot.clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
 
-        clickOn("#obstacleName").write("Jumbo Jet");
-        clickOn("#obstacleHeight").write("tall");
-        clickOn("#obstacleDoneButton");
+        robot.clickOn("#obstacleName").write("Jumbo Jet");
+        robot.clickOn("#obstacleHeight").write("tall");
+        robot.clickOn("#obstacleDoneButton");
 
-        alert_dialog_has_header_and_content("Message","Please input a number for height");
+        alert_dialog_has_header_and_content(robot, "Message","Please input a number for height");
 
-        clickOn("#obstacleHeight");
-        clearTextField(4);
-        write("30");
+        robot.clickOn("#obstacleHeight");
+        clearTextField(robot,4);
+        robot.write("30");
 
-        clickOn("#obstacleDoneButton");
+        robot.clickOn("#obstacleDoneButton");
 
-        clickOn("#runwayBox").clickOn("09C/27C");
-        clickOn("#logicalRunwayBox").clickOn("09C");
-        clickOn("#obstacleBox").clickOn("Jumbo Jet(30m)");
+        robot.clickOn("#runwayBox").clickOn("09C/27C");
+        robot.clickOn("#logicalRunwayBox").clickOn("09C");
+        robot.clickOn("#obstacleBox").clickOn("Jumbo Jet(30m)");
     }
 
     // Scenario 2: Charles (Airfield Operations Manager)
     @Test
-    public void scenario2()
+    @DisplayName("TC10: Test replicating Scenario 2 (Charles - Airfield Operations Manager)")
+    public void scenario2(FxRobot robot)
     {
-        scenario1();
+        scenario1(robot);
 
-        clickOn("#leftThresholdDistance").write("-50");
-        clickOn("#rightThresholdDistance").write("7550");
-        clickOn("#centreLinePositionBox").clickOn("N");
-        clickOn("#centreLineDistance").write("20");
-        clickOn("Calculate");
-        clickOn("Side-on view");
-
-        try
-        {
-            Thread.sleep(1000);
-        }
-        catch (InterruptedException ex)
-        {
-            ex.printStackTrace();
-        }
-
-        clickOn("Top-down view");
+        robot.clickOn("#leftThresholdDistance").write("-50");
+        robot.clickOn("#rightThresholdDistance").write("7550");
+        robot.clickOn("#centreLinePositionBox").clickOn("N");
+        robot.clickOn("#centreLineDistance").write("20");
+        robot.clickOn("Calculate");
+        robot.clickOn("Side-on view");
 
         try
         {
@@ -325,7 +316,7 @@ public class MainTest extends ApplicationTest
             ex.printStackTrace();
         }
 
-        clickOn("Calculation Breakdown");
+        robot.clickOn("Top-down view");
 
         try
         {
@@ -336,7 +327,18 @@ public class MainTest extends ApplicationTest
             ex.printStackTrace();
         }
 
-        clickOn("Simultaneous View");
+        robot.clickOn("Calculation Breakdown");
+
+        try
+        {
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException ex)
+        {
+            ex.printStackTrace();
+        }
+
+        robot.clickOn("Simultaneous View");
 
         try
         {
@@ -358,137 +360,158 @@ public class MainTest extends ApplicationTest
     // Tests Giving Undesired Outputs /////////////////////////////////////////////////////////////////////////////
         
     @Test
-    public void fail_emptyInputAirport(){
-        clickOn("File");
-        clickOn("Define").clickOn("New Airport");
-        clickOn("#airportDoneButton");
-        alert_dialog_has_header_and_content("Message","Please fill all input fields");
+    @DisplayName("TC11: Failure caused by blank airport name")
+    public void fail_emptyInputAirport(FxRobot robot){
+        robot.clickOn("File");
+        robot.clickOn("Define").clickOn("New Airport");
+        robot.clickOn("#airportDoneButton");
+        alert_dialog_has_header_and_content(robot, "Message","Please fill all input fields");
     }
 
     @Test
-    public void fail_airportAlreadyExist(){
-        clickOn("File");
-        clickOn("Define").clickOn("New Airport");
-        clickOn("#airportName").write("Heathrow");
-        clickOn("#airportDoneButton");
-        alert_dialog_has_header_and_content("Message","Airport already exists");
+    @DisplayName("TC12: Failure caused by existing airport name")
+    public void fail_airportAlreadyExist(FxRobot robot){
+        robot.clickOn("File");
+        robot.clickOn("Define").clickOn("New Airport");
+        robot.clickOn("#airportName").write("Heathrow");
+        robot.clickOn("#airportDoneButton");
+        alert_dialog_has_header_and_content(robot, "Message","Airport already exists");
     }
 
     @Test
-    public void fail_obstacleAlreadyExist(){
-        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
-        clickOn("#obstacleName").write("Barricades");
-        clickOn("#obstacleHeight").write("1");
-        clickOn("#obstacleDoneButton");
-        alert_dialog_has_header_and_content("Message","Duplicate alert: Obstacle has not been added");
+    @DisplayName("TC13: Failure caused by existing obstacle name")
+    public void fail_obstacleAlreadyExist(FxRobot robot){
+        robot.clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
+        robot.clickOn("#obstacleName").write("Barricades");
+        robot.clickOn("#obstacleHeight").write("1");
+        robot.clickOn("#obstacleDoneButton");
+        alert_dialog_has_header_and_content(robot, "Message","Duplicate alert: Obstacle has not been added");
     }
 
     @Test
-    public void fail_obstacleEmptyInput_stringHeight(){
-        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
-        clickOn("#obstacleDoneButton");
-        alert_dialog_has_header_and_content("Message","Please fill in all input fields");
+    @DisplayName("TC14: Failure caused by non-numeric obstacle height")
+    public void fail_obstacleEmptyInput_stringHeight(FxRobot robot){
+        robot.clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
+        robot.clickOn("#obstacleDoneButton");
+        alert_dialog_has_header_and_content(robot, "Message","Please fill in all input fields");
 
-        clickOn("#obstacleName").write("Barricades");
-        clickOn("#obstacleDoneButton");
-        alert_dialog_has_header_and_content("Message","Please fill in all input fields");
+        robot.clickOn("#obstacleName").write("Barricades");
+        robot.clickOn("#obstacleDoneButton");
+        alert_dialog_has_header_and_content(robot, "Message","Please fill in all input fields");
 
-        clickOn("#obstacleHeight").write("height");
-        clickOn("#obstacleDoneButton");
-        alert_dialog_has_header_and_content("Message","Please input a number for height");
+        robot.clickOn("#obstacleHeight").write("height");
+        robot.clickOn("#obstacleDoneButton");
+        alert_dialog_has_header_and_content(robot, "Message","Please input a number for height");
     }
 
     @Test
-    public void fail_obstacleNegativeHeight(){
-        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
-        clickOn("#obstacleName").write("Pole");
-        clickOn("#obstacleHeight").write("-10");
-        clickOn("#obstacleDoneButton");
-        alert_dialog_has_header_and_content("Message","Please put a number greater than zero for Height");
+    @DisplayName("TC15: Failure caused by negative obstacle height")
+    public void fail_obstacleNegativeHeight(FxRobot robot){
+        robot.clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
+        robot.clickOn("#obstacleName").write("Pole");
+        robot.clickOn("#obstacleHeight").write("-10");
+        robot.clickOn("#obstacleDoneButton");
+        alert_dialog_has_header_and_content(robot, "Message","Please put a number greater than zero for Height");
     }
 
     @Test
-    public void fail_obstacleZeroHeight(){
-        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
-        clickOn("#obstacleName").write("Pole");
-        clickOn("#obstacleHeight").write("0");
-        clickOn("#obstacleDoneButton");
-        alert_dialog_has_header_and_content("Message","Please put a number greater than zero for Height");
+    @DisplayName("TC16: Failure caused by an obstacle height of zero")
+    public void fail_obstacleZeroHeight(FxRobot robot){
+        robot.clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
+        robot.clickOn("#obstacleName").write("Pole");
+        robot.clickOn("#obstacleHeight").write("0");
+        robot.clickOn("#obstacleDoneButton");
+        alert_dialog_has_header_and_content(robot, "Message","Please put a number greater than zero for Height");
     }
 
     @Test
-    public void fail_obstacleLargeHeight(){
-        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
-        clickOn("#obstacleName").write("Pole");
-        clickOn("#obstacleHeight").write("101");
-        clickOn("#obstacleDoneButton");
-        alert_dialog_has_header_and_content("Message","Please put a number less than one hundred for Height");
+    @DisplayName("TC17: Failure caused by large obstacle height (101m)")
+    public void fail_obstacleLargeHeight(FxRobot robot){
+        robot.clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
+        robot.clickOn("#obstacleName").write("Pole");
+        robot.clickOn("#obstacleHeight").write("101");
+        robot.clickOn("#obstacleDoneButton");
+        alert_dialog_has_header_and_content(robot, "Message","Please put a number less than one hundred for Height");
     }
 
     @Test
-    public void fail_emptyInputRunwayDef(){
-        prepareRunway();
-        clickOn("#runwayDoneButton");
-        alert_dialog_has_header_and_content("Message","Please ensure all inputs have been filled in");
+    @DisplayName("TC18: Failure caused by blank runway definition fields")
+    public void fail_emptyInputRunwayDef(FxRobot robot){
+        prepareRunway(robot);
+        robot.clickOn("#runwayDoneButton");
+        alert_dialog_has_header_and_content(robot, "Message","Please ensure all inputs have been filled in");
     }
 
     @Test
-    public void fail_negativeInputRunwayDef(){
-        prepareRunway();
-        runwayDefFill("-1");
-        alert_dialog_has_header_and_content("Message","Please ensure only positive values are used for measurements");
+    @DisplayName("TC19: Failure caused by negative runway dimension")
+    public void fail_negativeInputRunwayDef(FxRobot robot){
+        prepareRunway(robot);
+        runwayDefFill(robot,"-1");
+        alert_dialog_has_header_and_content(robot, "Message","Please ensure only positive values are used for measurements");
     }
 
     @Test
-    public void fail_stringInputRunwayDef(){
-        prepareRunway();
-        runwayDefFill("String");
-        alert_dialog_has_header_and_content("Message","Please ensure only numbers are used as inputs for measurements");
+    @DisplayName("TC20: Failure caused by non-numeric runway dimension")
+    public void fail_stringInputRunwayDef(FxRobot robot){
+        prepareRunway(robot);
+        runwayDefFill(robot,"String");
+        alert_dialog_has_header_and_content(robot, "Message","Please ensure only numbers are used as inputs for measurements");
     }
 
     @Test
-    public void fail_emptyInputCalulation (){
-        clickOn("Calculate");
-        alert_dialog_has_header_and_content("Message","Please fill in all inputs");
+    @DisplayName("TC21: Failure caused by empty calculation fields")
+    public void fail_emptyInputCalulation (FxRobot robot){
+        robot.clickOn("Calculate");
+        alert_dialog_has_header_and_content(robot,"Message","Please fill in all inputs");
     }
 
     @Test
-    public void fail_stringInputCalculation(){
-        successfulAirportDef();
-        successfulRunwayDef();
-        successfulObstacleDef();
+    @DisplayName("TC22: Failure caused by non-numeric thresholds")
+    public void fail_stringInputCalculation(FxRobot robot){
+        successfulAirportDef(robot);
+        successfulRunwayDef(robot);
+        successfulObstacleDef(robot);
 
-        clickOn("#logicalRunwayBox").clickOn("09R");
-        clickOn("#leftThresholdDistance").write("2853");
-        clickOn("#rightThresholdDistance").write("string 500");
-        clickOn("#centreLinePositionBox").clickOn("N");
-        clickOn("#centreLineDistance").write("20");
+        robot.clickOn("#logicalRunwayBox").clickOn("09R");
+        robot.clickOn("#leftThresholdDistance").write("2853");
+        robot.clickOn("#rightThresholdDistance").write("string 500");
+        robot.clickOn("#centreLinePositionBox").clickOn("N");
+        robot.clickOn("#centreLineDistance").write("20");
 
-        clickOn("Calculate");
-        alert_dialog_has_header_and_content("Message","Please input numbers for distances");
+        robot.clickOn("Calculate");
+        alert_dialog_has_header_and_content(robot,"Message","Please input numbers for distances");
     }
         
     //Helper Methods ----------------------------------------------------------------------//
         
     /*Helper Method to retrieve Java FX GUI components */
-    public  <T extends Node> T find(final String query){
-        return (T) lookup(query).queryAll().iterator().next();
+    public  <T extends Node> T find(FxRobot robot, final String query){
+        return (T) robot.lookup(query).queryAll().iterator().next();
     }
 
-    public void alert_dialog_has_header_and_content(final String expectedHeader, final String expectedContent) {
-        final javafx.stage.Stage actualAlertDialog = getTopModalStage();
+    public void prepareRunway(FxRobot robot){
+        robot.clickOn("File");
+        robot.clickOn("Define").moveTo("New Airport").clickOn("New Runway");
+        robot.clickOn("#runwayDegree");
+        robot.clickOn("09");
+        robot.clickOn("#runwayPosition");
+        robot.clickOn("R");
+    }
+
+    public void alert_dialog_has_header_and_content(FxRobot robot, final String expectedHeader, final String expectedContent) {
+        final javafx.stage.Stage actualAlertDialog = getTopModalStage(robot);
         assertNotNull(actualAlertDialog);
 
         final DialogPane dialogPane = (DialogPane) actualAlertDialog.getScene().getRoot();
         assertEquals(expectedHeader, dialogPane.getHeaderText());
         assertEquals(expectedContent, dialogPane.getContentText());
-        clickOn("OK");
+        robot.clickOn("OK");
     }
 
-    private javafx.stage.Stage getTopModalStage() {
+    private javafx.stage.Stage getTopModalStage(FxRobot robot) {
         // Get a list of windows but ordered from top[0] to bottom[n] ones.
         // It is needed to get the first found modal window.
-        final List<Window> allWindows = new ArrayList<>(robotContext().getWindowFinder().listWindows());
+        final List<Window> allWindows = new ArrayList<>(robot.robotContext().getWindowFinder().listWindows());
         Collections.reverse(allWindows);
 
         return (javafx.stage.Stage) allWindows
@@ -499,37 +522,37 @@ public class MainTest extends ApplicationTest
                 .orElse(null);
     }
 
-    public void runwayDefFill(String todaLeftInput) {
-        clickOn("#todaLeft").write(todaLeftInput);
-        clickOn("#toraLeft").write("3660");
-        clickOn("#asdaLeft").write("3660");
-        clickOn("#ldaLeft").write("3353");
+    public void runwayDefFill(FxRobot robot, String todaLeftInput) {
+        robot.clickOn("#todaLeft").write(todaLeftInput);
+        robot.clickOn("#toraLeft").write("3660");
+        robot.clickOn("#asdaLeft").write("3660");
+        robot.clickOn("#ldaLeft").write("3353");
 
-        clickOn("#todaRight").write("3660");
-        clickOn("#toraRight").write("3660");
-        clickOn("#asdaRight").write("3660");
-        clickOn("#ldaRight").write("3660");
+        robot.clickOn("#todaRight").write("3660");
+        robot.clickOn("#toraRight").write("3660");
+        robot.clickOn("#asdaRight").write("3660");
+        robot.clickOn("#ldaRight").write("3660");
 
-        clickOn("#airports").clickOn("Heathrow");
-        clickOn("#runwayDoneButton");
+        robot.clickOn("#airports").clickOn("Heathrow");
+        robot.clickOn("#runwayDoneButton");
     }
 
-    public void runwayDefFillAll(String input) {
-        clickOn("#todaLeft").write(input);
-        clickOn("#toraLeft").write(input);
-        clickOn("#asdaLeft").write(input);
-        clickOn("#ldaLeft").write(input);
+    public void runwayDefFillAll(FxRobot robot, String input) {
+        robot.clickOn("#todaLeft").write(input);
+        robot.clickOn("#toraLeft").write(input);
+        robot.clickOn("#asdaLeft").write(input);
+        robot.clickOn("#ldaLeft").write(input);
 
-        clickOn("#todaRight").write(input);
-        clickOn("#toraRight").write(input);
-        clickOn("#asdaRight").write(input);
-        clickOn("#ldaRight").write(input);
+        robot.clickOn("#todaRight").write(input);
+        robot.clickOn("#toraRight").write(input);
+        robot.clickOn("#asdaRight").write(input);
+        robot.clickOn("#ldaRight").write(input);
 
-        clickOn("#airports").clickOn("Heathrow");
-        clickOn("#runwayDoneButton");
+        robot.clickOn("#airports").clickOn("Heathrow");
+        robot.clickOn("#runwayDoneButton");
     }
 
-    public void clearTextField(int size) {
-        for (int i = 0; i < size; i++) { push(KeyCode.BACK_SPACE); }
+    public void clearTextField(FxRobot robot, int size) {
+        for (int i = 0; i < size; i++) { robot.push(KeyCode.BACK_SPACE); }
     }
 }

@@ -54,7 +54,7 @@
         <!-- https://mvnrepository.com/artifact/org.testfx/testfx-core -->
         <dependency>
             <groupId>org.testfx</groupId>
-            <artifactId>testfx-core</artifactId>
+            <artifactId>testfx-junit5</artifactId>
             <version>4.0.16-alpha</version>
             <scope>test</scope>
         </dependency>
