@@ -1,16 +1,12 @@
 import Controller.AirportDefinitionController;
 import Controller.ObstacleDefinitionController;
 import Model.*;
-import com.sun.javafx.application.LauncherImpl;
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DialogPane;
-import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.text.Text;
@@ -19,10 +15,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.testfx.api.FxAssert;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
@@ -60,11 +53,7 @@ public class MainTest extends ApplicationTest
     @Before
     public void setUp() throws TimeoutException {
         clickOn("#noAirportDefinedOK");
-        // For some reason, when running this via Monocle, we need to open the window again since it can't
-        // see the window open after confirming the initial no airport message.
-//        clickOn("File");
-//        clickOn("Define New Airport");
-//        clickOn("#airportName").write("Heathrow");
+        clickOn("#airportName");
         write("Heathrow");
         clickOn("#airportDoneButton");
     }
@@ -95,7 +84,7 @@ public class MainTest extends ApplicationTest
     @Test
     public void successfulAirportDef (){
         clickOn("File");
-        clickOn("Define New Airport");
+        clickOn("Define").clickOn("New Airport");
         clickOn("#airportName").write("Gatwick");
         clickOn("#airportDoneButton");
         //clickOn("#airportMainBox");
@@ -109,7 +98,7 @@ public class MainTest extends ApplicationTest
 
     public void prepareRunway(){
         clickOn("File");
-        clickOn("Define New Runway");
+        clickOn("Define").moveTo("New Airport").clickOn("New Runway");
         clickOn("#runwayDegree");
         clickOn("09");
         clickOn("#runwayPosition");
@@ -150,7 +139,7 @@ public class MainTest extends ApplicationTest
 
     @Test
     public void successfulObstacleDef (){
-        clickOn("File").clickOn("Define New Obstacle");
+        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
         clickOn("#obstacleName").write("Boeing");
         clickOn("#obstacleHeight").write("25");
         clickOn("#obstacleDoneButton");
@@ -199,7 +188,7 @@ public class MainTest extends ApplicationTest
     @Test
     public void boundaryTest_lowerObstacle()
     {
-        clickOn("File").clickOn("Define New Obstacle");
+        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
         clickOn("#obstacleName").write("Crate");
         clickOn("#obstacleHeight").write("1");
         clickOn("#obstacleDoneButton");
@@ -213,7 +202,7 @@ public class MainTest extends ApplicationTest
     @Test
     public void boundaryTest_upperObstacle()
     {
-        clickOn("File").clickOn("Define New Obstacle");
+        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
         clickOn("#obstacleName").write("Crane");
         clickOn("#obstacleHeight").write("100");
         clickOn("#obstacleDoneButton");
@@ -249,10 +238,10 @@ public class MainTest extends ApplicationTest
     @Test
     public void scenario1()
     {
-        clickOn("File").clickOn("Define New Airport");
-        write("Bristol").clickOn("#airportDoneButton");
+        clickOn("File").clickOn("Define").clickOn("New Airport");
+        clickOn("#airportName").write("Bristol").clickOn("#airportDoneButton");
         clickOn("#airportMainBox").clickOn("Bristol");
-        clickOn("File").clickOn("Define New Runway");
+        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Runway");
         clickOn("#runwayDegree").clickOn("09");
         clickOn("#runwayPosition").clickOn("C");
 
@@ -284,7 +273,7 @@ public class MainTest extends ApplicationTest
 
         clickOn("#runwayDoneButton");
 
-        clickOn("File").clickOn("Define New Obstacle");
+        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
 
         clickOn("#obstacleName").write("Jumbo Jet");
         clickOn("#obstacleHeight").write("tall");
@@ -371,7 +360,7 @@ public class MainTest extends ApplicationTest
     @Test
     public void fail_emptyInputAirport(){
         clickOn("File");
-        clickOn("Define New Airport");
+        clickOn("Define").clickOn("New Airport");
         clickOn("#airportDoneButton");
         alert_dialog_has_header_and_content("Message","Please fill all input fields");
     }
@@ -379,7 +368,7 @@ public class MainTest extends ApplicationTest
     @Test
     public void fail_airportAlreadyExist(){
         clickOn("File");
-        clickOn("Define New Airport");
+        clickOn("Define").clickOn("New Airport");
         clickOn("#airportName").write("Heathrow");
         clickOn("#airportDoneButton");
         alert_dialog_has_header_and_content("Message","Airport already exists");
@@ -387,7 +376,7 @@ public class MainTest extends ApplicationTest
 
     @Test
     public void fail_obstacleAlreadyExist(){
-        clickOn("File").clickOn("Define New Obstacle");
+        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
         clickOn("#obstacleName").write("Barricades");
         clickOn("#obstacleHeight").write("1");
         clickOn("#obstacleDoneButton");
@@ -396,7 +385,7 @@ public class MainTest extends ApplicationTest
 
     @Test
     public void fail_obstacleEmptyInput_stringHeight(){
-        clickOn("File").clickOn("Define New Obstacle");
+        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
         clickOn("#obstacleDoneButton");
         alert_dialog_has_header_and_content("Message","Please fill in all input fields");
 
@@ -411,7 +400,7 @@ public class MainTest extends ApplicationTest
 
     @Test
     public void fail_obstacleNegativeHeight(){
-        clickOn("File").clickOn("Define New Obstacle");
+        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
         clickOn("#obstacleName").write("Pole");
         clickOn("#obstacleHeight").write("-10");
         clickOn("#obstacleDoneButton");
@@ -420,7 +409,7 @@ public class MainTest extends ApplicationTest
 
     @Test
     public void fail_obstacleZeroHeight(){
-        clickOn("File").clickOn("Define New Obstacle");
+        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
         clickOn("#obstacleName").write("Pole");
         clickOn("#obstacleHeight").write("0");
         clickOn("#obstacleDoneButton");
@@ -429,7 +418,7 @@ public class MainTest extends ApplicationTest
 
     @Test
     public void fail_obstacleLargeHeight(){
-        clickOn("File").clickOn("Define New Obstacle");
+        clickOn("File").clickOn("Define").moveTo("New Airport").clickOn("New Obstacle");
         clickOn("#obstacleName").write("Pole");
         clickOn("#obstacleHeight").write("101");
         clickOn("#obstacleDoneButton");
@@ -472,7 +461,7 @@ public class MainTest extends ApplicationTest
         clickOn("#logicalRunwayBox").clickOn("09R");
         clickOn("#leftThresholdDistance").write("2853");
         clickOn("#rightThresholdDistance").write("string 500");
-        clickOn("#centreLinePositionBox").clickOn("L");
+        clickOn("#centreLinePositionBox").clickOn("N");
         clickOn("#centreLineDistance").write("20");
 
         clickOn("Calculate");
