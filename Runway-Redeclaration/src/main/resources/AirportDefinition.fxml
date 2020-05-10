@@ -4,15 +4,15 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="125.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
 
-    <Text layoutX="257.0" layoutY="167.0" text="Airport Name" />
+    <Text layoutX="108.5" layoutY="30.5" text="Airport Name" />
     <!-- When pressed, the button calls airport definition function in Controller Class.-->
-    <Button fx:id="airportDoneButton" layoutX="249.0" layoutY="222.0" onAction="#defineAirport" text="Add Airport">
+    <Button fx:id="airportDoneButton" layoutX="99.0" layoutY="71.5" onAction="#defineAirport" text="Add Airport">
       <font>
          <Font name="System Bold" size="13.0" />
       </font></Button>
     <!-- Reads airport Name-->
-    <TextField fx:id="airportName" layoutX="215.0" layoutY="187.0" />
+    <TextField fx:id="airportName" layoutX="71.5" layoutY="38.5" />
 
 </AnchorPane>

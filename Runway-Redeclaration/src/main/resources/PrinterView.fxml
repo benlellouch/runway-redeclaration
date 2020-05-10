@@ -7,7 +7,7 @@
 <AnchorPane prefHeight="100.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <Text layoutX="59.0" layoutY="19.0" text="Choose view to print" GridPane.columnIndex="1" GridPane.rowIndex="1" />
     <ComboBox fx:id="printBox" layoutX="61.0" layoutY="29.0" promptText="Choose view" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-    <Button layoutX="98.0" layoutY="60.0" onAction="#print" text="Print" GridPane.columnIndex="1" GridPane.rowIndex="3">
+    <Button layoutX="92.0" layoutY="60.0" onAction="#print" text="Print" GridPane.columnIndex="1" GridPane.rowIndex="3">
       <font>
          <Font name="System Bold" size="13.0" />
       </font></Button>

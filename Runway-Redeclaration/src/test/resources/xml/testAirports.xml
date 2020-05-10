@@ -33,7 +33,7 @@
 		</LogicalRunway>
 
 		<LogicalRunway degree="28">
-                <direction> L </direction> 
+                <direction>L</direction> 
                    <TORA>3</TORA> 
                    <TODA>3</TODA> 
                    <ASDA>3</ASDA>  

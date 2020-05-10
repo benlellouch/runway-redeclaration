@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import Model.*;
 
@@ -14,6 +15,7 @@ public class CalculationsTest {
     Runway runway09L27R = new Runway(lRunway09L,lRunway27R);
 
     @Test
+    @DisplayName("TC1: Scenario 1 calculations test")
     public void testScenario1()
     {
         Obstacle obstacle = new Obstacle("test", 12,1);
@@ -33,6 +35,7 @@ public class CalculationsTest {
     }
 
     @Test
+    @DisplayName("TC2: Scenario 2 calculations test")
     public void testScenario2()
     {
         Obstacle obstacle = new Obstacle("test", 25,1);
@@ -51,6 +54,7 @@ public class CalculationsTest {
     }
 
     @Test
+    @DisplayName("TC3: Scenario 3 calculations test")
     public void testScenario3()
     {
         Obstacle obstacle = new Obstacle("test", 15,1);
@@ -69,6 +73,7 @@ public class CalculationsTest {
     }
 
     @Test
+    @DisplayName("TC4: Scenario 4 calculations test")
     public void testScenario4()
     {
         Obstacle obstacle = new Obstacle("test", 20,1);
