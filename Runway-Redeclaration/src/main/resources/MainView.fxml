@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="1080.0" prefWidth="1920.0"  xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
+<BorderPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
     <top>
         <MenuBar>
             <Menu text="File">
@@ -98,12 +98,33 @@
                         <Tab fx:id="resultsTab" closable="false" text="Results">
                             <SplitPane dividerPositions="0.5">
                                 <VBox>
-                                    <Text text="Original Runway" />
-                                    <Text fx:id="oldRunwayText" />
+                                    <Text text="Original Runway">
+                              <VBox.margin>
+                                 <Insets left="10.0" />
+                              </VBox.margin></Text>
+                                    <Text fx:id="oldRunwayText" VBox.vgrow="NEVER">
+                              <VBox.margin>
+                                 <Insets left="10.0" />
+                              </VBox.margin></Text>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
                                 </VBox>
                                 <VBox>
-                                    <Text text="Revised Runway" />
-                                    <Text fx:id="revisedRunwayText" />
+                                    <Text text="Revised Runway">
+                              <VBox.margin>
+                                 <Insets left="10.0" />
+                              </VBox.margin></Text>
+                                    <Text fx:id="revisedRunwayText">
+                              <VBox.margin>
+                                 <Insets left="10.0" />
+                              </VBox.margin></Text>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
                                 </VBox>
                             </SplitPane>
 
@@ -111,7 +132,10 @@
                         <Tab fx:id="calculationBreakdownTab" closable="false" text="Calculation Breakdown">
                             <Pane>
                                 <VBox prefWidth="320.0">
-                                    <Label fx:id="calculationBreakdown" wrapText="true" />
+                                    <Label fx:id="calculationBreakdown" wrapText="true">
+                              <VBox.margin>
+                                 <Insets left="10.0" top="10.0" />
+                              </VBox.margin></Label>
                                 </VBox>
                             </Pane>
                         </Tab>
@@ -148,6 +172,9 @@
           <Tab text="Notifications">
               <ScrollPane>
                   <Text fx:id="notificationsLog" />
+                  <padding>
+                     <Insets left="10.0" top="10.0" />
+                  </padding>
               </ScrollPane>
           </Tab>
         </tabs>
