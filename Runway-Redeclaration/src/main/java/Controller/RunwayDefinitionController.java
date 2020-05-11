@@ -141,6 +141,7 @@ public class RunwayDefinitionController implements Initializable {
                         LogicalRunway logicalRunway1 = new LogicalRunway(designatorLeft, toraLeft, todaLeft, asdaLeft, ldaLeft);
                         LogicalRunway logicalRunway2 = new LogicalRunway(designatorRight, toraRight, todaRight, asdaRight, ldaRight);
                         Runway run = new Runway(logicalRunway1, logicalRunway2);
+                        int x=airport.getRunways().size();
                         airport.addRunway(run);
 
                         for (int i = 0; i < airport.getRunways().size() - 1; i++) {
@@ -152,7 +153,7 @@ public class RunwayDefinitionController implements Initializable {
                             }
                         }
                         mainController.updateRunwayBox();
-
+                        if(x<airport.getRunways().size()){
                         Stage stage = (Stage) runwayDoneButton.getScene().getWindow();
                         stage.close();
                         Controller.notificationsString.append("Runway: ").append(run.getName()).append(" has been added to Airport: ").append(airport.getName()).append(" (").append(Time.valueOf(LocalTime.now())).append(")").append("\n");
@@ -168,6 +169,7 @@ public class RunwayDefinitionController implements Initializable {
                                         .graphic(new ImageView(Controller.tick))
                                         .position(Pos.BOTTOM_RIGHT);
                         runwayAddedNotification.show();
+                    }
                     }
                 }
                 else {
