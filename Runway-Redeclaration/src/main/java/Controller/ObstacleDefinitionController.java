@@ -93,6 +93,7 @@ public static ObstacleDefinitionController getInstance()
             else {
                 int newObstacleHeight = Integer.parseInt(obstacleHeight.getText().trim());
                 Obstacle newObstacleCreated = new Obstacle(newObstacleName,newObstacleHeight,1);
+                int x = obstacles.size();
                 obstacles.add(newObstacleCreated);
 
                 for (int i=0;i<obstacles.size()-1;i++){
@@ -104,6 +105,7 @@ public static ObstacleDefinitionController getInstance()
                     }
                 }
                 //obstacles.add(newObstacleCreated);
+                if(x<obstacles.size()){
                 Stage stage = (Stage) obstacleDoneButton.getScene().getWindow();
                 stage.close();
                 obstacleDefinedNotification =
@@ -119,6 +121,7 @@ public static ObstacleDefinitionController getInstance()
                 {
                     Controller.notificationsString.notify();
                 }
+            }
             }
         } catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
