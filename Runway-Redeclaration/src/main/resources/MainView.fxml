@@ -96,48 +96,51 @@
                 <TabPane fx:id="pane" prefHeight="771.0" prefWidth="542.0">
                     <tabs>
                         <Tab fx:id="resultsTab" closable="false" text="Results">
-                            <SplitPane dividerPositions="0.5">
-                                <VBox>
-                                    <Text text="Original Runway">
-                              <VBox.margin>
-                                 <Insets left="10.0" />
-                              </VBox.margin></Text>
-                                    <Text fx:id="oldRunwayText" VBox.vgrow="NEVER">
-                              <VBox.margin>
-                                 <Insets left="10.0" />
-                              </VBox.margin></Text>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <padding>
-                              <Insets top="10.0" />
-                           </padding>
-                                </VBox>
-                                <VBox>
-                                    <Text text="Revised Runway">
-                              <VBox.margin>
-                                 <Insets left="10.0" />
-                              </VBox.margin></Text>
-                                    <Text fx:id="revisedRunwayText">
-                              <VBox.margin>
-                                 <Insets left="10.0" />
-                              </VBox.margin></Text>
-                           <padding>
-                              <Insets top="10.0" />
-                           </padding>
-                                </VBox>
-                            </SplitPane>
+                            <ScrollPane>
+                                    <SplitPane dividerPositions="0.5" prefHeight="44.0" prefWidth="403.0">
+                                        <VBox>
+                                            <Text text="Original Runway">
+                                                <VBox.margin>
+                                                    <Insets left="10.0" />
+                                                </VBox.margin></Text>
+                                            <Text fx:id="oldRunwayText" VBox.vgrow="NEVER">
+                                                <VBox.margin>
+                                                    <Insets left="10.0" />
+                                                </VBox.margin></Text>
+                                            <opaqueInsets>
+                                                <Insets />
+                                            </opaqueInsets>
+                                            <padding>
+                                                <Insets top="10.0" />
+                                            </padding>
+                                        </VBox>
+                                        <VBox>
+                                            <Text text="Revised Runway">
+                                                <VBox.margin>
+                                                    <Insets left="10.0" />
+                                                </VBox.margin></Text>
+                                            <Text fx:id="revisedRunwayText">
+                                                <VBox.margin>
+                                                    <Insets left="10.0" />
+                                                </VBox.margin></Text>
+                                            <padding>
+                                                <Insets top="10.0" />
+                                            </padding>
+                                    </VBox>
+                                </SplitPane>
+                            </ScrollPane>
+
 
                         </Tab>
                         <Tab fx:id="calculationBreakdownTab" closable="false" text="Calculation Breakdown">
-                            <Pane>
+                            <ScrollPane>
                                 <VBox prefWidth="320.0">
                                     <Label fx:id="calculationBreakdown" wrapText="true">
                               <VBox.margin>
                                  <Insets left="10.0" top="10.0" />
                               </VBox.margin></Label>
                                 </VBox>
-                            </Pane>
+                            </ScrollPane>
                         </Tab>
                     </tabs>
                <padding>
