@@ -63,7 +63,8 @@ public class AirportDefinitionController {
         String newAirportName = airportName.getText().trim().replaceAll("\\s", "");
 
         if(!newAirportName.isEmpty())
-        {   airportObservableList.add(new Airport(newAirportName));
+        {   int x = airportObservableList.size();
+            airportObservableList.add(new Airport(newAirportName));
             if(!airportObservableList.isEmpty()){
                 for (int i=0;i<airportObservableList.size()-1;i++){
                     if(airportObservableList.get(i).getName().equalsIgnoreCase(newAirportName)){
@@ -73,6 +74,7 @@ public class AirportDefinitionController {
                         airportObservableList.remove(airportObservableList.size()-1);
                     }
                 }
+                if(x<airportObservableList.size() ){
                 Stage stage = (Stage) airportDoneButton.getScene().getWindow();
                 stage.close();
                 airportAddedNotification =
@@ -87,6 +89,7 @@ public class AirportDefinitionController {
                 synchronized (Controller.notificationsString)
                 {
                     Controller.notificationsString.notify();
+                }
                 }
             }else{
                 airportObservableList.add(new Airport(newAirportName));
